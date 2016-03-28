@@ -91,6 +91,7 @@ export default DS.Model.extend({
   isReviewing: Ember.computed.or('isUnderReview', 'isReviewed'),
   adminCurrentOffer: Ember.computed.or('isReviewing', 'isScheduled'),
   nonSubmittedOffer: Ember.computed.or('isDraft', 'isInactive'),
+  closedOrCancelled: Ember.computed.or('isClosed', 'isCancelled'),
 
   needReview: Ember.computed('isUnderReview', 'isSubmitted', 'isClosed', function(){
     return this.get('isUnderReview') || this.get('isSubmitted') || this.get("isClosed");
