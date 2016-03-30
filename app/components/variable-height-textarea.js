@@ -22,6 +22,7 @@ export default Ember.TextArea.extend({
           var parent = _this.get('parentDiv');
           var grandParentDiv = Ember.$("." + parent).closest(".review_item ");
           if(grandParentDiv.length === 0) {
+
             // auto-move textarea by chaning margin of parentDiv
             var paddingSize = textarea.scrollHeight - 50;
             Ember.$("." + parent)
@@ -57,13 +58,6 @@ export default Ember.TextArea.extend({
       Ember.run.scheduleOnce('afterRender', this, function(){
         Ember.$(_this.element).focus(function(){
           window.scrollTo(0, Ember.$(document).height());
-          if(_this.get("cordova").isIOS()) {
-            msgTextbox.css({'position':'absolute'});
-          }
-        });
-
-        Ember.$(_this.element).blur(function(){
-          msgTextbox.css({'position':'fixed'});
         });
       });
 
