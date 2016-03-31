@@ -24,15 +24,13 @@ export default Ember.TextArea.extend({
           if(grandParentDiv.length === 0) {
 
             // auto-move textarea by chaning margin of parentDiv
-            var paddingSize = textarea.scrollHeight - 50;
+            var paddingSize = textarea.scrollHeight - 68;
             Ember.$("." + parent)
               .css({'padding-bottom': (paddingSize > 0 ? paddingSize : 0) });
 
             // scrolling down to bottom of page
             if(_this.get("value") !== ""){
-              Ember.$('html, body').stop(true, false).animate({
-                scrollTop: Ember.$(document).height()
-              }, 'fast');
+              window.scrollTo(0, document.body.scrollHeight);
             }
           }
 
@@ -56,8 +54,17 @@ export default Ember.TextArea.extend({
       var msgTextbox = Ember.$(Ember.$(_this.element).closest(".message-textbar"));
 
       Ember.run.scheduleOnce('afterRender', this, function(){
+
+        var height = _this.get("cordova").isIOS() ? 55 : 30;
+        Ember.$(".message-footer").height(height);
+
         Ember.$(_this.element).focus(function(){
-          window.scrollTo(0, Ember.$(document).height());
+          msgTextbox.css({'position':'relative'});
+          window.scrollTo(0, document.body.scrollHeight);
+        });
+
+        Ember.$(_this.element).blur(function(){
+          msgTextbox.css({'position':'fixed'});
         });
       });
 

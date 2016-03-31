@@ -35,31 +35,33 @@
   </div>
 </section>
 
-<div class="btm message-form">
-  <div class="row message-textbar">
+<div class="message-footer">
+  <div class="btm message-form">
+    <div class="row message-textbar">
 
-    {{#if noMessage}}
-      <div class="row">
-        <div class="small-12 columns chat_note">
-          <i class="fa fa-info-circle"></i>
-          {{t "messages.chat_note"}}
-        </div>
-      </div>
-    {{/if}}
-
-    <div class="row message-base">
-      <div class="small-12 columns">
-        {{#validatable-form class="form-horizontal" action="sendMessage" on="submit"}}
-
-          <div class="row ui">
-            <div class="small-9 large-10 medium-10 columns">
-              {{variable-height-textarea value=body name="body" required="true" disabled=disabled parentDiv="message-section"}}
-            </div>
-            <div class="small-3 large-2 medium-2 columns">
-              {{#online-button disabledOverride=disabled disabled=inProgress}}{{t "send"}}{{/online-button}}
-            </div>
+      {{#if noMessage}}
+        <div class="row">
+          <div class="small-12 columns chat_note">
+            <i class="fa fa-info-circle"></i>
+            {{t "messages.chat_note"}}
           </div>
-        {{/validatable-form}}
+        </div>
+      {{/if}}
+
+      <div class="row message-base">
+        <div class="small-12 columns">
+          {{#validatable-form class="form-horizontal" action="sendMessage" on="submit"}}
+
+            <div class="row ui">
+              <div class="small-9 large-10 medium-10 columns">
+                {{variable-height-textarea value=body name="body" required="true" disabled=disabled parentDiv="message-section"}}
+              </div>
+              <div class="small-3 large-2 medium-2 columns">
+                {{#online-button disabledOverride=disabled disabled=inProgress}}{{t "send"}}{{/online-button}}
+              </div>
+            </div>
+          {{/validatable-form}}
+        </div>
       </div>
     </div>
   </div>
