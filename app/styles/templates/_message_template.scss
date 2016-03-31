@@ -93,7 +93,11 @@
 }
 
 .message-footer {
-  height: 30px;
+  height: 65px;
+
+  @media #{$small-only} {
+    height: 50px;
+  }
 }
 
 .message-form {
