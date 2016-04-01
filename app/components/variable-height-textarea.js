@@ -59,7 +59,8 @@ export default Ember.TextArea.extend({
         Ember.$(".message-footer").height(height);
 
         Ember.$(_this.element).focus(function(){
-          msgTextbox.css({'position':'relative'});
+          var positionVal = document.body.scrollHeight === Ember.$(window).height() ? 'fixed' : 'relative';
+          msgTextbox.css({'position': positionVal});
           window.scrollTo(0, document.body.scrollHeight);
         });
 
