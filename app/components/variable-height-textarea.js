@@ -55,12 +55,24 @@ export default Ember.TextArea.extend({
 
       Ember.run.scheduleOnce('afterRender', this, function(){
 
-        var height = _this.get("cordova").isIOS() ? 55 : 30;
+        var isIOS = _this.get("cordova").isIOS();
+
+        var height = isIOS ? 55 : 30;
         Ember.$(".message-footer").height(height);
 
         Ember.$(_this.element).focus(function(){
-          var positionVal = document.body.scrollHeight === Ember.$(window).height() ? 'fixed' : 'relative';
-          msgTextbox.css({'position': positionVal});
+
+          if(isIOS) {
+            if(document.body.scrollHeight === Ember.$(window).height()) {
+              Ember.$(".message-footer").addClass("message_footer_small_page");
+            } else {
+              Ember.$(".message-footer").removeClass("message_footer_small_page");
+            }
+            msgTextbox.css({'position': 'relative'});
+          } else {
+            var positionVal = document.body.scrollHeight === Ember.$(window).height() ? 'fixed' : 'relative';
+          }
+
           window.scrollTo(0, document.body.scrollHeight);
         });
 
