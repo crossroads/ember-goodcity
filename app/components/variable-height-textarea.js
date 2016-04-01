@@ -24,7 +24,7 @@ export default Ember.TextArea.extend({
           if(grandParentDiv.length === 0) {
 
             // auto-move textarea by chaning margin of parentDiv
-            var paddingSize = textarea.scrollHeight - 68;
+            var paddingSize = config.cordova.enabled ? 5 : (textarea.scrollHeight - 40);
             Ember.$("." + parent)
               .css({'padding-bottom': (paddingSize > 0 ? paddingSize : 0) });
 
