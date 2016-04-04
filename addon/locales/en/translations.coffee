@@ -70,7 +70,7 @@ I18nTranslationsEn =
     "h": "h"
     "1d": "1d"
     "d": "d"
-    "1mths": "1mths"
+    "mth": "mth"
     "mths": "mths"
     "1y": "1y"
     "y": "y"

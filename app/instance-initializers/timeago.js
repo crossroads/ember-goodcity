@@ -19,7 +19,7 @@ export default {
         hh: "%d" + loc("h"),
         d:  "%d" + loc("1d"),
         dd: "%d" + loc("d"),
-        M:  "%d" + loc("1mths"),
+        M:  "%d" + loc("mth"),
         MM: "%d" + loc("mths"),
         y:  "%d" + loc("1y"),
         yy: "%d" + loc("y")

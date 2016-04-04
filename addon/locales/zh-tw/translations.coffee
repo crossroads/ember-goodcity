@@ -70,7 +70,7 @@ I18nTranslationsZhTw =
     "h": "小時"
     "1d": "1天"
     "d": "天"
-    "1mths": "1個月"
+    "mth": "個月"
     "mths": "月"
     "1y": "1年"
     "y": "年"
