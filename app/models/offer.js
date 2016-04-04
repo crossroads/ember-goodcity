@@ -273,11 +273,7 @@ export default DS.Model.extend({
     return this.get("isScheduled") || this.get("isReceived") || this.get("isReceiving");
   }),
 
-  hideBookingModification: Ember.computed("delivery.gogovanOrder", "delivery.gogovanOrder.status", function(){
-    var session = getOwner(this).lookup("service:session");
-    return !session.get('isAdminApp') && this.get("delivery.isGogovan")
-    && this.get("delivery.gogovanOrder.isCompleted");
-  }),
+  hideBookingModification: Ember.computed.alias("delivery.gogovanOrder.isCompleted"),
 
   allPackagesMissing: Ember.computed("state", "items.@each.state", "packages.@each.state", function(){
     return !this.get("allItemsRejected") &&
