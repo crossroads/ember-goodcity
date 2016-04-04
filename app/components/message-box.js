@@ -8,19 +8,24 @@ export default Ember.Component.extend({
   btn1Callback: () => {},
   btn2Text: "",
   btn2Callback: () => {},
+  displayCloseLink: false,
 
   actions: {
-    btn1Click: function() {
+    btn1Click() {
       if (this.btn1Callback) {
         this.btn1Callback();
       }
       this.destroy();
     },
 
-    btn2Click: function() {
+    btn2Click() {
       if (this.btn2Callback) {
         this.btn2Callback();
       }
+      this.destroy();
+    },
+
+    closeModal() {
       this.destroy();
     }
   }

@@ -8,4 +8,8 @@
   {{/if}}
   <a id="btn1" class="right button" {{action "btn1Click"}}>{{btn1Text}}</a>
   <div style="clear:both;"></div>
+
+  {{#if displayCloseLink}}
+    <div><a class="right closeLink" {{action "closeModal"}}>{{t "cancel"}}</a></div>
+  {{/if}}
 </div>
