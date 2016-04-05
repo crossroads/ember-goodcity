@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import DS from 'ember-data';
+const { getOwner } = Ember;
 
 var attr = DS.attr,
     hasMany = DS.hasMany,
@@ -53,13 +54,15 @@ export default DS.Model.extend({
     return this.get("items").rejectBy("state", "draft").length;
   }),
 
-  packages: Ember.computed(function(){
-    return this.store.filter("package", p => p.get("offerId") === parseInt(this.get("id")));
+  allPackages: Ember.computed(function(){
+    return this.store.peekAll("package");
   }),
 
-  itemPackages: Ember.computed(function(){
-    return this.store.peekAll("package").filterBy("offerId", parseInt(this.get("id")));
+  packages: Ember.computed("allPackages.@each.offerId", function(){
+    return this.get("allPackages").filterBy("offerId", parseInt(this.get("id")));
   }),
+
+  itemPackages: Ember.computed.alias("packages"),
 
   receivedCount: Ember.computed("packages.@each.state", function(){
     return this.get('packages').filterBy("state", "received").length;
@@ -88,13 +91,22 @@ export default DS.Model.extend({
   isReviewing: Ember.computed.or('isUnderReview', 'isReviewed'),
   adminCurrentOffer: Ember.computed.or('isReviewing', 'isScheduled'),
   nonSubmittedOffer: Ember.computed.or('isDraft', 'isInactive'),
+  closedOrCancelled: Ember.computed.or('isClosed', 'isCancelled'),
 
-  needReview: Ember.computed('isUnderReview', 'isSubmitted', 'isCancelled', function(){
-    return this.get('isUnderReview') || this.get('isSubmitted') || this.get("isCancelled");
+  needReview: Ember.computed('isUnderReview', 'isSubmitted', 'isClosed', function(){
+    return this.get('isUnderReview') || this.get('isSubmitted') || this.get("isClosed");
   }),
 
-  isFinished: Ember.computed('isReceived', 'isCancelled', 'isInactive', function(){
-    return this.get('isReceived') || this.get('isCancelled') || this.get('isInactive');
+  isFinished: Ember.computed('isClosed', 'isReceived', 'isCancelled', 'isInactive', function(){
+    return this.get('isClosed') || this.get('isReceived') || this.get('isCancelled') || this.get('isInactive');
+  }),
+
+  canMerged: Ember.computed('isSubmitted', 'isUnderReview', 'isReviewed', function(){
+    return this.get('isSubmitted') || this.get('isUnderReview') || this.get('isReviewed');
+  }),
+
+  baseForMerge: Ember.computed('isSubmitted', 'isUnderReview', 'isReviewed', 'isScheduled', function(){
+    return this.get('isSubmitted') || this.get('isUnderReview') || this.get('isReviewed') || this.get('isScheduled');
   }),
 
   activeItems: Ember.computed('items.@each.state', function(){
@@ -244,8 +256,8 @@ export default DS.Model.extend({
     return (this.get("delivery.gogovanOrder.status") || "") === "completed";
   }),
 
-  showOfferIcons: Ember.computed('hasCompleteGGVOrder','itemCount', 'isCancelled', 'hasReceived', function(){
-    return this.get("itemCount") > 0 && !(this.get('isCancelled') || this.get('hasReceived')) && !this.get("hasCompleteGGVOrder");
+  showOfferIcons: Ember.computed('hasCompleteGGVOrder','itemCount', 'isClosed', 'hasReceived', function(){
+    return this.get("itemCount") > 0 && !(this.get('isClosed') || this.get('hasReceived')) && !this.get("hasCompleteGGVOrder");
   }),
 
   statusBarClass: Ember.computed('state', function(){
@@ -261,10 +273,103 @@ export default DS.Model.extend({
     return this.get("isScheduled") || this.get("isReceived") || this.get("isReceiving");
   }),
 
-  hideBookingModification: Ember.computed("delivery.gogovanOrder", "delivery.gogovanOrder.status", function(){
-    var session = this.container.lookup("service:session");
-    return !session.get('isAdminApp') && this.get("delivery.isGogovan")
-    && this.get("delivery.gogovanOrder.isCompleted");
-  })
+  hideBookingModification: Ember.computed.alias("delivery.gogovanOrder.isCompleted"),
+
+  allPackagesMissing: Ember.computed("state", "items.@each.state", "packages.@each.state", function(){
+    return !this.get("allItemsRejected") &&
+      this.get("allItemsReviewed") &&
+      this.get("state") !== "received" &&
+      this.get("packages.length") > 0 &&
+      this.get("packages").filter(p => !p.get("item.isRejected") && p.get("state") === "missing").get("length") === this.get("packages.length");
+  }),
+
+  timeDetail: Ember.computed("state", "delivery", function(){
+    var prefix = "", suffix = "", date;
+
+    if(this.get("isSubmitted")) {
+      prefix = this.locale("submitted");
+      date = this.get("submittedAt");
+
+    } else if(this.get("isUnderReview")) {
+      prefix = this.get("i18n").t("review_offer.review_started_by",
+        { firstName: this.get("reviewedBy.firstName"),
+          lastName: this.get("reviewedBy.lastName") }
+      );
+      date = this.get("reviewedAt");
+
+    } else if(this.get("isReviewed")) {
+      prefix = this.locale("review_offer.reviewed");
+      date = this.get("reviewCompletedAt");
+      suffix = this.locale("review_offer.plan_transport");
+
+    } else if(this.get("isClosed")) {
+      prefix = this.get("i18n").t("offer.closed_by",
+        { firstName: this.get("closedBy.firstName"),
+          lastName: this.get("closedBy.lastName") }
+      );
+      date = this.get("reviewCompletedAt");
+
+    } else if(this.get("isCancelled")) {
+      prefix = this.get("i18n").t("offer.cancelled_by",
+        { firstName: this.get("createdBy.firstName"),
+          lastName: this.get("createdBy.lastName") }
+      );
+      date = this.get("cancelledAt");
+
+    } else if(this.get("isReceived")) {
+      prefix = this.get("i18n").t("offer.received_by",
+        { firstName: this.get("createdBy.firstName"),
+          lastName: this.get("createdBy.lastName") }
+      );
+      date = this.get("receivedAt");
+
+    } else if(this.get("isReceiving")) {
+      prefix = this.get("i18n").t("offer.offer_details.start_receiving_by",
+        { firstName: this.get("receivedBy.firstName"),
+          lastName: this.get("receivedBy.lastName") }
+      );
+      date = this.get("startReceivingAt");
+
+    } else if(this.get("isScheduled")) {
+      if(this.get("delivery.isAlternate")) {
+        prefix = this.locale('offer.offer_details.is_collection');
+      } else if (this.get("delivery.isDropOff")) {
+        prefix = this.locale('offer.offer_details.is_drop_off');
+      } else if (this.get("delivery.isGogovan")){
+        prefix = this.get("delivery.gogovanOrder.ggvOrderStatus");
+      }
+
+      if (this.get("delivery.isGogovan")) {
+        if (this.get("delivery.completedWithGogovan")) {
+          date = this.get("delivery.gogovanOrder.completedAt");
+        } else {
+          prefix = prefix + " " + this.get("delivery.schedule.slotName");
+          date = this.get("delivery.schedule.scheduledAt");
+        }
+      } else {
+        date = this.get("delivery.schedule.scheduledAt");
+        suffix = this.get("delivery.schedule.dayTime");
+      }
+    }
+    return { prefix: prefix, date: date, suffix: suffix };
+  }),
+
+  itemStatus: Ember.computed("state", "items.@each.state", "packages.@each.state", function(){
+    if (this.get("hasReceived")) {
+      return this.get("receivedCount") + " " +
+        this.locale("offer.offer_details.received") + ", " +
+        this.get("missingCount") + " " +
+        this.locale("offer.offer_details.missing") + ", " +
+        this.get("rejectedItems.length") + " " +
+        this.locale("offer.offer_details.rejected");
+    } else {
+      return this.get("approvedItems.length") + " " +
+        this.locale("offer.offer_details.accepted") + ", " +
+        this.get("rejectedItems.length") + " " +
+        this.locale("offer.offer_details.rejected") + ", " +
+        this.get("submittedItems.length") + " " +
+        this.locale("offer.offer_details.pending");
+    }
+  }),
 
 });

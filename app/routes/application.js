@@ -2,6 +2,7 @@ import Ember from 'ember';
 import AjaxPromise from '../utils/ajax-promise';
 import config from '../config/environment';
 import preloadDataMixin from '../mixins/preload_data';
+const { getOwner } = Ember;
 
 export default Ember.Route.extend(preloadDataMixin, {
   cordova: Ember.inject.service(),
@@ -55,7 +56,7 @@ export default Ember.Route.extend(preloadDataMixin, {
   },
 
   logger: Ember.inject.service(),
-  alert: Ember.inject.service(),
+  messageBox: Ember.inject.service(),
 
   handleError: function(reason) {
     try
@@ -70,14 +71,14 @@ export default Ember.Route.extend(preloadDataMixin, {
         }
       } else if ([403, 404].indexOf(status) >= 0) {
         this.get("logger").error(reason);
-        this.get("alert").show(this.get("i18n").t(status+"_error"));
+        this.get("messageBox").alert(this.get("i18n").t(status+"_error"));
       } else if (status === 0) {
         // status 0 means request was aborted, this could be due to connection failure
         // but can also mean request was manually cancelled
-        this.get("alert").show(this.get("i18n").t("offline_error"));
+        this.get("messageBox").alert(this.get("i18n").t("offline_error"));
       } else {
         this.get("logger").error(reason);
-        this.get("alert").show(this.get("i18n").t("unexpected_error"));
+        this.get("messageBox").alert(this.get("i18n").t("unexpected_error"));
       }
     } catch (err) {}
   },
@@ -89,7 +90,7 @@ export default Ember.Route.extend(preloadDataMixin, {
     },
     loading() {
       Ember.$(".loading-indicator").remove();
-      var view = this.container.lookup('component:loading').append();
+      var view = getOwner(this).lookup('component:loading').append();
       this.router.one('didTransition', view, 'destroy');
     },
     // this is hopefully only triggered from promises from routes
@@ -98,7 +99,7 @@ export default Ember.Route.extend(preloadDataMixin, {
       try {
         var errorStatus = parseInt(reason.status || reason.errors && reason.errors[0].status)
         if ([403, 404].indexOf(errorStatus) >= 0) {
-          this.get("alert").show(this.get("i18n").t(errorStatus+"_error"), () => this.transitionTo("/"));
+          this.get("messageBox").alert(this.get("i18n").t(errorStatus+"_error"), () => this.transitionTo("/"));
         } else {
           this.handleError(reason);
         }

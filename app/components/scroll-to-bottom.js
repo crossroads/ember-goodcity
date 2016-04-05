@@ -5,12 +5,17 @@ export default Ember.Component.extend({
     var _this = this;
     this._super();
 
-    Ember.$().ready(function(){
+    Ember.run.scheduleOnce('afterRender', this, function(){
 
       // Scroll back to page-top on back-click
       Ember.$('.sticky_title_bar').on('click', '.back', function(){
         window.scrollTo(0, 0);
       });
+
+      // Stick Notification bell icon in header
+      if(Ember.$('.sticky_title_bar').length > 0) {
+        Ember.$('.all_unread_messages_count').addClass("fixed_to_header");
+      }
 
     });
 
@@ -43,4 +48,8 @@ export default Ember.Component.extend({
       return true;
     });
   },
+
+  willDestroyElement(){
+    Ember.$('.all_unread_messages_count').removeClass("fixed_to_header");
+  }
 });

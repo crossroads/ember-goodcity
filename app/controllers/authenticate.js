@@ -1,10 +1,11 @@
 import Ember from 'ember';
 import AjaxPromise from '../utils/ajax-promise';
 import config from '../config/environment';
+const { getOwner } = Ember;
 
 export default Ember.Controller.extend({
 
-  alert: Ember.inject.service(),
+  messageBox: Ember.inject.service(),
   attemptedTransition: null,
   pin: "",
 
@@ -20,7 +21,7 @@ export default Ember.Controller.extend({
       var otp_auth_key = this.get('session.otpAuthKey');
       var _this = this;
 
-      var loadingView = this.container.lookup('component:loading').append();
+      var loadingView = getOwner(this).lookup('component:loading').append();
       new AjaxPromise("/auth/verify", "POST", null, {pin: pin, otp_auth_key: otp_auth_key})
         .then(function(data) {
           _this.setProperties({pin:null});
@@ -34,7 +35,7 @@ export default Ember.Controller.extend({
           Ember.$('#pin').closest('div').addClass('error');
           _this.setProperties({pin: null});
           if (jqXHR.status === 422 && jqXHR.responseJSON.errors && jqXHR.responseJSON.errors.pin) {
-            _this.get("alert").show(jqXHR.responseJSON.errors.pin);
+            _this.get("messageBox").alert(jqXHR.responseJSON.errors.pin);
           }
           console.log("Unable to authenticate");
         })
@@ -43,7 +44,7 @@ export default Ember.Controller.extend({
 
     resendPin() {
       var mobile = this.get('mobile');
-      var loadingView = this.container.lookup('component:loading').append();
+      var loadingView = getOwner(this).lookup('component:loading').append();
 
       new AjaxPromise("/auth/send_pin", "POST", null, {mobile: mobile})
         .then(data => {

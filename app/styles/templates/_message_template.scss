@@ -88,6 +88,24 @@
   }
 }
 
+.btm.message-form {
+  height: 0px !important;
+}
+
+.message-footer {
+  height: 65px;
+
+  @media #{$small-only} {
+    height: 50px;
+  }
+}
+
+.message_footer_small_page {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+
 .message-form {
   .ui {
     padding-bottom: 0.1rem;

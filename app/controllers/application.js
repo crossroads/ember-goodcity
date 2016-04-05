@@ -2,12 +2,18 @@ import Ember from 'ember';
 import config from '../config/environment';
 
 export default Ember.Controller.extend({
+
+  cordova: Ember.inject.service(),
   subscriptions: Ember.inject.controller(),
 
   initSubscriptions: Ember.on('init', function() {
     if (this.session.get("isLoggedIn")) {
       this.send('setSubscriptions');
     }
+  }),
+
+  supportGCLink: Ember.computed('session.language', function(){
+    return this.get('session.language') === 'zh-tw' ? "https://www.goodcity.hk/get_involved_zh.html" : "https://www.goodcity.hk/get_involved.html";
   }),
 
   appVersion: Ember.computed(function(){

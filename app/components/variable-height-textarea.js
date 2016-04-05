@@ -5,6 +5,7 @@ export default Ember.TextArea.extend({
   tagName: "textarea",
   attributeBindings: ["disabled"],
   disabled: false,
+  cordova: Ember.inject.service(),
 
   valueChanged: Ember.observer('value', function () {
     var _this = this;
@@ -21,16 +22,15 @@ export default Ember.TextArea.extend({
           var parent = _this.get('parentDiv');
           var grandParentDiv = Ember.$("." + parent).closest(".review_item ");
           if(grandParentDiv.length === 0) {
+
             // auto-move textarea by chaning margin of parentDiv
-            var paddingSize = textarea.scrollHeight - 50;
+            var paddingSize = config.cordova.enabled ? 5 : (textarea.scrollHeight - 40);
             Ember.$("." + parent)
               .css({'padding-bottom': (paddingSize > 0 ? paddingSize : 0) });
 
             // scrolling down to bottom of page
             if(_this.get("value") !== ""){
-              Ember.$('html, body').stop(true, false).animate({
-                scrollTop: Ember.$(document).height()
-              }, 'fast');
+              window.scrollTo(0, document.body.scrollHeight);
             }
           }
 
@@ -53,10 +53,27 @@ export default Ember.TextArea.extend({
 
       var msgTextbox = Ember.$(Ember.$(_this.element).closest(".message-textbar"));
 
-      Ember.$().ready(function(){
+      Ember.run.scheduleOnce('afterRender', this, function(){
+
+        var isIOS = _this.get("cordova").isIOS();
+
+        var height = isIOS ? 55 : 30;
+        Ember.$(".message-footer").height(height);
+
         Ember.$(_this.element).focus(function(){
-          msgTextbox.css({'position':'absolute'});
-          window.scrollTo(0, Ember.$(document).height());
+
+          if(isIOS) {
+            if(document.body.scrollHeight === Ember.$(window).height()) {
+              Ember.$(".message-footer").addClass("message_footer_small_page");
+            } else {
+              Ember.$(".message-footer").removeClass("message_footer_small_page");
+            }
+            msgTextbox.css({'position': 'relative'});
+          } else {
+            var positionVal = document.body.scrollHeight === Ember.$(window).height() ? 'fixed' : 'relative';
+          }
+
+          window.scrollTo(0, document.body.scrollHeight);
         });
 
         Ember.$(_this.element).blur(function(){

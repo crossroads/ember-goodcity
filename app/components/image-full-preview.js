@@ -2,9 +2,15 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
 
+  lightGallery: null,
+
   didInsertElement(){
-    Ember.$().ready(function(){
-      Ember.$("#imageGallery").lightGallery({
+    var _this = this;
+
+    this._super();
+
+    Ember.run.scheduleOnce('afterRender', this, function(){
+      var lightGallery = Ember.$("#imageGallery").lightGallery({
         thumbnail: false,
         hideControlOnEnd: true,
         closable: false,
@@ -13,7 +19,14 @@ export default Ember.Component.extend({
         enableTouch : true,
         selector: '.preview_image'
       });
+
+      _this.set("lightGallery", lightGallery);
+
     });
+  },
+
+  willDestroyElement() {
+    this.get("lightGallery").destroy();
   }
 
 });

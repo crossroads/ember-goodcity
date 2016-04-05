@@ -141,6 +141,9 @@ input[type=number]::-webkit-outer-spin-button {
   line-height: 1.5;    /* fallback */
   word-break: break-word;
 }
+.ellipsis a {
+  display: inline;
+}
 .one-line-ellipsis {
   max-height: 1.4rem;  /* fallback */
   -webkit-line-clamp: 1; /* number of lines to show */
@@ -392,7 +395,7 @@ a.disabled{
   }
 }
 
-.reveal-modal#errorModal, #confirmModal, #customConfirmModal, #confirmReceivingModal, #confirmOfferCancelModal, #confirmOfferInactiveModal {
+.reveal-modal, .reveal-modal#errorModal, #confirmReceivingModal, #confirmOfferCancelModal, #confirmOfferInactiveModal {
   background-color: $light-grey;
   color: black;
   height: initial;

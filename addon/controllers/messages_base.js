@@ -19,8 +19,20 @@ export default Ember.Controller.extend({
     return this.groupBy(this.get("sortedElements"), "createdDate");
   }),
 
-  messagesAndVersions: Ember.computed("model.[]", "itemVersions", "packageVersions", "offerVersions", function(){
-    var messages = this.get("model").toArray();
+  allMessages: Ember.computed(function() {
+    return this.store.peekAll("message");
+  }),
+
+  messages: Ember.computed("allMessages.[]", "offer", "item", function() {
+    var messages = this.get("allMessages");
+    messages = this.get("isItemThread") ?
+      messages.filterBy("item.id", this.get("item.id")) :
+      messages.filterBy("offer.id", this.get("offer.id")).filterBy("item", null);
+    return messages.filterBy("isPrivate", this.get("isPrivate"));
+  }),
+
+  messagesAndVersions: Ember.computed("messages.[]", "itemVersions", "packageVersions", "offerVersions", function(){
+    var messages = this.get("messages").toArray();
     var itemVersions = this.get("itemVersions").toArray();
     var packageVersions = this.get("packageVersions").toArray();
     var offerVersions = this.get("offerVersions").toArray();
@@ -43,10 +55,10 @@ export default Ember.Controller.extend({
   }),
 
   allVersions: Ember.computed(function(){
-    return this.store.peekAll("version");
+    return this.get("store").peekAll("version");
   }),
 
-  offerVersions: Ember.computed("versions.[]", "offer.id", "isItemThread", function(){
+  offerVersions: Ember.computed("allVersions.[]", "offer.id", "isItemThread", function(){
     if (this.get("isItemThread")) { return []; }
     var offerId = parseInt(this.get("offer.id"));
     return this.get('allVersions').filterBy('itemType', 'Offer').filterBy("itemId", offerId);
@@ -71,6 +83,8 @@ export default Ember.Controller.extend({
     return result.getEach('items');
   },
 
+  messagesUtil: Ember.inject.service("messages"),
+
   actions: {
     sendMessage() {
       // To hide soft keyboard
@@ -91,6 +105,12 @@ export default Ember.Controller.extend({
         .finally(() => this.set("inProgress", false));
 
       Ember.$("body").animate({ scrollTop: Ember.$(document).height() }, 1000);
+    },
+
+    markRead() {
+      this.get("messages")
+        .filterBy('state', 'unread')
+        .forEach(m => this.get("messagesUtil").markRead(m));
     }
   }
 });

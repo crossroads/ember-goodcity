@@ -1,12 +1,22 @@
 import Ember from "ember";
 import config from '../config/environment';
 import AjaxPromise from '../utils/ajax-promise';
+const { getOwner } = Ember;
 
 export default Ember.Service.extend({
   session: Ember.inject.service(),
   logger: Ember.inject.service(),
   store: Ember.inject.service(),
   messagesUtil: Ember.inject.service("messages"),
+
+  iOSDevice: Ember.computed({
+    get() {
+      return false;
+    },
+    set(key, value) {
+      return value;
+    }
+  }),
 
   isAndroid: function () {
     if (!config.cordova.enabled) { return; }
@@ -38,9 +48,9 @@ export default Ember.Service.extend({
 
     function onDeviceReady() {
 
-      if(verifyIOS && _this.isIOS()) {
-        return false;
-      }
+      _this.set("iOSDevice", _this.isIOS());
+
+      if(verifyIOS && _this.isIOS()) { return false; }
 
       if (config.staging && typeof TestFairy != 'undefined') {
         TestFairy.begin('a362fd4ae199930a7a1a1b6daa6f729ac923b506');
@@ -88,7 +98,7 @@ export default Ember.Service.extend({
     }
 
     function processTappedNotification(payload) {
-      var notifications = _this.container.lookup("controller:notifications");
+      var notifications = getOwner(_this).lookup("controller:notifications");
       if (payload.category === "incoming_call") {
         notifications.acceptCall(payload);
       }
@@ -100,7 +110,7 @@ export default Ember.Service.extend({
         if(hasMessage) {
           notifications.transitionToRoute.apply(notifications, payload.route);
         } else {
-          var loadingView = _this.container.lookup('component:loading').append();
+          var loadingView = getOwner(_this).lookup('component:loading').append();
           var messageUrl = payload.item_id ? `/messages?item_id=${payload.item_id}` : `/messages?offer_id=${payload.offer_id}`
           new AjaxPromise(messageUrl, "GET", _this.get("session.authToken"), {})
             .then(function(data) {
