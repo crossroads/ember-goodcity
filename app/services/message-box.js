@@ -22,5 +22,6 @@ export default Ember.Service.extend({
     view.set("btn2Callback", btn2Callback);
     view.set("message", message);
     view.set("displayCloseLink", displayCloseLink);
+    view.set("isVisible", true);
   }
 });
