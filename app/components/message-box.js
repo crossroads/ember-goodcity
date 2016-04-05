@@ -9,7 +9,15 @@ export default Ember.Component.extend({
   btn2Text: "",
   btn2Callback: () => {},
   displayCloseLink: false,
-  isVisible: false,
+
+  isVisible: Ember.computed({
+    get() {
+      return false;
+    },
+    set(key, value) {
+      return value;
+    }
+  }),
 
   close() {
     if (this.get("isVisible")) {
@@ -17,7 +25,7 @@ export default Ember.Component.extend({
     } else {
       this.destroy();
     }
-  }
+  },
 
   actions: {
     btn1Click() {
