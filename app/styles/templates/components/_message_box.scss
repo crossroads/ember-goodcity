@@ -21,3 +21,43 @@
     font-size: 0.8rem;
   }
 }
+
+.popupOverlay {
+  .ui {
+    padding: 0;
+  }
+
+  textarea {
+    margin: 0;
+    max-width: 100%;
+    padding: 0.5rem;
+    overflow: hidden;
+    margin-top: 0.5rem;
+  }
+
+  input {
+    margin-bottom: 1rem;
+  }
+}
+
+#confirmReceivingModal, .popupOverlay #messageBox {
+  top: 20% !important;
+
+  @media #{$small-only} {
+    padding: 1rem;
+  }
+
+  div{
+    width: 100%;
+    margin-top: 0.7rem;
+    margin-bottom: 0.7rem;
+
+    @media #{$small-only} {
+      font-size: 0.9rem;
+    }
+  }
+
+  .receive_title {
+    font-weight: bold;
+  }
+}

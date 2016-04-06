@@ -10,14 +10,7 @@ export default Ember.Component.extend({
   btn2Callback: () => {},
   displayCloseLink: false,
 
-  isVisible: Ember.computed({
-    get() {
-      return false;
-    },
-    set(key, value) {
-      return value;
-    }
-  }),
+  isVisible: false,
 
   close() {
     if (this.get("isVisible")) {
