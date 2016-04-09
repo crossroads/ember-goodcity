@@ -395,7 +395,7 @@ a.disabled{
   }
 }
 
-.reveal-modal, .reveal-modal#errorModal, #confirmReceivingModal, #confirmOfferCancelModal, #confirmOfferInactiveModal {
+.reveal-modal, .reveal-modal#errorModal {
   background-color: $light-grey;
   color: black;
   height: initial;
