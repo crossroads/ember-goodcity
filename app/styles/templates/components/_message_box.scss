@@ -7,7 +7,53 @@
   opacity: 1;
   visibility: visible;
   top: 112px;
+
   .button {
     margin-left: 10px;
+    text-decoration: none;
+  }
+
+  .closeLink {
+    color: black !important;
+    background-color: inherit !important;
+    text-decoration: underline;
+    padding: 0 0 0.65rem 0.7rem;
+    font-size: 0.8rem;
+  }
+}
+
+.popupOverlay {
+  .ui {
+    padding: 0;
+  }
+
+  textarea {
+    margin: 0;
+    max-width: 100%;
+    padding: 0.5rem;
+    overflow: hidden;
+    margin-top: 0.5rem;
+  }
+
+  input {
+    margin-bottom: 1rem;
+  }
+
+  #messageBox {
+    top: 20% !important;
+
+    @media #{$small-only} {
+      padding: 1rem;
+    }
+
+    p {
+      width: 100%;
+      margin-top: 0.7rem;
+      margin-bottom: 0.7rem;
+
+      @media #{$small-only} {
+        font-size: 0.9rem;
+      }
+    }
   }
 }

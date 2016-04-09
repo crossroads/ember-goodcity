@@ -11,7 +11,7 @@ export default Ember.Service.extend({
     this.custom(message, this.get("i18n").t("cancel"), null, this.get("i18n").t("okay"), callback);
   },
 
-  custom: function(message, btn1Text, btn1Callback, btn2Text, btn2Callback) {
+  custom: function(message, btn1Text, btn1Callback, btn2Text, btn2Callback, displayCloseLink) {
     $(document).trigger("cancel-loading-timer");
     Ember.$(".loading-indicator").remove();
 
@@ -21,5 +21,7 @@ export default Ember.Service.extend({
     view.set("btn2Text", btn2Text);
     view.set("btn2Callback", btn2Callback);
     view.set("message", message);
+    view.set("displayCloseLink", displayCloseLink);
+    view.set("isVisible", true);
   }
 });

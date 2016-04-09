@@ -8,20 +8,35 @@ export default Ember.Component.extend({
   btn1Callback: () => {},
   btn2Text: "",
   btn2Callback: () => {},
+  displayCloseLink: false,
+
+  isVisible: false,
+
+  close() {
+    if (this.get("isVisible")) {
+      this.set("isVisible", false);
+    } else {
+      this.destroy();
+    }
+  },
 
   actions: {
-    btn1Click: function() {
+    btn1Click() {
       if (this.btn1Callback) {
         this.btn1Callback();
       }
-      this.destroy();
+      this.close();
     },
 
-    btn2Click: function() {
+    btn2Click() {
       if (this.btn2Callback) {
         this.btn2Callback();
       }
-      this.destroy();
+      this.close();
+    },
+
+    closeModal() {
+      this.close();
     }
   }
 });
