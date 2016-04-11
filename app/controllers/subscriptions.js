@@ -36,7 +36,7 @@ export default Ember.Controller.extend({
     if(!this.session.get("currentUser.fullName") && online) {
       var currentUrl = getOwner(this).lookup("router:main").get("url");
       if (currentUrl == "/offline") {
-        this.transitionTo("/");
+        this.transitionToRoute("/");
       } else {
         window.location.reload();
       }
