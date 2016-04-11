@@ -31,7 +31,7 @@ export default Ember.Component.extend({
           var rootURL = _this._getNormalisedRootUrl(router);
           var url = $target.attr('href');
 
-          if(url && url.indexOf(rootURL) === 0) {
+          if(url && url.startsWith(rootURL)) {
             url = url.substr(rootURL.length - 1);
 
             if(router.router.recognizer.recognize(url)) {

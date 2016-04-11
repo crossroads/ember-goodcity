@@ -37,7 +37,7 @@ export default Ember.Controller.extend({
       var actionUrl = router.generate.apply(router, notification.route);
       var actionUrl = actionUrl.split("#").get("lastObject");
 
-      if (currentUrl.indexOf(actionUrl) >= 0) {
+      if (currentUrl.includes(actionUrl)) {
         this.get("model").removeObject(notification);
         return this.retrieveNotification(index);
       }

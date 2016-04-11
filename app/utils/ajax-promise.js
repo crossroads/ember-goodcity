@@ -16,7 +16,7 @@ export default function(url, type, authToken, data, args) {
       type: type,
       dataType: "json",
       data: data,
-      url: url.indexOf('http') === -1 ? config.APP.SERVER_PATH + url : url,
+      url: url.includes('http') ? url : config.APP.SERVER_PATH + url,
       headers: headers,
       success: function(data) { Ember.run(function() { resolve(data); }); },
       error: function(jqXHR) {

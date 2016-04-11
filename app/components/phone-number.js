@@ -13,7 +13,7 @@ export default Ember.Component.extend({
 
   linkNumber: Ember.computed('number', function(){
     if (this.get("hidden")) {return ""};
-    var prefix = this.get("number").indexOf("+852") === -1 ? "+852" : "";
+    var prefix = this.get("number").startsWith("+852") ? "" : "+852";
     return prefix + this.get("number").replace(/ /g, "");
   })
 });

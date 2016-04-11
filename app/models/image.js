@@ -20,7 +20,7 @@ export default DS.Model.extend({
   generateUrl: function(width, height, crop) {
     //e.g. cloudinaryId = 1406959628/wjvaksnadntp239n6vwe.png
     var id = this.get('cloudinaryId');
-    if (!id || id.indexOf("/") === -1) {
+    if (!id || !id.includes("/")) {
       return null;
     }
     var version = id.split("/")[0];

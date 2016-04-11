@@ -35,7 +35,7 @@ export default Ember.Component.extend(Ember.ViewTargetActionSupport, {
 
   click: function() {
     var args = this.get("actionArgs");
-    if (typeof args == "string" && args.indexOf("[") === 0) {
+    if (typeof args == "string" && args.startsWith("[")) {
       args = JSON.parse(args);
     }
     this.triggerAction({actionContext: args});

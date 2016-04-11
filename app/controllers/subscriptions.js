@@ -169,7 +169,7 @@ export default Ember.Controller.extend({
       var messageUrl = router.generate.apply(router, messageRoute);
       var messageUrl = messageUrl.split("#").get("lastObject");
 
-      if (currentUrl.indexOf(messageUrl) >= 0) {
+      if (currentUrl.includes(messageUrl)) {
         var message = this.store.peekRecord("message", item.id);
         if(message && !message.get("isRead")) {
           this.get("messagesUtil").markRead(message);

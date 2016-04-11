@@ -13,7 +13,7 @@ export default {
     //   .concat("user")
     //   .map(t => t.replace(/_/, '-'));
 
-    if (!record || record.unloading || taxonomyTypes.indexOf(record.constructor.modelName) !== -1) {
+    if (!record || record.unloading || taxonomyTypes.includes(record.constructor.modelName)) {
       return;
     }
 
