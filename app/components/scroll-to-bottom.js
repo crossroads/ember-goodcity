@@ -27,7 +27,7 @@ export default Ember.Component.extend({
       // Scroll to first unread message in thread
       if(Ember.$(".unread.received_message:first").length > 0) {
         id = Ember.$(".unread.received_message:first").attr("id");
-        messageBox = Ember.$("#" + id);
+        messageBox = Ember.$(`#${id}`);
         scrollOffset = messageBox.offset().top - 100;
       } else {
 
