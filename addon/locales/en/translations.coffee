@@ -66,13 +66,10 @@ I18nTranslationsEn =
     "right_now" : "Right Now"
     "1m": "1m"
     "m": "m"
-    "1h": "1h"
     "h": "h"
-    "1d": "1d"
     "d": "d"
     "mth": "mth"
     "mths": "mths"
-    "1y": "1y"
     "y": "y"
 
   "application":

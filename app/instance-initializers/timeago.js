@@ -15,13 +15,13 @@ export default {
         s:  loc("1m"),
         m:  loc("1m"),
         mm: "%d" + loc("m"),
-        h:  "%d" + loc("1h"),
+        h:  "%d" + loc("h"),
         hh: "%d" + loc("h"),
-        d:  "%d" + loc("1d"),
+        d:  "%d" + loc("d"),
         dd: "%d" + loc("d"),
         M:  "%d" + loc("mth"),
         MM: "%d" + loc("mths"),
-        y:  "%d" + loc("1y"),
+        y:  "%d" + loc("y"),
         yy: "%d" + loc("y")
       }
     });

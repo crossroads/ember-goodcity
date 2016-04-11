@@ -66,13 +66,10 @@ I18nTranslationsZhTw =
     "right_now" : "現正進行"
     "1m": "1分鐘"
     "m": "分鐘"
-    "1h": "1小時"
     "h": "小時"
-    "1d": "1天"
     "d": "天"
     "mth": "個月"
     "mths": "月"
-    "1y": "1年"
     "y": "年"
 
   "application":
