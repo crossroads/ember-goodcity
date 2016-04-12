@@ -25,6 +25,7 @@ export default DS.Model.extend({
   deliveredBy:    attr('string'),
   startReceivingAt: attr('date'),
   cancelReason:   attr('string'),
+  inactiveAt: attr('date'),
 
   gogovanTransport:    belongsTo('gogovan_transport', { async: false }),
   crossroadsTransport: belongsTo('crossroads_transport', { async: false }),
@@ -329,6 +330,10 @@ export default DS.Model.extend({
           lastName: this.get("receivedBy.lastName") }
       );
       date = this.get("startReceivingAt");
+
+    } else if(this.get("isInactive")) {
+      prefix = this.get("i18n").t("offer.offer_details.inactive");
+      date = this.get("inactiveAt");
 
     } else if(this.get("isScheduled")) {
       if(this.get("delivery.isAlternate")) {
