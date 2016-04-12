@@ -5,6 +5,7 @@ export default Ember.Controller.extend({
 
   cordova: Ember.inject.service(),
   subscriptions: Ember.inject.controller(),
+  config,
 
   initSubscriptions: Ember.on('init', function() {
     if (this.session.get("isLoggedIn")) {
