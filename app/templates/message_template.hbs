@@ -48,6 +48,15 @@
         </div>
       {{/if}}
 
+      {{#if offer.isDraft}}
+        <div class="row">
+          <div class="small-12 columns chat_note">
+            <i class="fa fa-info-circle"></i>
+            {{t "messages.draft_chat_note"}}
+          </div>
+        </div>
+      {{/if}}
+
       <div class="row message-base">
         <div class="small-12 columns">
           {{#validatable-form class="form-horizontal" action="sendMessage" on="submit"}}

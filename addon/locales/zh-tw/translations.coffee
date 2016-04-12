@@ -115,6 +115,7 @@ I18nTranslationsZhTw =
     "owner" : "你"
     "today_with_time": "今天, {{time}}"
     "chat_note": "與審查員討論這項物資狀況"
+    "draft_chat_note": "Once you have submitted this offer, you can chat with our reviewers."
 
   "notifications":
     "view": "查看"

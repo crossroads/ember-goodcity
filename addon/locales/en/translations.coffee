@@ -115,6 +115,7 @@ I18nTranslationsEn =
     "owner" : "You"
     "today_with_time": "Today, {{time}}"
     "chat_note": "Chat about this item with our reviewers"
+    "draft_chat_note": "Once you have submitted this offer, you can chat with our reviewers."
 
   "notifications":
     "view": "View"
