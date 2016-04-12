@@ -46,7 +46,6 @@ I18nTranslationsEn =
   "all": "All"
   "thank_you": "Thank you"
   "go_to_top": "Go to Top"
-  "input_length_error_message" : "InputWithCounter doesn\'t work without a maxlength attribute'"
   "loading_timeout_error": "Loading view timeout reached."
   "items_text": "items"
   "version": "Version"

@@ -46,7 +46,6 @@ I18nTranslationsZhTw =
   "all": "全部"
   "thank_you": "多謝"
   "go_to_top": "回到頁面頂端"
-  "input_length_error_message" : "InputWithCounter doesn\'t work without a maxlength attribute'"
   "loading_timeout_error": "讀取時限已過"
   "items_text": "項目"
   "version": "版本"
