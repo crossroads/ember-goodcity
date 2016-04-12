@@ -55,12 +55,12 @@ export default DS.Model.extend({
     return this.get("items").rejectBy("state", "draft").length;
   }),
 
-  allPackages: Ember.computed(function(){
-    return this.store.peekAll("package");
-  }),
-
-  packages: Ember.computed("allPackages.@each.offerId", function(){
-    return this.get("allPackages").filterBy("offerId", parseInt(this.get("id")));
+  packages: Ember.computed("items.@each.packages", function(){
+    var res = [];
+    this.get("items")
+      .filterBy("state", "accepted")
+      .forEach(i => res = res.concat(i.get("packages").toArray()));
+    return res;
   }),
 
   itemPackages: Ember.computed.alias("packages"),
@@ -71,6 +71,10 @@ export default DS.Model.extend({
 
   missingCount: Ember.computed("packages.@each.state", function(){
     return this.get('packages').filterBy("state", "missing").length;
+  }),
+
+  expectingCount: Ember.computed("packages.@each.state", function(){
+    return this.get('packages').filterBy("state", "expecting").length;
   }),
 
   approvedItems: Ember.computed.filterBy("items", "state", "accepted"),
@@ -360,7 +364,14 @@ export default DS.Model.extend({
   }),
 
   itemStatus: Ember.computed("state", "items.@each.state", "packages.@each.state", function(){
-    if (this.get("hasReceived")) {
+    if (this.get("isReceiving")) {
+      return this.get("expectingCount") + " " +
+        this.locale("review_offer.expecting") + ", " +
+        this.get("receivedCount") + " " +
+        this.locale("offer.offer_details.received") + ", " +
+        this.get("missingCount") + " " +
+        this.locale("offer.offer_details.missing");
+    } else if (this.get("isReceived")) {
       return this.get("receivedCount") + " " +
         this.locale("offer.offer_details.received") + ", " +
         this.get("missingCount") + " " +
