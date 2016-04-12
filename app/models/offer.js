@@ -388,4 +388,12 @@ export default DS.Model.extend({
     }
   }),
 
+  hideCancelOfferOption: Ember.computed("state", "hasCompleteGGVOrder", function(){
+    return this.get("closedOrCancelled") || this.get("isReceived") || this.get("hasCompleteGGVOrder") || this.get("isReceiving");
+  }),
+
+  hideInactiveOfferOption: Ember.computed("state", "hasCompleteGGVOrder", function(){
+    return this.get("isFinished") || this.get("hasCompleteGGVOrder") || this.get("isReceiving");
+  }),
+
 });
