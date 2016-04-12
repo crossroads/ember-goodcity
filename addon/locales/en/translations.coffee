@@ -329,7 +329,7 @@ I18nTranslationsEn =
     "delivery_to" : "Delivery to: Tuen Mun"
     "crossroads_foundation" : "Crossroads Foundation"
     "crossroads_address1" : "2 Castle Peak Road, Tuen Mun"
-    "crossroads_address2" : "Opposite Gold Coast Phase 1 Apartments Unload at Building 40"
+    "crossroads_address2" : "Opposite Gold Coast Phase 1 Apartments Unload at Building 32"
     "map" : "map"
     "goodcity_job_summary" : "GoodCity Job Summary"
 

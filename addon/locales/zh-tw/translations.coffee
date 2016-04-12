@@ -329,7 +329,7 @@ I18nTranslationsZhTw =
     "delivery_to" : "運送至：屯門"
     "crossroads_foundation" : "十字路會"
     "crossroads_address1" : "屯門青山公路2號"
-    "crossroads_address2" : "黃金海岸1期對面，並於40號大樓落貨"
+    "crossroads_address2" : "黃金海岸1期對面，並於32號大樓落貨"
     "map" : "地圖"
     "goodcity_job_summary" : "好人好市工作摘要"
 
