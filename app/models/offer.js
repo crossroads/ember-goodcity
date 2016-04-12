@@ -311,15 +311,15 @@ export default DS.Model.extend({
 
     } else if(this.get("isCancelled")) {
       prefix = this.get("i18n").t("offer.cancelled_by",
-        { firstName: this.get("createdBy.firstName"),
-          lastName: this.get("createdBy.lastName") }
+        { firstName: this.get("closedBy.firstName"),
+          lastName: this.get("closedBy.lastName") }
       );
       date = this.get("cancelledAt");
 
     } else if(this.get("isReceived")) {
       prefix = this.get("i18n").t("offer.received_by",
-        { firstName: this.get("createdBy.firstName"),
-          lastName: this.get("createdBy.lastName") }
+        { firstName: this.get("closedBy.firstName"),
+          lastName: this.get("closedBy.lastName") }
       );
       date = this.get("receivedAt");
 
