@@ -17,3 +17,10 @@ test:
     - sleep 5
   override:
     - ./node_modules/ember-cli/bin/ember test
+
+deployment:
+  staging:
+    branch: master
+    commands:
+      - curl -X POST https://circleci.com/api/v1/project/crossroads/admin.goodcity/tree/master?circle-token=$circle_token
+      - curl -X POST https://circleci.com/api/v1/project/crossroads/app.goodcity/tree/master?circle-token=$circle_token
