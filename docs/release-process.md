@@ -31,11 +31,13 @@ Merge live into master branch.
 
 ### 2. Update version
 
-For app.goodcity and admin.goodcity you must also bump the version number, you do this by updating the APP_VERSION and VERSION environment variable to something like 0.7 at:
+For app.goodcity and admin.goodcity you must also bump the version number, you do this by updating the APP_VERSION and VERSION environment variable to something like 0.7.0 at:
+- https://circleci.com/gh/crossroads/app.goodcity/edit#env-vars
 - https://circleci.com/gh/crossroads/admin.goodcity/edit#env-vars
-- https://circleci.com/gh/crossroads/admin.goodcity/edit#env-vars
-- https://goodcity.visualstudio.com/DefaultCollection/app.goodcity/_build?definitionId=1&_a=variables
-- https://goodcity.visualstudio.com/DefaultCollection/admin.goodcity/_build?definitionId=2&_a=variables
+- https://goodcity.visualstudio.com/DefaultCollection/app.goodcity/_build?definitionId=6&_a=variables
+- https://goodcity.visualstudio.com/DefaultCollection/app.goodcity/_build?definitionId=8&_a=variables
+- https://goodcity.visualstudio.com/DefaultCollection/admin.goodcity/_build?definitionId=7&_a=variables
+- https://goodcity.visualstudio.com/DefaultCollection/admin.goodcity/_build?definitionId=9&_a=variables
 
 ### 3. Merge PR
 
@@ -56,8 +58,13 @@ It is important to tag all of the code repositories at this point so that it is 
 
 ## Building and distributing the mobile apps
 
-Once CircleCI completes its builds, it will upload the admin.goodcity and app.goodcity Android apps to the TestFairy service. Download and test the builds.
+ANDROID
+Download the live build from CircleCI artifacts, and then upload to Google Play beta testing:
+https://circleci.com/gh/crossroads/admin.goodcity/tree/live
+https://circleci.com/gh/crossroads/app.goodcity/tree/live
+https://play.google.com/apps/publish/
 
-If you are satisfied the apps are working correctly, upload them to the Google Play store and submit for distribution.
+If happy with build, click `Promote to Prod`
 
-Build the iOS apps from the `live` branch and test them. Upload to iOS for submission when complete.
+iOS
+Go to Release tab in Visual Studio Team Services (VSTS) and then create a new release once the build on the live branch has completed in VSTS. This should automatically upload the build to Testflight. Once happy with build then create a new release in https://developer.apple.com and select the TestFlight build.
