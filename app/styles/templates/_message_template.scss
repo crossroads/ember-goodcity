@@ -149,13 +149,14 @@
   border-bottom: 1px solid $light-blue;
   line-height: 0.1em;
   margin: 10px 0 20px;
+
+  span {
+    padding: 0 10px;
+    color: $medium-blue;
+    background: $dark-blue;
+  }
 }
 
-.day_seperator span {
-  padding:0 10px;
-  color: #314B6F;
-  background: $dark-blue;
-}
 .tabs-content .day_seperator span {
   background: $light-grey;
 }
