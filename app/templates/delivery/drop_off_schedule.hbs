@@ -47,14 +47,25 @@
 
           <div class="row schedule_info">
             <div class='description'>
-              {{#external-link linkUrl=crossroadsMapLocation}}
-                {{t "drop-off.find_crossroads"}}
+              {{t "drop-off.arrive_on_time"}}<br/>
+              {{t "drop-off.volunteer"}}
+            </div>
+          </div>
+
+          <div class="row">
+
+            <div class="small-9 columns description">
+              <b>{{t "drop-off.delivery_to"}}</b><br/>
+              {{t "drop-off.crossroads_address"}}
+            </div>
+
+            <div class="small-3 columns map-link">
+              {{#external-link linkUrl=(crossroads_map_link)}}
+                <img src="assets/images/google-map-pin.png"/>
+                <div>{{t "drop-off.see_map"}}</div>
               {{/external-link}}
             </div>
 
-            <div class='description'>
-              {{t "drop-off.arrive_on_time"}}
-            </div>
           </div>
 
         </div>

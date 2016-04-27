@@ -25,9 +25,28 @@
   }
 
   .description {
+    @media #{$large-only} {
+      font-size: 0.9rem;
+    }
+
     text-align: justify;
     a {
       text-decoration: underline;
+      color: inherit !important;
+    }
+
+    b {
+      color: white;
+    }
+  }
+
+  .map-link {
+    margin-top: 0.8rem;
+
+    img {
+      width: 3rem;
+    }
+    a {
       color: inherit !important;
     }
   }
