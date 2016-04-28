@@ -127,8 +127,8 @@ export default DS.Model.extend({
     return reviewedItems.get('length') === 0;
   }),
 
-  readyForSchedule: Ember.computed('needReview', 'allItemsReviewed', function(){
-    return this.get('needReview') && this.get('allItemsReviewed');
+  readyForSchedule: Ember.computed('state', 'allItemsReviewed', function(){
+    return (this.get('isUnderReview') || this.get('isSubmitted')) && this.get('allItemsReviewed');
   }),
 
   allItemsRejected: Ember.computed('items.@each.state', 'needReview', function(){
