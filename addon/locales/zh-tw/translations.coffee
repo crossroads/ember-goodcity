@@ -304,13 +304,13 @@ I18nTranslationsZhTw =
     "open_new_tab": "將在新視窗打開"
     "book_schedule": "預約時間"
     "arrive_on_time": "Please arrive during our operating hours to ensure we can receive your kind donation."
-    "volunteer": "Our volunteers can help to unlod your vehicle."
+    "volunteer": "Our volunteers can help unload your vehicle."
     "see_map": "See map"
-    "delivery_to": "Delivery To:"
+    "delivery_to": "Deliver To:"
     "crossroads_address": "Crossroads Village,<br/> 2 Castle Peak Road, Tuen Mun, NT<br/> Drop off at Building 32"
     "arrive": "Please arrive during our operating hours."
     "message_us": "Message us via this app if you have any questions."
-    "thanks": "Thank you for arranging to deliver your items."
+    "thanks": "Thank you for arranging delivery of your items."
 
   "crossroads_truck":
         "book_time": "預約時間"
