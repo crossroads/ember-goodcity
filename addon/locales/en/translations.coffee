@@ -301,14 +301,20 @@ I18nTranslationsEn =
   "drop-off":
     "select_schedule": "Select Schedule"
     "expect_delivery": "When can we expect your delivery?"
-    "find_crossroads": "Find Crossroads on Google Maps"
     "open_new_tab": "will open in new tab"
-    "arrive_on_time": "Please arrive during our operating hours to ensure we can successfully receive your kind donation."
     "book_schedule": "Book Schedule"
+    "arrive_on_time": "Please arrive during our operating hours to ensure we can receive your kind donation."
+    "volunteer": "Our volunteers can help unload your vehicle."
+    "see_map": "See map"
+    "delivery_to": "Deliver To:"
+    "crossroads_address": "Crossroads Village,<br/> 2 Castle Peak Road, Tuen Mun, NT<br/> Drop off at Building 32"
+    "arrive": "Please arrive during our operating hours."
+    "message_us": "Message us via this app if you have any questions."
+    "thanks": "Thank you for arranging delivery of your items."
 
   "crossroads_truck":
-        "book_time": "Book Time"
-        "show_more": "Show More"
+    "book_time": "Book Time"
+    "show_more": "Show More"
 
   "offer":
     "disable": "Disable"
