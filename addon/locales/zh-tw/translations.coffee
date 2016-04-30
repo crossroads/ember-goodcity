@@ -305,7 +305,7 @@ I18nTranslationsZhTw =
     "book_schedule": "預約時間"
     "arrive_on_time": "Please arrive during our operating hours to ensure we can receive your kind donation."
     "volunteer": "Our volunteers can help unload your vehicle."
-    "see_map": "See map"
+    "see_map": "詳見地圖"
     "delivery_to": "Deliver To:"
     "crossroads_address": "Crossroads Village,<br/> 2 Castle Peak Road, Tuen Mun, NT<br/> Drop off at Building 32"
     "arrive": "Please arrive during our operating hours."
