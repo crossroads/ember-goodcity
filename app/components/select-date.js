@@ -44,8 +44,11 @@ export default Ember.TextField.extend({
       });
 
       // disable current option
-      Ember.$(".time_selector select option[value="+total_mins+"]").addClass("hidden");
-      Ember.$(".time_selector select option[value="+total_mins+"]")[0].disabled = true;
+      var current_option = Ember.$(".time_selector select option[value="+total_mins+"]");
+      if(current_option.length > 0) {
+        current_option.addClass("hidden");
+        current_option[0].disabled = true;
+      }
 
     } else {
       // Enable all select options
