@@ -54,7 +54,7 @@ export default Ember.TextField.extend({
         option = Ember.$(".time_selector select option:eq(3)");
       }
 
-      if(option) {
+      if(option.length > 0) {
         option.addClass("hidden");
         option[0].disabled = true;
 
