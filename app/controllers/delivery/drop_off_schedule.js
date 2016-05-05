@@ -13,7 +13,7 @@ export default Ember.Controller.extend({
   i18n: Ember.inject.service(),
 
   slots: Ember.computed('timeslot.[]', function(){
-    return this.store.peekAll('timeslot').sortBy('id');
+    return this.store.peekAll('timeslot').sortBy('name');
   }),
 
   available_dates: Ember.computed('available_dates.[]', {
