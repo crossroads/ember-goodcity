@@ -20,7 +20,14 @@ export default DS.Model.extend({
   needEnglish:   attr('boolean'),
   needCart:      attr('boolean'),
   needCarry:     attr('boolean'),
+  needOver6ft:   attr('true'),
+  removeNet:     attr('string'),
+
   baseFee:       attr('string'),
+  totalFee:      attr('string'),
+  needEnglishFee: attr('string'),
+  needCartFee:    attr('string'),
+  removeNetFee:   attr('string'),
 
   price:         attr('number'),
   driverName:    attr('string'),

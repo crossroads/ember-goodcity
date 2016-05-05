@@ -11,10 +11,16 @@ export default addressDetails.extend({
   speakEnglish: false,
   borrowTrolley: false,
   porterage: false,
+  longerGoods: false,
+  longGoodSelection: "half",
 
   datePrompt: t("gogovan.book_van.date"),
   timePrompt: t("gogovan.book_van.time"),
   i18n: Ember.inject.service(),
+
+  isSelectedVan: Ember.computed("selectedGogovanOption", function(){
+    return this.get("selectedGogovanOption") == "1";
+  }),
 
   offer: Ember.computed("deliveryController", {
     get() {
@@ -51,8 +57,7 @@ export default addressDetails.extend({
       "720": "12:00", "750": "12:30",
       "780": "1:00",  "810": "1:30",
       "840": "2:00", "870": "2:30",
-      "900": "3:00", "930": "3:30",
-      "960": "4:00"}
+      "900": "3:00" }
     for(var minutes in slots) {
       var period = parseInt(minutes) >= 720 ? this.locale("gogovan.book_van.pm") : this.locale("gogovan.book_van.am");
       options.push({id: minutes, name: slots[minutes] + " " + period});
@@ -85,11 +90,19 @@ export default addressDetails.extend({
       requestProperties.needCarry = controller.get("porterage");
       requestProperties.offerId = delivery.get('offer.id');
       requestProperties.gogovanOptionId = gogovanOptionId;
+      requestProperties.needOver6ft = this.get("longerGoods");
+      if(this.get("longerGoods")) {
+        requestProperties.removeNet = this.get("longGoodSelection");
+      }
 
       var order = controller.store.createRecord('gogovan_order', requestProperties);
       order.set('delivery', delivery);
       new AjaxPromise("/gogovan_orders/calculate_price", "POST", controller.get('session.authToken'), requestProperties).then(function(data) {
-          order.set('baseFee', data['base']);
+          order.set('baseFee', data.base);
+          order.set('total', data.total);
+          order.set('needEnglishFee', data.breakdown.speak_english && data.breakdown.speak_english.value);
+          order.set('needCartFee', data.breakdown.borrow_carts && data.breakdown.borrow_carts.value);
+          order.set('removeNetFee', data.breakdown.remove_net && data.breakdown.remove_net.value);
           loadingView.destroy();
           controller.transitionToRoute('delivery.confirm_van', {queryParams: {placeOrder: true}});
         });

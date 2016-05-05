@@ -9,6 +9,8 @@
               <h3><i class="fa fa-exclamation-triangle"></i> {{t 'delivery_details.waiting'}}</h3>
 
               {{t 'delivery_details.display_driver_details'}}
+              <br/><br/>
+              {{t 'delivery_details.ensure_time'}}
               <hr>
             {{else if ggvOrder.isPickedUp}}
               <h3>
@@ -62,6 +64,29 @@
           {{/with}}
         </div>
       </div>
+
+      <div class="row">
+        <div class="small-6 columns">
+          {{t "drop-off.delivery_to"}}<br/>
+          {{#external-link linkUrl=(crossroads_map_link)}}
+            <img src="assets/images/google-map-pin.png" class='gmap_link'/>
+          {{/external-link}}
+        </div>
+        <div class="small-6 columns right strong">
+          {{t "drop-off.crossroads_address"}}
+        </div>
+      </div>
+      <hr>
+
+      <div class="row">
+        <div class="small-6 columns">
+          {{t "delivery_details.crossroads_phone"}}
+        </div>
+        <div class="small-6 columns right strong">
+          {{crossroadsContact}}
+        </div>
+      </div>
+      <hr>
 
       <div class="row">
         <div class="small-12 columns">

@@ -13,37 +13,29 @@
     <div class="row ui">
       <div class="small-12 columns">
 
-        <div class="row delivery-details">
-          {{display-datetime orderDetails.pickupTime format='MMMM Do (dddd), h:mm a'}}<br/>
-          {{districtName}} → {{t 'crossroads'}}<br/>
-          {{#if orderDetails.needEnglish}}
-            {{t "gogovan.confirm_van.speak_english"}},
-          {{/if}}
-          {{#if orderDetails.needCarry}}
-            {{t "gogovan.confirm_van.porterage"}},
-          {{/if}}
-          {{#if orderDetails.needCart}}
-            {{t "gogovan.confirm_van.trolley"}}
-          {{/if}}
+        <div class="row delivery-details ">
+          <div class="small-12 columns important_details">
+            {{display-datetime orderDetails.pickupTime format='MMMM Do (dddd), h:mm a'}}<br/>
+            {{districtName}} → {{t 'gogovan.confirm_van.crossroads'}}<br/>
+          </div>
         </div>
-        <hr>
 
         <div class = 'charges-details'>
           <div class="row">
-            <div class="small-3 columns heading">
+            <div class="small-4 columns heading">
               {{t "gogovan.confirm_van.base_fee"}}
             </div>
-            <div class="small-9 columns">
+            <div class="small-8 columns">
               ${{orderDetails.baseFee}}
             </div>
           </div>
           <hr>
 
           <div class="row">
-            <div class="small-3 columns heading">
+            <div class="small-4 columns heading">
               {{t "gogovan.confirm_van.porterage"}}
             </div>
-            <div class="small-6 columns">
+            <div class="small-5 columns">
               {{#if orderDetails.needCarry}}
                 {{t "gogovan.confirm_van.negotiate" }}
               {{else}}
@@ -56,17 +48,62 @@
           </div>
           <hr>
 
-          <div class="row">
-            <div class="small-3 columns heading">
-              {{t "gogovan.confirm_van.other"}}
+          {{#if orderDetails.needOver6ft}}
+            <div class="row">
+              <div class="small-4 columns heading">
+                {{t "gogovan.confirm_van.goods_6ft"}}
+              </div>
+              <div class="small-8 columns">
+                ${{orderDetails.removeNetFee}}
+              </div>
             </div>
-            <div class="small-9 columns"> {{t "gogovan.confirm_van.other-msg"}}</div>
+            <hr>
+          {{/if}}
+
+          {{#if orderDetails.needEnglish}}
+            <div class="row">
+              <div class="small-4 columns heading">
+                {{t "gogovan.confirm_van.speak_english"}}
+              </div>
+              <div class="small-8 columns">
+                ${{orderDetails.needEnglishFee}}
+              </div>
+            </div>
+            <hr>
+          {{/if}}
+
+          {{#if orderDetails.needCart}}
+            <div class="row">
+              <div class="small-4 columns heading">
+                {{t "gogovan.confirm_van.trolley"}}
+              </div>
+              <div class="small-8 columns">
+                ${{orderDetails.needCartFee}}
+              </div>
+            </div>
+          {{/if}}
+
+          <div class="row">
+            <div class="small-4 columns heading estimate_details">
+              {{t "gogovan.confirm_van.estimate"}}
+            </div>
+            <div class="small-8 columns estimate_details">
+              ${{orderDetails.total}}
+            </div>
           </div>
-          <hr>
+
         </div>
 
         <div class="row user-details">
-          <div class='confirm'>{{t "gogovan.confirm_van.confirm_with_driver"}}</div>
+          <div class='confirm'>
+            {{t "gogovan.confirm_van.confirm_total_price"}}
+            <br/>
+
+            {{#external-link linkUrl="https://www.gogovan.com.hk/en/pricing"}}
+              {{t "gogovan.confirm_van.ggv_link"}}
+              <i class="fa fa-external-link" aria-hidden="true"></i>
+            {{/external-link}}
+          </div>
 
           <div class="row">
             <div class="small-3 columns input-label">

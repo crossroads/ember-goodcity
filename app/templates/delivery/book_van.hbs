@@ -84,6 +84,51 @@
                 {{input type="checkbox" name="porterage" checked=porterage id='3' }}
                 <label for='3'><span>{{t "gogovan.book_van.porterage"}}</span></label>
               </div>
+
+              {{#if isSelectedVan}}
+                <div class='checkbox'>
+                  {{input type="checkbox" name="longerGoods" checked=longerGoods id='4' }}
+                  <label for='4'><span>{{t "gogovan.book_van.longer_goods"}}</span></label>
+                </div>
+
+                {{#if longerGoods}}
+                  <div class="radio_selection">
+                    <div class="custom_radio_button">
+
+
+                      {{radio-button name="longerGoods" selection=longGoodSelection value="half" id="half"}}
+
+                      <label for="half">
+                        <div class="row">
+                          <div class="small-2 large-1 columns">
+                            <span></span>
+                          </div>
+                          <div class="small-10 large-11 columns">
+                            {{t "gogovan.book_van.longer_goods_6ft"}}
+                          </div>
+                        </div>
+
+                      </label>
+                    </div>
+
+                    <div class="custom_radio_button">
+                      {{radio-button name="longerGoods" selection=longGoodSelection value="full" id="full"}}
+                      <label for="full">
+                        <div class="row">
+                          <div class="small-2 large-1 columns">
+                            <span></span>
+                          </div>
+                          <div class="small-10 large-11 columns">
+                            {{t "gogovan.book_van.longer_goods_6ft_tall"}}
+                          </div>
+                        </div>
+
+                      </label>
+                    </div>
+                  </div>
+                {{/if}}
+              {{/if}}
+
             </div>
 
           </div>
