@@ -8,6 +8,8 @@ export default Addressable.extend({
   firstName:   attr('string'),
   lastName:    attr('string'),
   mobile:      attr('string'),
+  donationAmount: attr('string'),
+  donationDate: attr('date'),
 
   permission:  DS.belongsTo('permission', { async: false }),
 
