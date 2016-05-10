@@ -20,7 +20,7 @@ export default DS.Model.extend({
   needEnglish:   attr('boolean'),
   needCart:      attr('boolean'),
   needCarry:     attr('boolean'),
-  needOver6ft:   attr('true'),
+  needOver6ft:   attr('boolean'),
   removeNet:     attr('string'),
 
   baseFee:       attr('string'),
