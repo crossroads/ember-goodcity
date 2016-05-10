@@ -35,10 +35,15 @@
   .popup_subheading {
     font-size: 1rem;
     margin-top: 1rem;
+    display: block;
 
     @media #{$small-only} {
       font-size: 0.9rem;
     }
+  }
+
+  .summary {
+    display: inline-block;
   }
 }
 
