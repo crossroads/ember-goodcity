@@ -1,0 +1,58 @@
+.custom_radio_button {
+  margin:0 0 0.75em 0;
+
+  .small-2 {
+    width: 11%;
+  }
+  .small-10 {
+    width: 89%;
+  }
+
+  label {
+    width: 100%;
+
+    @media #{$large-only} {
+      width: 50%;
+    }
+
+    font-size: 0.7rem;
+  }
+
+  input[type="radio"] {
+    display:none;
+  }
+
+  input[type="radio"] + label span {
+    display:inline-block;
+    width:19px;
+    height:19px;
+    margin:-1px 4px 0 0;
+    vertical-align:middle;
+    cursor:pointer;
+    -moz-border-radius:  50%;
+    border-radius:  50%;
+  }
+
+  input[type="radio"]:checked + label {
+    background: inherit;
+    border: none;
+  }
+
+  input[type="radio"] + label span {
+     background-color:$white;
+     border: 0.22rem solid;
+     color: white;
+  }
+
+  input[type="radio"]:checked + label span {
+    background-color: $coral-red;
+  }
+
+  input[type="radio"] + label span,
+  input[type="radio"]:checked + label span {
+    -webkit-transition:background-color 0.4s linear;
+    -o-transition:background-color 0.4s linear;
+    -moz-transition:background-color 0.4s linear;
+    transition:background-color 0.4s linear;
+  }
+}

@@ -155,6 +155,7 @@ I18nTranslationsEn =
     "driver_completed": "Picked up"
     "waiting": "Awaiting Driver Confirmation"
     "display_driver_details": "Driver & vehicle details will appear here once a driver accepts your booking."
+    "ensure_time": "Please ensure your delivery will arrive at our location by 4pm at the latest. Our volunteers will unload the vehicle at the end."
     "time": "Booking Time"
     "id": "Booking ID"
     "driver_screen": "Driver Screen"
@@ -163,6 +164,7 @@ I18nTranslationsEn =
     "accepted_items": "Accepted items to be transported"
     "driver_picked_up_items": "Items picked up by GGV Driver"
     "charity_sale": "Charity sale ok?"
+    "crossroads_phone": "Crossroads' Phone"
 
   "items":
     "add_item":
@@ -266,12 +268,12 @@ I18nTranslationsEn =
       "thanks" : "Got it, thank you!"
 
     "confirm_van" :
+      "crossroads": "Crossroads (Tuen Mun)"
       "other-msg" : "Tolls, parking, etc. not included"
       "title" : "Confirm Van"
       "base_fee" : "Base fee"
       "porterage" : "Labour"
       "speak_english" : "Speak English"
-      "trolley" : "Borrow trolley(s)"
       "details" : "Details"
       "other" : "Other"
       "confirm_with_driver" : "Please confirm total price with driver before loading."
@@ -280,6 +282,11 @@ I18nTranslationsEn =
       "book_delivery" : "Confirm & Book"
       "negotiate" : "Negotiate with driver"
       "no_porterage" : "Not Requested"
+      "goods_6ft": "Goods >6ft"
+      "trolley": "Trolley"
+      "estimate": "Estimate"
+      "confirm_total_price": "Estimate does not include tunnel/bridge fees, parking and other misc. fees. Please confirm total price with driver before loading."
+      "ggv_link": "More about fees on the GoGoVan website"
 
     "book_van" :
       "title" : "Book Van"
@@ -287,9 +294,12 @@ I18nTranslationsEn =
       "select_day" : "Preferred day/time"
       "crossroads_time" : "Limited to Crossroads' operating hours"
       "requirements" : "Extra Requirements"
-      "speak_english" : "Speak English"
-      "trolly_cost" : "Borrow trolley(s) + $20/piece"
+      "speak_english" : "Speak English + $5"
+      "trolly_cost" : "Borrow trolley(s) + $10/piece"
       "porterage" : "Labour (negotiate with drivers)"
+      "longer_goods": "Goods longer than 6ft (183cm)"
+      "longer_goods_6ft": "longer than 6ft +$10"
+      "longer_goods_6ft_tall": "longer than 6ft &taller than 2ft(60cm) +$20"
       "extra_time_charge" : "Extra Time(15 minutes waiting time is included for you to load the van. Extra time incurs a charge.)"
       "get_quote" : "Get Quote"
       "date": "Date"
