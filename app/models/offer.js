@@ -288,6 +288,14 @@ export default DS.Model.extend({
       this.get("packages").filter(p => !p.get("item.isRejected") && p.get("state") === "missing").get("length") === this.get("packages.length");
   }),
 
+  readyForClosure: Ember.computed("state", "packages.@each.state", function(){
+    return !this.get("allItemsRejected") &&
+      this.get("allItemsReviewed") &&
+      this.get("state") !== "received" &&
+      this.get("packages.length") > 0 &&
+      this.get("packages").filter(p => !p.get("item.isRejected") && p.get("state") === "expecting").get("length") === 0;
+  }),
+
   timeDetail: Ember.computed("state", "delivery", function(){
     var prefix = "", suffix = "", date;
 
