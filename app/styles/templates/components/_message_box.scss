@@ -9,8 +9,12 @@
   top: 112px;
   text-align: left;
 
+  @media #{$medium-only} {
+    width: 65%;
+  }
+
   .button {
-    margin-left: 10px;
+    margin-left: 0.3rem;
     text-decoration: none;
   }
 
