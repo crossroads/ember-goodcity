@@ -299,7 +299,7 @@ I18nTranslationsZhTw =
       "porterage" : "需協助搬運（需與司機商量）"
       "longer_goods": "Goods longer than 6ft (183cm)"
       "longer_goods_6ft": "longer than 6ft +$10"
-      "longer_goods_6ft_tall": "longer than 6ft &taller than 2ft(60cm) +$20"
+      "longer_goods_6ft_tall": "longer than 6ft & taller than 2ft(60cm) +$20"
       "extra_time_charge" : "額外時間（已包括15分鐘搬運時間，超過15分鐘可能需要額外收費）"
       "get_quote" : "報價"
       "date": "日期"
