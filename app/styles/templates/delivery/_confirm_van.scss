@@ -12,7 +12,12 @@
   }
   .user-details {
     .confirm {
-      margin-bottom: 1rem; }
+      margin-bottom: 1rem;
+      padding: 0.8rem;
+      a {
+        text-decoration: underline;
+      }
+    }
     .input-label > span {
       height: 2.5rem;
       vertical-align: middle;
@@ -40,5 +45,21 @@
     border-color: $coral-red !important;
     background: $light-pitch !important;
     margin-bottom: 1rem;
+  }
+
+  .important_details {
+    background-color: #334f75;
+    font-size: 0.85rem;
+    padding: 1rem !important;
+    margin-bottom: 1rem;
+    margin-top: -2rem;
+  }
+
+  .estimate_details {
+    background-color: #334f75;
+    font-size: 0.85rem;
+    padding: 1rem 0.5rem !important;
+    margin: 1rem 0;
+    color: white;
   }
 }

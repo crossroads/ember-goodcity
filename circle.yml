@@ -1,8 +1,6 @@
 machine:
-  pre:
-    - curl https://raw.githubusercontent.com/creationix/nvm/v0.23.3/install.sh | bash
   node:
-    version: 0.12
+    version: 4
 
 dependencies:
   post:
@@ -17,3 +15,10 @@ test:
     - sleep 5
   override:
     - ./node_modules/ember-cli/bin/ember test
+
+deployment:
+  staging:
+    branch: master
+    commands:
+      - curl -X POST https://circleci.com/api/v1/project/crossroads/admin.goodcity/tree/master?circle-token=$circle_token
+      - curl -X POST https://circleci.com/api/v1/project/crossroads/app.goodcity/tree/master?circle-token=$circle_token

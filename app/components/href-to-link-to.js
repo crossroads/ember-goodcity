@@ -10,7 +10,7 @@ export default Ember.Component.extend({
   _getNormalisedRootUrl: function(router) {
     var rootURL = router.rootURL;
     if(rootURL.charAt(rootURL.length - 1) !== '/') {
-      rootURL = rootURL + '/';
+      rootURL = `${rootURL}/`;
     }
     return rootURL;
   },

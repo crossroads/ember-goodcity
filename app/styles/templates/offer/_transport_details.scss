@@ -15,7 +15,7 @@
   }
 
   hr {
-    margin: 0.3rem -0.7rem !important;
+    margin: 0.5rem -0.7rem !important;
   }
 
   .right {
@@ -59,10 +59,6 @@
       margin-top: 1rem;
     }
   }
-
-  .gogovan_status {
-    margin-bottom: 1rem;
-  }
 }
 
 .thumbnail {
@@ -70,4 +66,8 @@
   height: 55px;
   margin-bottom: 5px;
   border: 2px solid grey;
+}
+
+img.gmap_link {
+  width: 2rem;
 }

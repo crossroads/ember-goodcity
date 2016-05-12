@@ -39,11 +39,20 @@
   <div class="btm message-form">
     <div class="row message-textbar">
 
-      {{#if noMessage}}
+      {{#if displayChatNote}}
         <div class="row">
           <div class="small-12 columns chat_note">
             <i class="fa fa-info-circle"></i>
             {{t "messages.chat_note"}}
+          </div>
+        </div>
+      {{/if}}
+
+      {{#if offer.isDraft}}
+        <div class="row">
+          <div class="small-12 columns chat_note">
+            <i class="fa fa-info-circle"></i>
+            {{t "messages.draft_chat_note"}}
           </div>
         </div>
       {{/if}}

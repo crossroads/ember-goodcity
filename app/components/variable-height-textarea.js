@@ -20,12 +20,12 @@ export default Ember.TextArea.extend({
             .height(textarea.scrollHeight - 15);
 
           var parent = _this.get('parentDiv');
-          var grandParentDiv = Ember.$("." + parent).closest(".review_item ");
+          var grandParentDiv = Ember.$(`.${parent}`).closest(".review_item ");
           if(grandParentDiv.length === 0) {
 
             // auto-move textarea by chaning margin of parentDiv
             var paddingSize = config.cordova.enabled ? 5 : (textarea.scrollHeight - 40);
-            Ember.$("." + parent)
+            Ember.$(`.${parent}`)
               .css({'padding-bottom': (paddingSize > 0 ? paddingSize : 0) });
 
             // scrolling down to bottom of page
@@ -46,7 +46,7 @@ export default Ember.TextArea.extend({
   didInsertElement() {
     var _this = this;
     var parent = _this.get('parentDiv');
-    var grandParentDiv = Ember.$("." + parent).closest(".review_item ");
+    var grandParentDiv = Ember.$(`.${parent}`).closest(".review_item ");
 
     // Apply only in Donor Cordova App.
     if(grandParentDiv.length === 0 && config.cordova.enabled) {

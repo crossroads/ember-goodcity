@@ -7,7 +7,82 @@
   opacity: 1;
   visibility: visible;
   top: 112px;
+  text-align: left;
+
+  @media #{$medium-only} {
+    width: 65%;
+  }
+
   .button {
-    margin-left: 10px;
+    margin-left: 0.3rem;
+    text-decoration: none;
+  }
+
+  .closeLink {
+    color: black !important;
+    background-color: inherit !important;
+    text-decoration: underline;
+    padding: 0 0 0.65rem 0.7rem;
+    font-size: 0.8rem;
+  }
+
+  .popup_heading {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    font-weight: bolder;
+
+    @media #{$small-only} {
+      font-size: 1rem;
+    }
+  }
+
+  .popup_subheading {
+    font-size: 1rem;
+    margin-top: 1rem;
+    display: block;
+
+    @media #{$small-only} {
+      font-size: 0.9rem;
+    }
+  }
+
+  .summary {
+    display: inline-block;
+  }
+}
+
+.popupOverlay {
+  .ui {
+    padding: 0;
+  }
+
+  textarea {
+    margin: 0;
+    max-width: 100%;
+    padding: 0.5rem;
+    overflow: hidden;
+    margin-top: 0.5rem;
+  }
+
+  input {
+    margin-bottom: 1rem;
+  }
+
+  #messageBox {
+    top: 20% !important;
+
+    @media #{$small-only} {
+      padding: 1rem;
+    }
+
+    p {
+      width: 100%;
+      margin-top: 0.7rem;
+      margin-bottom: 0.7rem;
+
+      @media #{$small-only} {
+        font-size: 0.9rem;
+      }
+    }
   }
 }

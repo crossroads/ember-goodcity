@@ -3,9 +3,8 @@ import Ember from 'ember';
 // Handle time selection based on current time
 // <select id="ember1325" required="">
 //   <option value="">Time</option>
-//   <option value="1">9AM-11AM</option> => (540mins - 660mins)
-//   <option value="2">11AM-1PM</option> => (660mins - 840mins)
-//   <option value="3">2PM-4PM</option>  => (840mins - 960mins)
+//   <option value="1">10:30AM-1PM</option> => (630mins - 780mins)
+//   <option value="2">2PM-4PM</option>  => (840mins - 960mins)
 // </select>
 
 export default Ember.TextField.extend({
@@ -46,17 +45,16 @@ export default Ember.TextField.extend({
       var total_mins = this.currentMinutes();
       var option;
 
-      if(total_mins >= 660 && total_mins < 840) {
+      if(total_mins >= 780 && total_mins < 960) {
         option = Ember.$(".time_selector select option:eq(1)");
-      } else if(total_mins >= 840 && total_mins < 960) {
-        option = Ember.$(".time_selector select option:eq(2)");
       } else if(total_mins >= 960) {
-        option = Ember.$(".time_selector select option:eq(3)");
+        option = Ember.$(".time_selector select option:eq(2)");
       }
 
-      if(option) {
+      if(option && option.length > 0) {
         option.addClass("hidden");
         option[0].disabled = true;
+        if(option.is(':selected')) { option.prop("selected", false) }
 
         option.prevAll().each(function() {
           Ember.$( this ).addClass("hidden");

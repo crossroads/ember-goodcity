@@ -11,8 +11,8 @@ export default Ember.Controller.extend({
   sortedElements: Ember.computed.sort("messagesAndVersions", "sortProperties"),
   isItemThread: Ember.computed.notEmpty("item"),
 
-  disabled: Ember.computed('offer.isFinished', 'item.isDraft', function(){
-    return this.get('offer.isFinished') || this.get('item.isDraft');
+  disabled: Ember.computed('offer.isCancelled', 'item.isDraft', function(){
+    return this.get('offer.isCancelled') || this.get('item.isDraft');
   }),
 
   groupedElements: Ember.computed("sortedElements.[]", function(){

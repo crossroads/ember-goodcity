@@ -46,7 +46,6 @@ I18nTranslationsEn =
   "all": "All"
   "thank_you": "Thank you"
   "go_to_top": "Go to Top"
-  "input_length_error_message" : "InputWithCounter doesn\'t work without a maxlength attribute'"
   "loading_timeout_error": "Loading view timeout reached."
   "items_text": "items"
   "version": "Version"
@@ -66,13 +65,10 @@ I18nTranslationsEn =
     "right_now" : "Right Now"
     "1m": "1m"
     "m": "m"
-    "1h": "1h"
     "h": "h"
-    "1d": "1d"
     "d": "d"
     "mth": "mth"
     "mths": "mths"
-    "1y": "1y"
     "y": "y"
 
   "application":
@@ -119,6 +115,7 @@ I18nTranslationsEn =
     "owner" : "You"
     "today_with_time": "Today, {{time}}"
     "chat_note": "Chat about this item with our reviewers"
+    "draft_chat_note": "Once you have submitted this offer, you can chat with our reviewers."
 
   "notifications":
     "view": "View"
@@ -158,6 +155,7 @@ I18nTranslationsEn =
     "driver_completed": "Picked up"
     "waiting": "Awaiting Driver Confirmation"
     "display_driver_details": "Driver & vehicle details will appear here once a driver accepts your booking."
+    "ensure_time": "Please ensure your delivery will arrive at our location by 4pm at the latest. Our volunteers will unload the vehicle at the end."
     "time": "Booking Time"
     "id": "Booking ID"
     "driver_screen": "Driver Screen"
@@ -166,6 +164,7 @@ I18nTranslationsEn =
     "accepted_items": "Accepted items to be transported"
     "driver_picked_up_items": "Items picked up by GGV Driver"
     "charity_sale": "Charity sale ok?"
+    "crossroads_phone": "Crossroads' Phone"
 
   "items":
     "add_item":
@@ -269,12 +268,12 @@ I18nTranslationsEn =
       "thanks" : "Got it, thank you!"
 
     "confirm_van" :
+      "crossroads": "Crossroads (Tuen Mun)"
       "other-msg" : "Tolls, parking, etc. not included"
       "title" : "Confirm Van"
       "base_fee" : "Base fee"
       "porterage" : "Labour"
       "speak_english" : "Speak English"
-      "trolley" : "Borrow trolley(s)"
       "details" : "Details"
       "other" : "Other"
       "confirm_with_driver" : "Please confirm total price with driver before loading."
@@ -283,6 +282,11 @@ I18nTranslationsEn =
       "book_delivery" : "Confirm & Book"
       "negotiate" : "Negotiate with driver"
       "no_porterage" : "Not Requested"
+      "goods_6ft": "Goods >6ft"
+      "trolley": "Trolley"
+      "estimate": "Estimate"
+      "confirm_total_price": "Estimate does not include tunnel/bridge fees, parking and other misc. fees. Please confirm total price with driver before loading."
+      "ggv_link": "More about fees on the GoGoVan website"
 
     "book_van" :
       "title" : "Book Van"
@@ -290,9 +294,12 @@ I18nTranslationsEn =
       "select_day" : "Preferred day/time"
       "crossroads_time" : "Limited to Crossroads' operating hours"
       "requirements" : "Extra Requirements"
-      "speak_english" : "Speak English"
-      "trolly_cost" : "Borrow trolley(s) + $20/piece"
+      "speak_english" : "Speak English + $5"
+      "trolly_cost" : "Borrow trolley(s) + $10/piece"
       "porterage" : "Labour (negotiate with drivers)"
+      "longer_goods": "Goods longer than 6ft (183cm)"
+      "longer_goods_6ft": "longer than 6ft +$10"
+      "longer_goods_6ft_tall": "longer than 6ft &taller than 2ft(60cm) +$20"
       "extra_time_charge" : "Extra Time(15 minutes waiting time is included for you to load the van. Extra time incurs a charge.)"
       "get_quote" : "Get Quote"
       "date": "Date"
@@ -304,14 +311,20 @@ I18nTranslationsEn =
   "drop-off":
     "select_schedule": "Select Schedule"
     "expect_delivery": "When can we expect your delivery?"
-    "find_crossroads": "Find Crossroads on Google Maps"
     "open_new_tab": "will open in new tab"
-    "arrive_on_time": "Please arrive during our operating hours to ensure we can successfully receive your kind donation."
     "book_schedule": "Book Schedule"
+    "arrive_on_time": "Please arrive during our operating hours to ensure we can receive your kind donation."
+    "volunteer": "Our volunteers can help unload your vehicle."
+    "see_map": "See map"
+    "delivery_to": "Deliver To:"
+    "crossroads_address": "Crossroads Village,<br/> 2 Castle Peak Road, Tuen Mun, NT<br/> Drop off at Building 32"
+    "arrive": "Please arrive during our operating hours."
+    "message_us": "Message us via this app if you have any questions."
+    "thanks": "Thank you for arranging delivery of your items."
 
   "crossroads_truck":
-        "book_time": "Book Time"
-        "show_more": "Show More"
+    "book_time": "Book Time"
+    "show_more": "Show More"
 
   "offer":
     "disable": "Disable"
@@ -333,7 +346,7 @@ I18nTranslationsEn =
     "delivery_to" : "Delivery to: Tuen Mun"
     "crossroads_foundation" : "Crossroads Foundation"
     "crossroads_address1" : "2 Castle Peak Road, Tuen Mun"
-    "crossroads_address2" : "Opposite Gold Coast Phase 1 Apartments Unload at Building 40"
+    "crossroads_address2" : "Opposite Gold Coast Phase 1 Apartments Unload at Building 32"
     "map" : "map"
     "goodcity_job_summary" : "GoodCity Job Summary"
 

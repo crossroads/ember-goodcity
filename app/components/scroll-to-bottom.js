@@ -1,6 +1,8 @@
 import Ember from 'ember';
 export default Ember.Component.extend({
 
+  cordova: Ember.inject.service(),
+
   didInsertElement() {
     var _this = this;
     this._super();
@@ -17,9 +19,20 @@ export default Ember.Component.extend({
         Ember.$('.all_unread_messages_count').addClass("fixed_to_header");
       }
 
+      // Fixed header in iOS
+      if(_this.get("cordova").isIOS()) {
+        Ember.$("textarea").on("touchstart", function(){
+          Ember.$(".sticky_title_bar").css({"position": "absolute"});
+        });
+
+        Ember.$("textarea").on("blur", function(){
+          Ember.$(".sticky_title_bar").css({"position": "fixed"});
+        });
+      }
+
     });
 
-    Ember.run.scheduleOnce("afterRender", function() {
+    Ember.run.scheduleOnce("afterRender", this, function() {
 
       var messageBox, id, scrollOffset;
       var hadUnread = Ember.$(".hidden.unread_id") && Ember.$(".hidden.unread_id").attr("data-name");
@@ -27,7 +40,7 @@ export default Ember.Component.extend({
       // Scroll to first unread message in thread
       if(Ember.$(".unread.received_message:first").length > 0) {
         id = Ember.$(".unread.received_message:first").attr("id");
-        messageBox = Ember.$("#" + id);
+        messageBox = Ember.$(`#${id}`);
         scrollOffset = messageBox.offset().top - 100;
       } else {
 

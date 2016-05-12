@@ -44,7 +44,7 @@ export default Ember.Component.extend({
       }
     });
 
-    var reqData = this.get("offerId") ? { tags: "offer_" + this.get("offerId") } : {};
+    var reqData = this.get("offerId") ? { tags: `offer_${this.get('offerId')}` } : {};
     new AjaxPromise("/images/generate_signature", "GET", this.get('session.authToken'), reqData)
       .then(function(data) {
         if ( !(_this.get('isDestroyed') || _this.get('isDestroying')) ) {

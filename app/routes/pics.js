@@ -1,6 +1,6 @@
-import AuthorizeRoute from './authorize';
+import Ember from 'ember';
 
-export default AuthorizeRoute.extend({
+export default Ember.Route.extend({
   renderTemplate() {
     var controllerName = this.get("session.isAdminApp") ? "offers" : "application";
 

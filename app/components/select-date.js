@@ -10,7 +10,7 @@ export default Ember.TextField.extend({
     var hours = currentTime.getHours();
     var minutes = currentTime.getMinutes() > 30 ? 30 : 0;
     var total_mins = hours*60 + minutes;
-    return (total_mins > 960) ? 960 : total_mins;
+    return (total_mins > 900) ? 900 : total_mins;
   },
 
   _currentDay: function(){
@@ -44,8 +44,11 @@ export default Ember.TextField.extend({
       });
 
       // disable current option
-      Ember.$(".time_selector select option[value="+total_mins+"]").addClass("hidden");
-      Ember.$(".time_selector select option[value="+total_mins+"]")[0].disabled = true;
+      var current_option = Ember.$(".time_selector select option[value="+total_mins+"]");
+      if(current_option.length > 0) {
+        current_option.addClass("hidden");
+        current_option[0].disabled = true;
+      }
 
     } else {
       // Enable all select options
@@ -83,7 +86,7 @@ export default Ember.TextField.extend({
       var firstDateArray = available_array.get("lastObject");
       var firstDate = new Date(firstDateArray[0], firstDateArray[1],firstDateArray[2]);
       var isTodayListed = _this._currentDay().getTime() === firstDate.getTime();
-      if(_this.currentMinutes() === 960 && isTodayListed) { available_array.pop(); }
+      if(_this.currentMinutes() === 900 && isTodayListed) { available_array.pop(); }
     }
 
     Ember.run.scheduleOnce('afterRender', this, function(){
