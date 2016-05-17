@@ -29,26 +29,29 @@ export default Ember.Controller.extend({
 
     this.setRoute(notification);
 
-    if(notification.route) {
-      // if current url matches notification view action url then dismiss notification
-      var router = this.get("target");
-      var currentUrl = window.location.href.split("#").get("lastObject");
+    // if current url matches notification view action url then dismiss notification
+    var router = this.get("target");
+    var currentUrl = window.location.href.split("#").get("lastObject");
 
-      var actionUrl = router.generate.apply(router, notification.route);
-      var actionUrl = actionUrl.split("#").get("lastObject");
+    var actionUrl = router.generate.apply(router, notification.route);
+    var actionUrl = actionUrl.split("#").get("lastObject");
 
-      if (currentUrl.indexOf(actionUrl) >= 0) {
-        this.get("model").removeObject(notification);
-        return this.retrieveNotification(index);
-      }
-
-      return notification;
+    if (currentUrl.indexOf(actionUrl) >= 0) {
+      this.get("model").removeObject(notification);
+      return this.retrieveNotification(index);
     }
+
+    return notification;
   },
 
   itemImageUrl: Ember.computed('nextNotification', function(){
     var itemId = this.get("nextNotification.item_id");
-    return itemId ? this.store.peekRecord("item", itemId).get("displayImageUrl") : null;
+    if(itemId) {
+      var item = this.store.peekRecord("item", itemId);
+      return item ? item.get("displayImageUrl") : null;
+    } else {
+      return null;
+    }
   }),
 
   showItemImage: Ember.computed.notEmpty("itemImageUrl"),
