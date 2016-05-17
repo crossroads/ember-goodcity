@@ -404,4 +404,8 @@ export default DS.Model.extend({
     return this.get("isFinished") || this.get("hasCompleteGGVOrder") || this.get("isReceiving");
   }),
 
+  allowResubmit: Ember.computed("isCancelled", "allItemsReviewed", function(){
+    return (this.get("isCancelled") && !this.get("allItemsReviewed")) || this.get("isInactive");
+  }),
+
 });
