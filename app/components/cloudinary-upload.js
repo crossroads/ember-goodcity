@@ -29,7 +29,6 @@ export default Ember.Component.extend({
       imageMaxHeight: 800,
       imageMaxWidth: 800,
       disableImageResize: false,
-      public_id: "test",
 
       fail: function(e, data) {
         if(data.errorThrown === "timeout") {

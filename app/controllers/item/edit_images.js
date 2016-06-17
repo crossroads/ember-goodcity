@@ -95,15 +95,33 @@ export default Ember.Controller.extend({
   })),
 
   //css related
-  previewImageBgCss: Ember.computed("previewImage", "isExpanded", "instructionBoxCss", function(){
-    var css = this.get("instructionBoxCss");
-    if (!this.get("previewImage")) {
-      return css;
+  previewImageBgCss: Ember.computed("previewImage", "isExpanded", "previewImage.angle", {
+
+    get() {
+      var css = this.get("instructionBoxCss");
+      if (!this.get("previewImage")) {
+        return css;
+      }
+
+      var imgTag = new Image();
+      imgTag.onload = () => {
+        var newCSS = new Ember.Handlebars.SafeString(
+          css + "background-image:url(" + this.get("previewImage.imageUrl") + ");" +
+          "background-size: " + (this.get("isExpanded") ? "contain" : "cover") + ";"
+        );
+        this.set("previewImageBgCss", newCSS);
+      }
+      imgTag.src = this.get("previewImage.imageUrl");
+
+      return new Ember.Handlebars.SafeString(
+          css + "background-image:url('assets/images/image_loading.gif');" +
+          "background-size: 'inherit';"
+        );
+    },
+
+    set(key, value) {
+      return value;
     }
-    return new Ember.Handlebars.SafeString(
-      css + "background-image:url(" + this.get("previewImage.imageUrl") + ");" +
-      "background-size: " + (this.get("isExpanded") ? "contain" : "cover") + ";"
-    );
   }),
 
   instructionBoxCss: Ember.computed("previewImage", "isExpanded", function(){
@@ -264,8 +282,6 @@ export default Ember.Controller.extend({
     setPreview(image) {
       var rotation = this.get("rotationAngleDetails")[image.id];
       this.set("rotationCounter", rotation/90);
-      var newCss = new Ember.Handlebars.SafeString(this.get("instructionBoxCss") + "-webkit-transform: rotate(" + rotation + "deg);");
-      this.set("instructionBoxCss", newCss);
 
       this.get("item.images").setEach("selected", false);
       image.set("selected", true);
@@ -277,13 +293,13 @@ export default Ember.Controller.extend({
         var pkg = this.get("package");
         pkg.set("imageId", this.get("previewImage.id"));
         pkg.save()
-          .catch(error => { pkg.rollback(); throw error; });
+          .catch(error => { pkg.rolledBack(); throw error; });
       } else {
         this.get("item.images").setEach("favourite", false);
         this.get("previewImage").set("favourite", true);
         this.get("previewImage").save()
           .catch(error => {
-            this.get("item.images").forEach(img => img.rollback());
+            this.get("item.images").forEach(img => img.rolledBack());
             throw error;
           });
       }
@@ -309,7 +325,7 @@ export default Ember.Controller.extend({
                 this.send("setFavourite");
               }
             })
-            .catch(error => { img.rollback(); throw error; })
+            .catch(error => { img.rolledBack(); throw error; })
             .finally(() => loadingView.destroy());
         });
       }
@@ -404,14 +420,18 @@ export default Ember.Controller.extend({
     },
 
     rotateImage(counter) {
-      var css = this.get("instructionBoxCss");
+      counter = counter < 0 ? (counter + 4) : counter
+      var angle = 90*(counter%4);
+      this.get("rotationAngleDetails")[this.get("previewImage.id")] = angle;
 
-      this.get("rotationAngleDetails")[this.get("previewImage.id")] = 90*counter;
-      var newCss = new Ember.Handlebars.SafeString(css + "-webkit-transform: rotate(" + 90*counter + "deg);");
-      Ember.$("a.selected .thumb").css({"-webkit-transform": "rotate("+90*counter+"deg)"});
-
-      this.set("instructionBoxCss", newCss);
+      var image = this.get("previewImage");
+      image.set("angle", angle);
+      Ember.run.debounce(this, this.saveImageRotation, image, 1000);
     }
+  },
+
+  saveImageRotation(image) {
+    image.save();
   },
 
 });
