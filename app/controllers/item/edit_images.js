@@ -7,6 +7,13 @@ export default Ember.Controller.extend({
   offerController: Ember.inject.controller('offer'),
   offer: Ember.computed.alias("offerController.model"),
   item: Ember.computed.alias("model"),
+  rotationCounter: 0,
+
+  rotationAngleDetails: Ember.computed("item", "item.images.[]", function(){
+    var hash = {};
+    this.get("item.images").forEach(image => hash[image.id] = 0);
+    return hash;
+  }),
 
   session: Ember.inject.service(),
   store: Ember.inject.service(),
@@ -88,7 +95,7 @@ export default Ember.Controller.extend({
   })),
 
   //css related
-  previewImageBgCss: Ember.computed("previewImage", "isExpanded", function(){
+  previewImageBgCss: Ember.computed("previewImage", "isExpanded", "instructionBoxCss", function(){
     var css = this.get("instructionBoxCss");
     if (!this.get("previewImage")) {
       return css;
@@ -255,6 +262,11 @@ export default Ember.Controller.extend({
     },
 
     setPreview(image) {
+      var rotation = this.get("rotationAngleDetails")[image.id];
+      this.set("rotationCounter", rotation/90);
+      var newCss = new Ember.Handlebars.SafeString(this.get("instructionBoxCss") + "-webkit-transform: rotate(" + rotation + "deg);");
+      this.set("instructionBoxCss", newCss);
+
       this.get("item.images").setEach("selected", false);
       image.set("selected", true);
       this.set("previewImage", image);
@@ -380,6 +392,26 @@ export default Ember.Controller.extend({
         img.save().catch(error => { img.unloadRecord(); throw error; });
       }
     },
+
+    rotateImageRight() {
+      this.incrementProperty("rotationCounter");
+      this.send("rotateImage", this.get("rotationCounter"));
+    },
+
+    rotateImageLeft() {
+      this.decrementProperty("rotationCounter");
+      this.send("rotateImage", this.get("rotationCounter"));
+    },
+
+    rotateImage(counter) {
+      var css = this.get("instructionBoxCss");
+
+      this.get("rotationAngleDetails")[this.get("previewImage.id")] = 90*counter;
+      var newCss = new Ember.Handlebars.SafeString(css + "-webkit-transform: rotate(" + 90*counter + "deg);");
+      Ember.$("a.selected .thumb").css({"-webkit-transform": "rotate("+90*counter+"deg)"});
+
+      this.set("instructionBoxCss", newCss);
+    }
   },
 
 });
