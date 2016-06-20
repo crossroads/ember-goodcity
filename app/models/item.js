@@ -58,7 +58,7 @@ export default DS.Model.extend({
     return this.get("images").rejectBy("favourite", true);
   }),
 
-  displayImageUrl: Ember.computed('displayImage', function(){
+  displayImageUrl: Ember.computed('displayImage', 'displayImage.thumbImageUrl', function(){
     return this.get('displayImage.thumbImageUrl') || "assets/images/default_item.jpg";
   }),
 
