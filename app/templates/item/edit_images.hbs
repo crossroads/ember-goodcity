@@ -1,20 +1,28 @@
-<section class="main-section row">
+<section class="main-section row edit-images-page">
 
   <div id="main-image" class="{{if isExpanded 'is-expanded'}}">
     {{#unless noImage}}
       <div style={{previewImageBgCss}}>
-        <div id="main-image-controls">
-          <a {{action "deleteImage"}} title={{t "edit_images.delete_tooltip"}}>
-            <i class="fa fa-trash"></i>
-          </a>
-          <a {{action "setFavourite"}} title={{t "edit_images.favourite_tooltip"}}>
-            <i class="fa {{if previewMatchesFavourite 'fa-star' 'fa-star-o'}}"></i>
-          </a>
-          <a {{action "expandImage"}} title={{t "edit_images.fullscreen_tooltip"}}>
-            <i class="fa {{if isExpanded 'fa-compress' 'fa-expand'}}"></i>
-          </a>
-        </div>
       </div>
+
+      <div id="main-image-controls">
+        <a {{action "deleteImage"}} title={{t "edit_images.delete_tooltip"}}>
+          <i class="fa fa-trash"></i>
+        </a>
+        <a {{action "setFavourite"}} title={{t "edit_images.favourite_tooltip"}}>
+          <i class="fa {{if previewMatchesFavourite 'fa-star' 'fa-star-o'}}"></i>
+        </a>
+        <a {{action "rotateImageRight"}} >
+          <i class="fa fa-repeat"></i>
+        </a>
+        <a {{action "rotateImageLeft"}} >
+          <i class="fa fa-undo"></i>
+        </a>
+        <a {{action "expandImage"}} title={{t "edit_images.fullscreen_tooltip"}}>
+          <i class="fa {{if isExpanded 'fa-compress' 'fa-expand'}}"></i>
+        </a>
+      </div>
+
     {{else}}
     <div class="center-box" style={{instructionBoxCss}}>
       <span class="center-item">
