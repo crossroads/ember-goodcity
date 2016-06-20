@@ -7,14 +7,6 @@ export default Ember.Controller.extend({
   offerController: Ember.inject.controller('offer'),
   offer: Ember.computed.alias("offerController.model"),
   item: Ember.computed.alias("model"),
-  rotationCounter: 0,
-
-  rotationAngleDetails: Ember.computed("item", "item.images.[]", function(){
-    var hash = {};
-    this.get("item.images").forEach(image => hash[image.id] = 0);
-    return hash;
-  }),
-
   session: Ember.inject.service(),
   store: Ember.inject.service(),
   messageBox: Ember.inject.service(),
@@ -280,9 +272,6 @@ export default Ember.Controller.extend({
     },
 
     setPreview(image) {
-      var rotation = this.get("rotationAngleDetails")[image.id];
-      this.set("rotationCounter", rotation/90);
-
       this.get("item.images").setEach("selected", false);
       image.set("selected", true);
       this.set("previewImage", image);
@@ -410,20 +399,18 @@ export default Ember.Controller.extend({
     },
 
     rotateImageRight() {
-      this.incrementProperty("rotationCounter");
-      this.send("rotateImage", this.get("rotationCounter"));
+      var angle = this.get("previewImage.angle")
+      angle = (angle + 90)%360;
+      this.send("rotateImage", angle);
     },
 
     rotateImageLeft() {
-      this.decrementProperty("rotationCounter");
-      this.send("rotateImage", this.get("rotationCounter"));
+      var angle = this.get("previewImage.angle")
+      angle = (angle ? (angle - 90) : 270)%360;
+      this.send("rotateImage", angle);
     },
 
-    rotateImage(counter) {
-      counter = counter < 0 ? (counter + 4) : counter
-      var angle = 90*(counter%4);
-      this.get("rotationAngleDetails")[this.get("previewImage.id")] = angle;
-
+    rotateImage(angle) {
       var image = this.get("previewImage");
       image.set("angle", angle);
       Ember.run.debounce(this, this.saveImageRotation, image, 1000);
