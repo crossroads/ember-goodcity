@@ -413,7 +413,7 @@ export default Ember.Controller.extend({
     rotateImage(angle) {
       var image = this.get("previewImage");
       image.set("angle", angle);
-      Ember.run.debounce(this, this.saveImageRotation, image, 1000);
+      Ember.run.debounce(this, this.saveImageRotation, image, 400);
     }
   },
 
