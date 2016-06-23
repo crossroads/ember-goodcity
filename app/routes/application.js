@@ -52,6 +52,12 @@ export default Ember.Route.extend(preloadDataMixin, {
         outlet: 'notification_link',
         controller: 'notification_link'
       });
+
+      this.render('internet_call_status', {
+        into: 'application',
+        outlet: 'internet_call_status',
+        controller: 'internet_call_status'
+      });
     }
   },
 
