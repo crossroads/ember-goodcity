@@ -282,13 +282,13 @@ export default Ember.Controller.extend({
         var pkg = this.get("package");
         pkg.set("imageId", this.get("previewImage.id"));
         pkg.save()
-          .catch(error => { pkg.rolledBack(); throw error; });
+          .catch(error => { pkg.rollbackAttributes(); throw error; });
       } else {
         this.get("item.images").setEach("favourite", false);
         this.get("previewImage").set("favourite", true);
         this.get("previewImage").save()
           .catch(error => {
-            this.get("item.images").forEach(img => img.rolledBack());
+            this.get("item.images").forEach(img => img.rollbackAttributes());
             throw error;
           });
       }
@@ -314,7 +314,7 @@ export default Ember.Controller.extend({
                 this.send("setFavourite");
               }
             })
-            .catch(error => { img.rolledBack(); throw error; })
+            .catch(error => { img.rollbackAttributes(); throw error; })
             .finally(() => loadingView.destroy());
         });
       }
