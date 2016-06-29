@@ -90,8 +90,9 @@ export default addressDetails.extend({
       requestProperties.needCarry = controller.get("porterage");
       requestProperties.offerId = delivery.get('offer.id');
       requestProperties.gogovanOptionId = gogovanOptionId;
-      requestProperties.needOver6ft = this.get("longerGoods");
-      if(this.get("longerGoods")) {
+
+      if(this.get("isSelectedVan")) {
+        requestProperties.needOver6ft = this.get("longerGoods");
         requestProperties.removeNet = this.get("longGoodSelection");
       }
 
@@ -101,7 +102,7 @@ export default addressDetails.extend({
           order.set('baseFee', data.base);
           order.set('total', data.total);
           order.set('needEnglishFee', data.breakdown.speak_english && data.breakdown.speak_english.value);
-          order.set('needCartFee', data.breakdown.borrow_carts && data.breakdown.borrow_carts.value);
+          order.set('needCartFee', (data.breakdown.borrow_carts && data.breakdown.borrow_carts.value) || (data.breakdown.borrow_forklift_pcs && data.breakdown.borrow_forklift_pcs.value));
           order.set('removeNetFee', data.breakdown.remove_net && data.breakdown.remove_net.value);
           loadingView.destroy();
           controller.transitionToRoute('delivery.confirm_van', {queryParams: {placeOrder: true}});
