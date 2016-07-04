@@ -73,9 +73,9 @@ export default Ember.Controller.extend({
     });
   }),
 
-  favouriteImage: Ember.computed("item.images.@each.favourite", "package.image", function(){
+  favouriteImage: Ember.computed("item.images.@each.favourite", "package.favouriteImage", function(){
     return this.get("package") ?
-      this.get("package.image") :
+      this.get("package.favouriteImage") :
       this.get("images").filterBy("favourite").get("firstObject");
   }),
 
@@ -280,7 +280,7 @@ export default Ember.Controller.extend({
     setFavourite() {
       if (this.get("package")) {
         var pkg = this.get("package");
-        pkg.set("imageId", this.get("previewImage.id"));
+        pkg.set("favouriteImage", this.get("previewImage"));
         pkg.save()
           .catch(error => { pkg.rollbackAttributes(); throw error; });
       } else {
