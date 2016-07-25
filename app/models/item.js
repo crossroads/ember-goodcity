@@ -22,7 +22,6 @@ export default DS.Model.extend({
   donorCondition:       belongsTo('donor_condition', { async: false }),
   donorConditionId:     foreignKey('donorCondition.id'),
   rejectionReason:      belongsTo('rejection_reason', { async: false }),
-  saleable:             attr('boolean'),
   state_event:          attr('string'),
 
   isAccepted: Ember.computed.equal("state", "accepted"),
