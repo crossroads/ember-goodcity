@@ -77,7 +77,15 @@
 
               <div class='checkbox'>
                 {{input type="checkbox" name="borrowTrolley" checked=borrowTrolley id='2' }}
-                <label for='2'><span>{{t "gogovan.book_van.trolly_cost"}}</span></label>
+                <label for='2'>
+                  <span>
+                    {{#if isSelectedVan}}
+                      {{t "gogovan.book_van.van_trolly_cost"}}
+                    {{else}}
+                      {{t "gogovan.book_van.truck_trolly_cost"}}
+                    {{/if}}
+                  </span>
+                </label>
               </div>
 
               <div class='checkbox'>

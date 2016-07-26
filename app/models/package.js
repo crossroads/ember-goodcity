@@ -19,7 +19,7 @@ export default DS.Model.extend({
   item:            belongsTo('item', { async: false }),
   packageType:     belongsTo('package_type', { async: false }),
   location:        belongsTo('location', { async: false }),
-  imageId:         attr('number'),
+  favouriteImage:  belongsTo('image', { async: false }),
   offerId:         attr('number'),
   inventoryNumber: attr('string'),
   grade:           attr('string'),
@@ -52,11 +52,7 @@ export default DS.Model.extend({
     return !res ? '' : res + 'cm';
   }),
 
-  image: Ember.computed('imageId', function(){
-    return this.store.peekRecord("image", this.get("imageId"));
-  }),
-
-  displayImageUrl: Ember.computed("image", "item.displayImageUrl", function(){
-    return this.get("image") ? this.get("image.thumbImageUrl") : this.get("item.displayImageUrl");
+  displayImageUrl: Ember.computed("favouriteImage", "item.displayImageUrl", function(){
+    return this.get("favouriteImage") ? this.get("favouriteImage.thumbImageUrl") : this.get("item.displayImageUrl");
   })
 });

@@ -7,7 +7,6 @@ export default Ember.Controller.extend({
   offerController: Ember.inject.controller('offer'),
   offer: Ember.computed.alias("offerController.model"),
   item: Ember.computed.alias("model"),
-
   session: Ember.inject.service(),
   store: Ember.inject.service(),
   messageBox: Ember.inject.service(),
@@ -74,9 +73,9 @@ export default Ember.Controller.extend({
     });
   }),
 
-  favouriteImage: Ember.computed("item.images.@each.favourite", "package.image", function(){
+  favouriteImage: Ember.computed("item.images.@each.favourite", "package.favouriteImage", function(){
     return this.get("package") ?
-      this.get("package.image") :
+      this.get("package.favouriteImage") :
       this.get("images").filterBy("favourite").get("firstObject");
   }),
 
@@ -88,15 +87,33 @@ export default Ember.Controller.extend({
   })),
 
   //css related
-  previewImageBgCss: Ember.computed("previewImage", "isExpanded", function(){
-    var css = this.get("instructionBoxCss");
-    if (!this.get("previewImage")) {
-      return css;
+  previewImageBgCss: Ember.computed("previewImage", "isExpanded", "previewImage.angle", {
+
+    get() {
+      var css = this.get("instructionBoxCss");
+      if (!this.get("previewImage")) {
+        return css;
+      }
+
+      var imgTag = new Image();
+      imgTag.onload = () => {
+        var newCSS = new Ember.Handlebars.SafeString(
+          css + "background-image:url(" + this.get("previewImage.imageUrl") + ");" +
+          "background-size: " + (this.get("isExpanded") ? "contain" : "cover") + ";"
+        );
+        this.set("previewImageBgCss", newCSS);
+      }
+      imgTag.src = this.get("previewImage.imageUrl");
+
+      return new Ember.Handlebars.SafeString(
+          css + "background-image:url('assets/images/image_loading.gif');" +
+          "background-size: 'inherit';"
+        );
+    },
+
+    set(key, value) {
+      return value;
     }
-    return new Ember.Handlebars.SafeString(
-      css + "background-image:url(" + this.get("previewImage.imageUrl") + ");" +
-      "background-size: " + (this.get("isExpanded") ? "contain" : "cover") + ";"
-    );
   }),
 
   instructionBoxCss: Ember.computed("previewImage", "isExpanded", function(){
@@ -263,15 +280,15 @@ export default Ember.Controller.extend({
     setFavourite() {
       if (this.get("package")) {
         var pkg = this.get("package");
-        pkg.set("imageId", this.get("previewImage.id"));
+        pkg.set("favouriteImage", this.get("previewImage"));
         pkg.save()
-          .catch(error => { pkg.rollback(); throw error; });
+          .catch(error => { pkg.rollbackAttributes(); throw error; });
       } else {
         this.get("item.images").setEach("favourite", false);
         this.get("previewImage").set("favourite", true);
         this.get("previewImage").save()
           .catch(error => {
-            this.get("item.images").forEach(img => img.rollback());
+            this.get("item.images").forEach(img => img.rollbackAttributes());
             throw error;
           });
       }
@@ -297,7 +314,7 @@ export default Ember.Controller.extend({
                 this.send("setFavourite");
               }
             })
-            .catch(error => { img.rollback(); throw error; })
+            .catch(error => { img.rollbackAttributes(); throw error; })
             .finally(() => loadingView.destroy());
         });
       }
@@ -380,6 +397,28 @@ export default Ember.Controller.extend({
         img.save().catch(error => { img.unloadRecord(); throw error; });
       }
     },
+
+    rotateImageRight() {
+      var angle = this.get("previewImage.angle")
+      angle = (angle + 90)%360;
+      this.send("rotateImage", angle);
+    },
+
+    rotateImageLeft() {
+      var angle = this.get("previewImage.angle")
+      angle = (angle ? (angle - 90) : 270)%360;
+      this.send("rotateImage", angle);
+    },
+
+    rotateImage(angle) {
+      var image = this.get("previewImage");
+      image.set("angle", angle);
+      Ember.run.debounce(this, this.saveImageRotation, image, 400);
+    }
+  },
+
+  saveImageRotation(image) {
+    image.save();
   },
 
 });

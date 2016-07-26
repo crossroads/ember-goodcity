@@ -8,24 +8,26 @@ export default DS.Model.extend({
   favourite:     attr('boolean'),
   cloudinaryId:  attr('string'),
   item:          belongsTo('item', { async: false }),
+  angle:         attr('number'),
 
-  imageUrl: Ember.computed('cloudinaryId', function(){
+  imageUrl: Ember.computed('cloudinaryId', 'angle', function(){
     return this.generateUrl();
   }),
 
-  thumbImageUrl: Ember.computed('cloudinaryId', function(){
+  thumbImageUrl: Ember.computed('cloudinaryId', 'angle', function(){
     return this.generateUrl(120, 120, true);
   }),
 
   generateUrl: function(width, height, crop) {
     //e.g. cloudinaryId = 1406959628/wjvaksnadntp239n6vwe.png
     var id = this.get('cloudinaryId');
+    var angle = this.get('angle') || 0;
     if (!id || id.indexOf("/") === -1) {
       return null;
     }
     var version = id.split("/")[0];
     var filename = id.substring(id.indexOf("/") + 1);
-    return Ember.$.cloudinary.url(filename, {
+    var options = {
       version: version,
       height: height,
       width: width,
@@ -34,6 +36,8 @@ export default DS.Model.extend({
       id: id,
       secure: true,
       protocol: 'https:'
-    });
+    };
+    if(angle) { options["angle"] = angle }
+    return Ember.$.cloudinary.url(filename, options);
   }
 });

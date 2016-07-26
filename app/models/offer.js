@@ -12,6 +12,7 @@ export default DS.Model.extend({
   origin:         attr('string'),
   stairs:         attr('boolean'),
   parking:        attr('boolean'),
+  saleable:       attr('boolean'),
   estimatedSize:  attr('string'),
   notes:          attr('string'),
   createdAt:      attr('date'),
@@ -31,8 +32,6 @@ export default DS.Model.extend({
   crossroadsTransport: belongsTo('crossroads_transport', { async: false }),
   cancellationReason:  belongsTo('cancellation_reason', { async: false }),
 
-  // used for items of current-offer
-  saleable:       attr('boolean'),
 
   items:          hasMany('item', { async: false }),
   messages:       hasMany('message', { async: false }),
@@ -140,12 +139,11 @@ export default DS.Model.extend({
     return this.get("activeItems.firstObject.displayImageUrl") || "assets/images/default_item.jpg";
   }),
 
-  isCharitableSale: Ember.computed('items.@each.saleable', function(){
-    var isSaleable = this.get("items").rejectBy("saleable", false).length > 0;
-    return  isSaleable ? this.locale("yes") : this.locale("no");
+  isCharitableSale: Ember.computed('saleable', function(){
+    return  this.get("saleable") ? this.locale("yes") : this.locale("no");
   }),
 
-  isAccepted: Ember.computed('items.@each.saleable', function(){
+  isAccepted: Ember.computed('isReviewed', 'approvedItems.[]', function(){
     return (this.get("approvedItems").length > 0) && this.get('isReviewed');
   }),
 
@@ -402,6 +400,10 @@ export default DS.Model.extend({
 
   hideInactiveOfferOption: Ember.computed("state", "hasCompleteGGVOrder", function(){
     return this.get("isFinished") || this.get("hasCompleteGGVOrder") || this.get("isReceiving");
+  }),
+
+  allowResubmit: Ember.computed("isCancelled", "allItemsReviewed", function(){
+    return (this.get("isCancelled") && !this.get("allItemsReviewed")) || this.get("isInactive");
   }),
 
 });

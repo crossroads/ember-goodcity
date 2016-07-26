@@ -39,7 +39,7 @@ export default Ember.Controller.extend({
         slotName:    slotName };
 
       var deliveryId = this.get('delivery.model.id');
-      var delivery   = this.store.peekRecord('delivery', deliveryId);
+      var delivery   = this.get("store").peekRecord('delivery', deliveryId);
       var offer      = delivery.get("offer");
 
       var properties = {

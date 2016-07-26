@@ -22,7 +22,6 @@ export default DS.Model.extend({
   donorCondition:       belongsTo('donor_condition', { async: false }),
   donorConditionId:     foreignKey('donorCondition.id'),
   rejectionReason:      belongsTo('rejection_reason', { async: false }),
-  saleable:             attr('boolean'),
   state_event:          attr('string'),
 
   isAccepted: Ember.computed.equal("state", "accepted"),
@@ -58,7 +57,7 @@ export default DS.Model.extend({
     return this.get("images").rejectBy("favourite", true);
   }),
 
-  displayImageUrl: Ember.computed('displayImage', function(){
+  displayImageUrl: Ember.computed('displayImage', 'displayImage.thumbImageUrl', function(){
     return this.get('displayImage.thumbImageUrl') || "assets/images/default_item.jpg";
   }),
 
