@@ -28,7 +28,7 @@ export default DS.Model.extend({
 
   isDispatched: Ember.computed.bool('sentOn'),
   isDesignated: Ember.computed('designationId', 'sentOn', function () {
-    return this.get('designationId') && this.get('sentOn') === null;
+    return this.get('designationId') && this.get('sentOn') === null && this.get('inventoryNumber');
   }),
 
   donorCondition:   belongsTo('donor_condition', { async: false }),
