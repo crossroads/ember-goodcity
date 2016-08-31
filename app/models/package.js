@@ -23,6 +23,13 @@ export default DS.Model.extend({
   offerId:         attr('number'),
   inventoryNumber: attr('string'),
   grade:           attr('string'),
+  sentOn:          attr('date'),
+  designationId:   attr('number'),
+
+  isDispatched: Ember.computed.bool('sentOn'),
+  isDesignated: Ember.computed('designationId', 'sentOn', function () {
+    return this.get('designationId') && this.get('sentOn') === null && this.get('inventoryNumber');
+  }),
 
   donorCondition:   belongsTo('donor_condition', { async: false }),
   donorConditionId: Ember.computed.foreignKey('donorCondition.id'),
