@@ -37,6 +37,18 @@ export default Ember.Route.extend(preloadDataMixin, {
     return this._loadDataStore();
   },
 
+  afterModel() {
+    if(this.get("session.isAdminApp")) {
+      this.loadStaticData(true).catch(error => {
+        if (error.status === 0 || (error.errors && error.errors[0].status === "0")) {
+          this.transitionTo("offline");
+        } else {
+          this.handleError(error);
+        }
+      });
+    }
+  },
+
   renderTemplate() {
     this.render(); // default template
 

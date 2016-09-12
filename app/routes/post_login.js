@@ -18,6 +18,17 @@ export default Ember.Route.extend(preloadDataMixin, {
   },
 
   afterModel() {
+
+    if(this.get("session.isAdminApp")) {
+      this.loadStaticData().catch(error => {
+        if (error.status === 0) {
+          this.transitionTo("offline");
+        } else {
+          throw error;
+        }
+      });
+    }
+
     // After everthying has been loaded, redirect user to requested url
     var attemptedTransition = this.controllerFor('login').get('attemptedTransition');
     if (attemptedTransition) {

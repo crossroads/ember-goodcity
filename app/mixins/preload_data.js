@@ -6,9 +6,11 @@ export default Ember.Mixin.create({
 
   preloadData: function(includePublicTypes) {
     var promises = [];
+    var isDonorApp = this.get("session.isDonorApp");
+
     var retrieve = types => types.map(type => this.store.findAll(type, { reload: true }));
 
-    if (includePublicTypes) {
+    if (includePublicTypes && isDonorApp) {
       promises = retrieve(config.APP.PRELOAD_TYPES);
     }
 
@@ -29,9 +31,21 @@ export default Ember.Mixin.create({
         this.store.query('offer', offer_params)
       );
 
-      promises = promises.concat(retrieve(config.APP.PRELOAD_AUTHORIZED_TYPES));
+      if(isDonorApp) {
+        promises = promises.concat(retrieve(config.APP.PRELOAD_AUTHORIZED_TYPES));
+      }
     }
 
     return Ember.RSVP.all(promises);
-  }
+  },
+
+  loadStaticData: function(includePublicTypes) {
+    var promises = [];
+    var retrieve = types => types.map(type => this.store.findAll(type, { reload: true }));
+    if (includePublicTypes) { promises = retrieve(config.APP.PRELOAD_TYPES); }
+    if (this.get("session.authToken")) {
+      promises = promises.concat(retrieve(config.APP.PRELOAD_AUTHORIZED_TYPES));
+    }
+    return Ember.RSVP.all(promises);
+  },
 });
