@@ -87,7 +87,7 @@ export default Ember.Controller.extend({
       socket.on("notification", Ember.run.bind(this, this.notification));
       socket.on("update_store", Ember.run.bind(this, this.update_store));
       socket.on("_batch", Ember.run.bind(this, this.batch));
-      socket.on("_resync", Ember.run.bind(this, this.resync));
+      // socket.on("_resync", Ember.run.bind(this, this.resync));
       socket.on("_settings", Ember.run.bind(this, function(settings) {
         this.set("deviceTtl", settings.device_ttl);
         this.set("lastOnline", Date.now());
