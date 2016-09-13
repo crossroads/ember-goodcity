@@ -44,12 +44,12 @@ export default Ember.Controller.extend({
   }),
 
   // resync if offline longer than deviceTtl
-  checkdeviceTtl: Ember.observer('online', function () {
-    var online = this.get("online");
+  checkdeviceTtl: Ember.observer('status.online', function () {
+    var online = this.get("status.online");
     var deviceTtl = this.get("deviceTtl");
     if (online && deviceTtl !== 0 && (Date.now() - this.get("lastOnline")) > deviceTtl * 1000) {
       this.resync();
-    } else if (!online) {
+    } else if (online === false) {
       this.set("lastOnline", Date.now());
     }
   }),
