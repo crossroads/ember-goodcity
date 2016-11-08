@@ -156,6 +156,10 @@ input[type=number]::-webkit-outer-spin-button {
   max-height: 4.5rem;
   -webkit-line-clamp: 3; /* number of lines to show */
 }
+.five-line-ellipsis {
+  max-height: 5.8rem;
+  -webkit-line-clamp: 5;
+}
 /***********************************************************/
 /*********************** TABS ******************************/
 .tabs {

@@ -81,7 +81,11 @@ export default Ember.Controller.extend({
       socket.on("error", Ember.run.bind(this, function(reason) {
         // ignore xhr post error related to no internet connection
         if (typeof reason !== "object" || reason.type !== "TransportError" && reason.message !== "xhr post error") {
-          this.get("logger").error(reason);
+          if(reason.indexOf("Auth") === 0){
+            this.transitionToRoute('login');
+          } else {
+            this.get("logger").error(reason);
+          }
         }
       }));
       socket.on("notification", Ember.run.bind(this, this.notification));
