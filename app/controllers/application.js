@@ -5,7 +5,10 @@ export default Ember.Controller.extend({
 
   cordova: Ember.inject.service(),
   subscriptions: Ember.inject.controller(),
+  isMobileApp: config.cordova.enabled,
   config,
+
+  app_id: config.APP.ANDROID_APP_ID,
 
   initSubscriptions: Ember.on('init', function() {
     if (this.session.get("isLoggedIn")) {
@@ -40,6 +43,13 @@ export default Ember.Controller.extend({
 
     setSubscriptions() {
       this.get('subscriptions').send('wire');
+    },
+
+    rateApp(){
+      if(this.get("cordova").isIOS()){
+        this.set("app_id", config.APP.IOS_APP_ID);
+      }
+      LaunchReview.launch(this.get("app_id"));
     }
   }
 });
