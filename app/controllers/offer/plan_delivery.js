@@ -8,6 +8,7 @@ export default Ember.Controller.extend({
   logger: Ember.inject.service(),
   offerId: Ember.computed.alias('offerController.model.id'),
   gogovanPriceCalculated: Ember.computed.notEmpty("gogovanPrice"),
+  isDiscountAvailable: false,
 
   offer: Ember.computed('offerId', function(){
     return this.store.peekRecord('offer', this.get('offerId'));
@@ -21,8 +22,12 @@ export default Ember.Controller.extend({
       };
 
       new AjaxPromise("/gogovan_orders/calculate_price", "POST", this.session.get('authToken'), params)
-        .then(data => this.set("gogovanPrice", data.base))
-        .catch(error => this.get("logger").error(error));
+        .then(data => {
+          this.set("gogovanPrice", data.base);
+          if(data) {
+            this.set("isDiscountAvailable", true);
+          }
+        }).catch(error => this.get("logger").error(error));
 
       return "";
     },

@@ -209,9 +209,12 @@ I18nTranslationsEn =
   "plan_delivery":
     "title" : "Plan Transport"
     "fastest" :
+      "coupon_discount": "Includes $50 promotional discount."
+      "promo_discount": "Promotional discount"
       "title" : "Fastest"
       "info" : "Hire a vehicle with a few clicks.<br/>Recommended!"
       "cost" : "From ${{cost}}"
+      "discount_cost": "Total ${{cost}}"
       "booking_button" : "Go to Booking"
       "learn_more": "Learn More"
       "gogovan_charges": "Gogovan Bookings"
