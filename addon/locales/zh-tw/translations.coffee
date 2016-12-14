@@ -209,12 +209,13 @@ I18nTranslationsZhTw =
   "plan_delivery":
     "title" : "安排遞送服務"
     "fastest" :
-      "coupon_discount": "Includes $50 promotional discount."
+      "include": "Includes $"
+      "coupon_discount": "promotional discount."
       "promo_discount": "Promotional discount"
       "title" : "最快速"
       "info" : "<br/>方便快捷，推介使用！"
       "cost" : "費用由港元${{cost}}起"
-      "discount_cost": "Total ${{cost}}"
+      "discount_cost": "From $"
       "booking_button" : "預約時間"
       "learn_more": "了解詳情"
       "gogovan_charges": "預約GoGoVan"

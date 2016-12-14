@@ -99,6 +99,14 @@ export default addressDetails.extend({
       var order = controller.store.createRecord('gogovan_order', requestProperties);
       order.set('delivery', delivery);
       new AjaxPromise("/gogovan_orders/calculate_price", "POST", controller.get('session.authToken'), requestProperties).then(function(data) {
+         var coupon = data.breakdown.coupon_discount;
+          if(coupon) {
+            var discount = coupon.value.toString();
+            order.set("isDiscountAvailable", true);
+            order.set("coupon_discount", discount.slice(0, 1) + "$" + discount.slice(1));
+          } else {
+            order.set("isDiscountAvailable", false);
+          }
           order.set('baseFee', data.base);
           order.set('total', data.total);
           order.set('needEnglishFee', data.breakdown.speak_english && data.breakdown.speak_english.value);
