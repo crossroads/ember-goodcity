@@ -23,8 +23,8 @@
             <h3>{{t "plan_delivery.fastest.title"}} <i class="fa fa-check-circle"></i></h3>
             {{t "plan_delivery.fastest.info"}}<br/>
             {{#if isDiscountAvailable}}
-             <b><i class="fa fa-heart" style="color:white"></i>
-              <span style="color:white">{{t "plan_delivery.fastest.include"}}{{couponDiscount}} {{t "plan_delivery.fastest.coupon_discount"}}</span></b><br/>
+              <i class="fa fa-heart" style="color:white"></i>
+              <span style="color:white">{{t "plan_delivery.fastest.include"}}{{couponDiscount}} {{t "plan_delivery.fastest.coupon_discount"}}</span><br/>
             {{/if}}
             {{#online-button action="startDelivery" actionArgs="Gogovan" classNames="button"}}{{t "plan_delivery.fastest.booking_button"}}{{/online-button}}
           </div>
