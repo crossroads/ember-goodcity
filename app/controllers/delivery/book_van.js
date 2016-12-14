@@ -103,7 +103,7 @@ export default addressDetails.extend({
           if(coupon) {
             var discount = coupon.value.toString();
             order.set("isDiscountAvailable", true);
-            order.set("coupon_discount", discount.slice(0, 1) + "$" + discount.slice(1));
+            order.set("couponDiscount", discount.slice(0, 1) + "$" + discount.slice(1));
           } else {
             order.set("isDiscountAvailable", false);
           }
