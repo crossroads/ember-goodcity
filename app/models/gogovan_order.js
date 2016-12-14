@@ -35,6 +35,8 @@ export default DS.Model.extend({
   driverLicense: attr('string'),
   ggvUuid:       attr('string'),
   delivery:      belongsTo('delivery', { async: false }),
+  isDiscountAvailable: false,
+  couponDiscount: 0,
 
   i18n: Ember.inject.service(),
 
