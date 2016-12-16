@@ -164,7 +164,7 @@ I18nTranslationsZhTw =
     "accepted_items": "已接受物資，正在等候運送"
     "driver_picked_up_items": "GoGoVan司機已接收物資"
     "charity_sale": "閣下同意我們義賣捐贈物資嗎？"
-    "crossroads_phone": "Crossroads' Phone"
+    "crossroads_phone": "十字路會電話"
 
   "items":
     "add_item":
@@ -276,7 +276,7 @@ I18nTranslationsZhTw =
       "title" : "確定車輛"
       "base_fee" : "基本費用"
       "porterage" : "搬運"
-      "speak_english" : "Speak English"
+      "speak_english" : "通曉英語"
       "details" : "詳情"
       "other" : "其他"
       "confirm_with_driver" : "在搬運前，請先與司機商討總價格"
@@ -285,9 +285,9 @@ I18nTranslationsZhTw =
       "book_delivery" : "確認及預約"
       "negotiate" : "與司機商討"
       "no_porterage" : "不需要"
-      "goods_6ft": "Goods >6ft"
-      "trolley": "Trolley"
-      "estimate": "Estimate"
+      "goods_6ft": "貨物>6尺"
+      "trolley": "手推車"
+      "estimate": "預計"
       "confirm_total_price": "預計價格並不包括隧道或天橋費、泊車以及其他雜費。請在上貨前與司機確認最終價錢。"
       "ggv_link": "請到GoGovan網站查閱更多有關費用詳情。"
 
