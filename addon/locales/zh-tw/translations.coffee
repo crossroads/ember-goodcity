@@ -155,7 +155,7 @@ I18nTranslationsZhTw =
     "driver_completed": "司機已確認預約"
     "waiting": "正在等候司機確認"
     "display_driver_details": "司機確認預約後，閣下即能查閱司機及車輛的資料。"
-    "ensure_time": "Please ensure your delivery will arrive at our location by 4pm at the latest. Our volunteers will unload the vehicle at the end."
+    "ensure_time": "請確保在下午4時或之前送抵本會。我們的義工會代為落貨。"
     "time": "預約時間"
     "id": "預約帳號"
     "driver_screen": "司機介面"
@@ -164,7 +164,7 @@ I18nTranslationsZhTw =
     "accepted_items": "已接受物資，正在等候運送"
     "driver_picked_up_items": "GoGoVan司機已接收物資"
     "charity_sale": "閣下同意我們義賣捐贈物資嗎？"
-    "crossroads_phone": "Crossroads' Phone"
+    "crossroads_phone": "十字路會電話"
 
   "items":
     "add_item":
@@ -209,9 +209,12 @@ I18nTranslationsZhTw =
   "plan_delivery":
     "title" : "安排遞送服務"
     "fastest" :
+      "include_coupon_discount": "加入 ${{cost}} 優惠折扣。"
+      "promo_discount": "優惠折扣"
       "title" : "最快速"
       "info" : "<br/>方便快捷，推介使用！"
       "cost" : "費用由港元${{cost}}起"
+      "discount_cost": "由 ${{cost}} 起"
       "booking_button" : "預約時間"
       "learn_more": "了解詳情"
       "gogovan_charges": "預約GoGoVan"
@@ -268,12 +271,12 @@ I18nTranslationsZhTw =
       "thanks" : "確定，謝謝！"
 
     "confirm_van" :
-      "crossroads": "Crossroads (Tuen Mun)"
+      "crossroads": "十字路會（屯門）"
       "other-msg" : "並不包括隧道費及泊車費等費用"
       "title" : "確定車輛"
       "base_fee" : "基本費用"
       "porterage" : "搬運"
-      "speak_english" : "Speak English"
+      "speak_english" : "通曉英語"
       "details" : "詳情"
       "other" : "其他"
       "confirm_with_driver" : "在搬運前，請先與司機商討總價格"
@@ -282,11 +285,11 @@ I18nTranslationsZhTw =
       "book_delivery" : "確認及預約"
       "negotiate" : "與司機商討"
       "no_porterage" : "不需要"
-      "goods_6ft": "Goods >6ft"
-      "trolley": "Trolley"
-      "estimate": "Estimate"
-      "confirm_total_price": "Estimate does not include tunnel/bridge fees, parking and other misc. fees. Please confirm total price with driver before loading."
-      "ggv_link": "More about fees on the GoGoVan website"
+      "goods_6ft": "貨物>6尺"
+      "trolley": "手推車"
+      "estimate": "預計"
+      "confirm_total_price": "預計價格並不包括隧道或天橋費、泊車以及其他雜費。請在上貨前與司機確認最終價錢。"
+      "ggv_link": "請到GoGovan網站查閱更多有關費用詳情。"
 
     "book_van" :
       "title" : "預約貨車"
@@ -298,9 +301,9 @@ I18nTranslationsZhTw =
       "van_trolly_cost" : "需借用手推車（每輛10元）"
       "truck_trolly_cost" : "需借用手推車（每輛20元）"
       "porterage" : "需協助搬運（需與司機商量）"
-      "longer_goods": "Goods longer than 6ft (183cm)"
-      "longer_goods_6ft": "longer than 6ft +$10"
-      "longer_goods_6ft_tall": "longer than 6ft & taller than 2ft(60cm) +$20"
+      "longer_goods": "貨物超過6尺長（183厘米）"
+      "longer_goods_6ft": "超過6尺長 +$10"
+      "longer_goods_6ft_tall": "超過6尺長和2尺高（60厘米） +$20"
       "extra_time_charge" : "額外時間（已包括15分鐘搬運時間，超過15分鐘可能需要額外收費）"
       "get_quote" : "報價"
       "date": "日期"

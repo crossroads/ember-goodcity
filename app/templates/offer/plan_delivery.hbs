@@ -1,3 +1,4 @@
+
 <nav class="tab-bar">
   <section class="left-small">
     {{#if session.isAdminApp}}
@@ -21,11 +22,19 @@
           <div class="small-8 columns left">
             <h3>{{t "plan_delivery.fastest.title"}} <i class="fa fa-check-circle"></i></h3>
             {{t "plan_delivery.fastest.info"}}<br/>
+            {{#if isDiscountAvailable}}
+              <i class="fa fa-heart" style="color:white"></i>
+              <span style="color:white">{{t "plan_delivery.fastest.include_coupon_discount" cost=couponDiscount}}</span><br/>
+            {{/if}}
             {{#online-button action="startDelivery" actionArgs="Gogovan" classNames="button"}}{{t "plan_delivery.fastest.booking_button"}}{{/online-button}}
           </div>
           <div class="small-4 columns right">
             {{#if gogovanPriceCalculated}}
-              <div class="cost">{{t "plan_delivery.fastest.cost" cost=gogovanPrice}}</div>
+              {{#if isDiscountAvailable}}
+                <div class="cost">{{t "plan_delivery.fastest.discount_cost" cost=priceWithDiscount}}</div>
+              {{else}}
+                <div class="cost">{{t "plan_delivery.fastest.cost" cost=gogovanPrice}}</div>
+              {{/if}}
             {{else}}
               <i class="fa fa-spinner fa-spin"></i><br/>
             {{/if}}
