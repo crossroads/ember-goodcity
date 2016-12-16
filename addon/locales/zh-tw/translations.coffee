@@ -155,7 +155,7 @@ I18nTranslationsZhTw =
     "driver_completed": "司機已確認預約"
     "waiting": "正在等候司機確認"
     "display_driver_details": "司機確認預約後，閣下即能查閱司機及車輛的資料。"
-    "ensure_time": "Please ensure your delivery will arrive at our location by 4pm at the latest. Our volunteers will unload the vehicle at the end."
+    "ensure_time": "請確保在下午4時或之前送抵本會。我們的義工會代為落貨。"
     "time": "預約時間"
     "id": "預約帳號"
     "driver_screen": "司機介面"
