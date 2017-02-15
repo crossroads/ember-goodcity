@@ -3,7 +3,8 @@ import VerifyOfferStateRoute from './verify_offer_state';
 export default VerifyOfferStateRoute.extend({
 
   model: function(){
-    return this.store.peekAll('gogovan_order').get('lastObject');
+    var ggvOrder = this.store.peekAll('gogovan_order').get('lastObject');
+    return ggvOrder.get("districtId") ? ggvOrder : this.store.peekAll('gogovan_order').filterBy('districtId').get("lastObject");
   },
 
   afterModel: function(order) {
