@@ -21,7 +21,7 @@ export default Ember.Component.extend({
 
       var continueCallback = () => {
         if (!this.get("isDestroyed")) {
-          $(document).off("cancel-loading-timer");
+          Ember.$(document).off("cancel-loading-timer");
           this.didInsertElement.call(this);
         }
       };
