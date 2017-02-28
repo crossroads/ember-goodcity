@@ -1,7 +1,8 @@
 import Ember from 'ember';
+import loading from '../templates/loading';
 
 export default Ember.Component.extend({
-  layoutName: 'loading',
+  layout: loading,
   classNames: ["loading-indicator"],
   messageBox: Ember.inject.service(),
   logger: Ember.inject.service(),
