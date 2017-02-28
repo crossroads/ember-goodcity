@@ -19,7 +19,7 @@ export default Ember.Component.extend({
       return this.get('store').peekAll('district').sortBy('name');
     },
     set: function(key, value) {
-      return value !== '' ? value : this.get('store.')peekAll('district').sortBy('name');
+      return value !== '' ? value : this.get('store').peekAll('district').sortBy('name');
     }
   }),
 
