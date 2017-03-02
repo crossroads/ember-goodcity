@@ -1,44 +1,28 @@
 import Ember from 'ember';
-import messageBox from '../templates/components/message-box';
+const { getOwner } = Ember;
 
-export default Ember.Component.extend({
+export default Ember.Service.extend({
+  i18n: Ember.inject.service(),
 
-  layout: messageBox,
-  message: "",
-  btn1Text: "",
-  btn1Callback: () => {},
-  btn2Text: "",
-  btn2Callback: () => {},
-  displayCloseLink: false,
-
-  isVisible: false,
-
-  close() {
-    if (this.get("isVisible")) {
-      this.set("isVisible", false);
-    } else {
-      this.destroy();
-    }
+  alert: function(message, callback) {
+    this.custom(message, this.get("i18n").t("okay"), callback);
   },
 
-  actions: {
-    btn1Click() {
-      var callbackOutput = true;
-      if (this.btn1Callback) {
-        callbackOutput = this.btn1Callback();
-      }
-      if(callbackOutput !== false) { this.close(); }
-    },
+  confirm: function(message, callback) {
+    this.custom(message, this.get("i18n").t("cancel"), null, this.get("i18n").t("okay"), callback);
+  },
 
-    btn2Click() {
-      if (this.btn2Callback) {
-        this.btn2Callback();
-      }
-      this.close();
-    },
+  custom: function(message, btn1Text, btn1Callback, btn2Text, btn2Callback, displayCloseLink) {
+    Ember.$(document).trigger("cancel-loading-timer");
+    Ember.$(".loading-indicator").remove();
 
-    closeModal() {
-      this.close();
-    }
+    var view = getOwner(this).lookup("component:message-box").append();
+    view.set("btn1Text", btn1Text);
+    view.set("btn1Callback", btn1Callback);
+    view.set("btn2Text", btn2Text);
+    view.set("btn2Callback", btn2Callback);
+    view.set("message", message);
+    view.set("displayCloseLink", displayCloseLink);
+    view.set("isVisible", true);
   }
 });

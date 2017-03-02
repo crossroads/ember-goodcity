@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import messageBox from '../templates/message-box';
+import messageBox from '../templates/components/message-box';
 
 export default Ember.Component.extend({
 
