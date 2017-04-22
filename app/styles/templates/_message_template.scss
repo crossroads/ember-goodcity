@@ -39,14 +39,12 @@
 
 .my_message {
   @extend .message_bubble_box;
-  word-wrap: break-word !important;
   background-color: $light-yellow;
   float: right;
 }
 
 .received_message {
   @extend .message_bubble_box;
-  word-wrap: break-word !important;
   float: left;
 }
 

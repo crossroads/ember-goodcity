@@ -8,7 +8,7 @@
           </div>
           {{#each messages as |message|}}
             {{#if message.isMessage}}
-              <div class="{{message.state}} {{if message.myMessage 'my_message' 'received_message'}}" id={{message.id}}>
+              <div class="{{message.state}} {{if message.myMessage 'my_message' 'received_message'}} ellipsis" id={{message.id}}>
                 <div class='message_details'>
                   {{#if message.myMessage}}
                     {{t "messages.owner" }}
