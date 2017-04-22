@@ -41,11 +41,13 @@
   @extend .message_bubble_box;
   background-color: $light-yellow;
   float: right;
+  word-wrap: break-word;
 }
 
 .received_message {
   @extend .message_bubble_box;
   float: left;
+  word-wrap: break-word;
 }
 
 .message_arrow {
