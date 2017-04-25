@@ -18,6 +18,7 @@ export default Ember.Controller.extend({
   logger: Ember.inject.service(),
   i18n: Ember.inject.service(),
   messagesUtil: Ember.inject.service("messages"),
+  appName: config.APP.NAME,
   status: {
     online: false,
     hidden: true,
@@ -139,6 +140,21 @@ export default Ember.Controller.extend({
     this.store.pushPayload(data.sender);
 
     var type = Object.keys(data.item)[0];
+    var dataItem = data.item
+
+    if(this.get("appName") === "app.goodcity") {
+      if((type === "Item" && dataItem.Item && dataItem.Item.message_ids) || (type === "Offer" && dataItem.Offer && dataItem.Offer.message_ids)) {
+        var message_ids = type === "Item" ? dataItem.Item.message_ids : dataItem.Offer.message_ids;
+        message_ids.forEach(msgId => {
+          if(msgId){
+            var msg = this.store.peekRecord("message", msgId);
+            if(!msg) {
+              type === "Item" ? dataItem.Item.message_ids.removeObject(msgId) : dataItem.Offer.message_ids.removeObject(msgId);
+            }
+          }
+        })
+      }
+    }
     // use extend to make a copy of data.item[type] so object is not normalized for use by
     // messagesUtil in mark message read code below
     var item = Ember.$.extend({}, data.item[type]);
