@@ -140,7 +140,7 @@ export default Ember.Controller.extend({
     this.store.pushPayload(data.sender);
 
     var type = Object.keys(data.item)[0];
-    var dataItem = data.item
+    var dataItem = data.item;
 
     if(this.get("appName") === "app.goodcity") {
       if((type === "Item" && dataItem.Item && dataItem.Item.message_ids) || (type === "Offer" && dataItem.Offer && dataItem.Offer.message_ids)) {
