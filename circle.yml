@@ -5,8 +5,6 @@ machine:
 dependencies:
   pre:
     - if ! (which yarn); then curl -o- -L https://yarnpkg.com/install.sh | bash; fi
-  override:
-    - yarn install
   post:
     - "./node_modules/ember-cli/node_modules/bower/bin/bower install"
     - yarn link
