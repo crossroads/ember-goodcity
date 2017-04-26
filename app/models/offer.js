@@ -36,7 +36,7 @@ export default DS.Model.extend({
   items:          hasMany('item', { async: false }),
   messages:       hasMany('message', { async: true }),
 
-  delivery:       belongsTo('delivery', { async: true }),
+  delivery:       belongsTo('delivery', { async: false }),
   createdBy:      belongsTo('user', { async: false }),
   reviewedBy:     belongsTo('user', { async: false }),
   closedBy:       belongsTo('user', { async: false }),
