@@ -140,19 +140,19 @@ export default Ember.Controller.extend({
     this.store.pushPayload(data.sender);
 
     var type = Object.keys(data.item)[0];
-    var dataItem = data.item;
 
     if(this.get("appName") === "app.goodcity") {
-      if((type === "Item" && dataItem.Item && dataItem.Item.message_ids) || (type === "Offer" && dataItem.Offer && dataItem.Offer.message_ids)) {
-        var message_ids = type === "Item" ? dataItem.Item.message_ids : dataItem.Offer.message_ids;
+      if((type === "Item" && data.item.Item && data.item.Item.message_ids) || (type === "Offer" && data.item.Offer && data.item.Offer.message_ids)) {
+        var message_ids = type === "Item" ? data.item.Item.message_ids : data.item.Offer.message_ids;
         message_ids.forEach(msgId => {
           if(msgId){
             var msg = this.store.peekRecord("message", msgId);
             if(!msg) {
-              type === "Item" ? dataItem.Item.message_ids.removeObject(msgId) : dataItem.Offer.message_ids.removeObject(msgId);
+              type === "Item" ? data.item.Item.message_ids.removeObject(msgId) : data.item.Offer.message_ids.removeObject(msgId);
             }
           }
         })
+        type === "Item" ? data.item.Item.message_ids = data.item.Item.message_ids.compact() : data.item.Offer.message_ids = data.item.Offer.message_ids.compact();
       }
     }
     // use extend to make a copy of data.item[type] so object is not normalized for use by
