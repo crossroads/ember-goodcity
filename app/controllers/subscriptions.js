@@ -141,6 +141,19 @@ export default Ember.Controller.extend({
 
     var type = Object.keys(data.item)[0];
 
+    var pkg = undefined;
+    if(type === "Package") {
+      pkg = data.item.Package;
+    } else if(type === "package") {
+      pkg = data.item.package;
+    }
+
+    if(this.get("appName") === "admin.goodcity") {
+      if((type === "Package" || type === "package") && pkg && pkg.packages_location_ids) {
+        type === "Package" ? data.item.Package.packages_location_ids = pkg.packages_location_ids.compact() : data.item.package.packages_location_ids = pkg.packages_location_ids.compact();
+      }
+    }
+
     if(this.get("appName") === "app.goodcity") {
       if((type === "Item" && data.item.Item && data.item.Item.message_ids) || (type === "Offer" && data.item.Offer && data.item.Offer.message_ids)) {
         var message_ids = type === "Item" ? data.item.Item.message_ids : data.item.Offer.message_ids;
