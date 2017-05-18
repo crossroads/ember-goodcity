@@ -1,7 +1,8 @@
 import Ember from 'ember';
+import loading from '../templates/loading';
 
 export default Ember.Component.extend({
-  layoutName: 'loading',
+  layout: loading,
   classNames: ["loading-indicator"],
   messageBox: Ember.inject.service(),
   logger: Ember.inject.service(),
@@ -20,7 +21,7 @@ export default Ember.Component.extend({
 
       var continueCallback = () => {
         if (!this.get("isDestroyed")) {
-          $(document).off("cancel-loading-timer");
+          Ember.$(document).off("cancel-loading-timer");
           this.didInsertElement.call(this);
         }
       };

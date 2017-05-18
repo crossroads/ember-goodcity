@@ -7,6 +7,7 @@ export default Ember.Component.extend({
   currentSelected: {id: null},
   selected_id: null,
   i18n: Ember.inject.service(),
+  store: Ember.inject.service(),
 
   currentSelectedObserver: Ember.observer('currentSelected', function () {
     var selectedDistrictId = this.getWithDefault('currentSelected.id');
@@ -15,18 +16,15 @@ export default Ember.Component.extend({
 
   districtsByTerritory: Ember.computed({
     get: function() {
-      var store = this.get('targetObject.store');
-      return store.peekAll('district').sortBy('name');
+      return this.get('store').peekAll('district').sortBy('name');
     },
     set: function(key, value) {
-      var store = this.get('targetObject.store');
-      return value !== '' ? value : store.peekAll('district').sortBy('name');
+      return value !== '' ? value : this.get('store').peekAll('district').sortBy('name');
     }
   }),
 
   allTerritory: Ember.computed(function(){
-    var store = this.get('targetObject.store');
-    return store.peekAll('territory').sortBy('name');
+    return this.get('store').peekAll('territory').sortBy('name');
   }),
 
   selectDistrictLabel: t("select_district"),

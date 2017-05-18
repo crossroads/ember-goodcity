@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import DS from 'ember-data';
 import '../computed/foreign-key';
+import config from '../config/environment';
 
 var attr = DS.attr,
     belongsTo = DS.belongsTo,
@@ -27,6 +28,17 @@ export default DS.Model.extend({
   isAccepted: Ember.computed.equal("state", "accepted"),
   isRejected: Ember.computed.equal("state", "rejected"),
   isDrafted:  Ember.computed.equal("state", "draft"),
+  appName:    config.APP.NAME,
+
+  removePrivateMessage: Ember.observer('messages.[]', 'messages.@each.isPrivate', function() {
+    if(this.get('appName') === "app.goodcity") {
+      this.get("messages").forEach(msg => {
+        if(msg && msg.get('isPrivate') === undefined) {
+          this.store.unloadRecord(msg);
+        }
+      });
+    }
+  }),
 
   canUpdated: Ember.computed("hasReceivedPackages", "offer.state", function(){
     return !(this.get("hasReceivedPackages") || this.get("offer.isFinished"));
