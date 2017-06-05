@@ -25,11 +25,11 @@ export default Ember.Route.extend(preloadDataMixin, {
 
   beforeModel(transition = []) {
     try {
-      localStorage.test = "isSafariPrivateBrowser";
+      window.localStorage.test = "isSafariPrivateBrowser";
     } catch (e) {
       this.get("messageBox").alert(this.get("i18n").t("QuotaExceededError"));
     }
-    localStorage.removeItem('test');
+    window.localStorage.removeItem('test');
     if (transition.queryParams.ln) {
       var language = transition.queryParams.ln === "zh-tw" ? "zh-tw" : "en";
       this.set('session.language', language);
