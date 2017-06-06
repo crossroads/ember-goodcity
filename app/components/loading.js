@@ -35,12 +35,14 @@ export default Ember.Component.extend({
         false
       );
 
-      // we already have a black overlay from loading screen, so prevent this one making it darker
-      view.on("didInsertElement", function() {
-        view.$(".reveal-modal-bg").css("background-color", "transparent");
-      });
+      if(view) {
+        // we already have a black overlay from loading screen, so prevent this one making it darker
+        view.on("didInsertElement", function() {
+          view.$(".reveal-modal-bg").css("background-color", "transparent");
+        });
 
-      this.set("prompt", view);
+        this.set("prompt", view);
+      }
     }, 30000);
 
     this.set("timer", timer);
