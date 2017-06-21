@@ -81,7 +81,8 @@ export default Ember.Controller.extend({
   }),
 
   initPreviewImage: Ember.on('init', Ember.observer("package", "item", "item.images.[]", function () {
-    this.set("previousRoute", history.state.path)
+    path = history.state ? history.state.path : "";
+    this.set("previousRoute", path);
     var image = this.get("package.image") || this.get("item.displayImage");
     if (image) {
       this.send("setPreview", image);
@@ -235,7 +236,7 @@ export default Ember.Controller.extend({
   actions: {
     next() {
       if(this.get("session.isAdminApp")) {
-        if(this.get("previousRoute") !== history.state.path){
+        if(history.state && this.get("previousRoute") !== history.state.path){
           window.history.back();
         } else {
           this.transitionToRoute("review_item.accept", this.get('offer'), this.get('model'));
