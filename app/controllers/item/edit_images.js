@@ -81,7 +81,7 @@ export default Ember.Controller.extend({
   }),
 
   initPreviewImage: Ember.on('init', Ember.observer("package", "item", "item.images.[]", function () {
-    path = history.state ? history.state.path : "";
+    var path = history.state ? history.state.path : "";
     this.set("previousRoute", path);
     var image = this.get("package.image") || this.get("item.displayImage");
     if (image) {
