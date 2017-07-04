@@ -23,6 +23,7 @@ export default Ember.Controller.extend({
   backBtnVisible: true,
   loadingPercentage: t("edit_images.image_uploading"),
   uploadedFileDate: null,
+  previousRoute: null,
 
   initActionSheet: function(onSuccess) {
     var _this = this;
@@ -80,6 +81,8 @@ export default Ember.Controller.extend({
   }),
 
   initPreviewImage: Ember.on('init', Ember.observer("package", "item", "item.images.[]", function () {
+    var path = history.state ? history.state.path : "";
+    this.set("previousRoute", path);
     var image = this.get("package.image") || this.get("item.displayImage");
     if (image) {
       this.send("setPreview", image);
@@ -233,7 +236,11 @@ export default Ember.Controller.extend({
   actions: {
     next() {
       if(this.get("session.isAdminApp")) {
-        this.transitionToRoute("review_item.accept", this.get('offer'), this.get('model'));
+        if(history.state && this.get("previousRoute") !== history.state.path){
+          window.history.back();
+        } else {
+          this.transitionToRoute("review_item.accept", this.get('offer'), this.get('model'));
+        }
       } else {
         this.transitionToRoute("item.edit");
       }

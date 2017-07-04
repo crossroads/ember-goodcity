@@ -41,7 +41,7 @@ export default DS.Model.extend({
   }),
 
   canUpdated: Ember.computed("hasReceivedPackages", "offer.state", function(){
-    return !(this.get("hasReceivedPackages") || this.get("offer.isFinished"));
+    return !(this.get("hasReceivedPackages") || this.get("offer.isFinished") || this.get('offer.state') === 'receiving');
   }),
 
   isDraft: Ember.computed('offer.state', function(){
