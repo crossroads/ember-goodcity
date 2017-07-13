@@ -11,5 +11,5 @@ export default VerifyOfferStateRoute.extend({
     if(!order) {
       this.transitionTo('delivery.book_van');
     }
-  },
+  }
 });

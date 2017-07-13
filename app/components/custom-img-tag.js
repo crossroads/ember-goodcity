@@ -16,5 +16,5 @@ export default Ember.Component.extend({
       }
       if(!state){ this.src = default_image; }
     });
-  },
+  }
 });

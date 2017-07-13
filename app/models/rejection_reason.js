@@ -9,5 +9,5 @@ export default DS.Model.extend({
 
   specialId: Ember.computed('id', function(){
     return this.get("id") + "_reason";
-  }),
+  })
 });

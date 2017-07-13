@@ -55,5 +55,5 @@ export default DS.Model.extend({
     } else {
       return this.get("i18n").t("offer.offer_details.is_gogovan_order").string;
     }
-  }),
+  })
 });

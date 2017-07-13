@@ -22,5 +22,5 @@ export default DS.Model.extend({
       day_time = this.get("i18n").t("day." + ((slot > 8 && slot < 12 ) ? "morning" : "afternoon"));
     }
     return day_time;
-  }),
+  })
 });

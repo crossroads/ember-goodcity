@@ -426,6 +426,6 @@ export default Ember.Controller.extend({
 
   saveImageRotation(image) {
     image.save();
-  },
+  }
 
 });

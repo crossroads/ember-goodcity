@@ -6,6 +6,6 @@ export default Ember.Component.extend({
     Ember.run.scheduleOnce('afterRender', this, function(){
       Ember.$('html, body').scrollTop(0);
     });
-  },
+  }
 
 });

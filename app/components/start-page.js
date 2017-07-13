@@ -10,6 +10,6 @@ export default Ember.Component.extend({
         window.scrollTo(0, document.body.scrollHeight);
       }
     });
-  },
+  }
 
 });

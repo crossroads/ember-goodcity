@@ -57,6 +57,6 @@ export default Addressable.extend({
     } else if(this.get('lastDisconnected') < this.get('lastConnected')) {
       return this.get("i18n").t('online');
     }
-  }),
+  })
 
 });

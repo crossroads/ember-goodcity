@@ -47,5 +47,5 @@ export default Ember.Mixin.create({
       promises = promises.concat(retrieve(config.APP.PRELOAD_AUTHORIZED_TYPES));
     }
     return Ember.RSVP.all(promises);
-  },
+  }
 });

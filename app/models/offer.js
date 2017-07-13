@@ -404,6 +404,6 @@ export default DS.Model.extend({
 
   allowResubmit: Ember.computed("isCancelled", "allItemsReviewed", function(){
     return (this.get("isCancelled") && !this.get("allItemsReviewed")) || this.get("isInactive");
-  }),
+  })
 
 });

@@ -29,5 +29,5 @@ export default Ember.Controller.extend({
     } else {
       return this.store.peekAll('district').sortBy('name');
     }
-  }),
+  })
 });
