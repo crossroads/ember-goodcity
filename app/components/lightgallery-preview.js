@@ -16,7 +16,7 @@ export default Ember.Component.extend({
         closable: false,
         counter: true,
         swipeThreshold : 50,
-        enableTouch : true,
+        enableTouch : true
       });
 
       _this.set("lightGallery", lightGallery);

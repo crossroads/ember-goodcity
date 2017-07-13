@@ -132,7 +132,7 @@ export default Ember.TextField.extend({
             this.set('select', new Date(date), { format: 'ddd mmm d' });
             _this._setTimeSlots(date);
           }
-        },
+        }
       });
 
       validateForm();

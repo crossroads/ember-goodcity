@@ -41,7 +41,7 @@ export default Ember.Controller.extend({
 
   itemVersions: Ember.computed("item.id", "allVersions.[]", "isItemThread", function(){
     if (!this.get("isItemThread")) { return []; }
-    var itemId = parseInt(this.get("item.id"));
+    var itemId = parseInt(this.get("item.id"), 10);
     return this.get('allVersions').filterBy("itemId", itemId).
       filterBy('itemType', 'Item');
   }),
@@ -60,7 +60,7 @@ export default Ember.Controller.extend({
 
   offerVersions: Ember.computed("allVersions.[]", "offer.id", "isItemThread", function(){
     if (this.get("isItemThread")) { return []; }
-    var offerId = parseInt(this.get("offer.id"));
+    var offerId = parseInt(this.get("offer.id"), 10);
     return this.get('allVersions').filterBy('itemType', 'Offer').filterBy("itemId", offerId);
   }),
 
