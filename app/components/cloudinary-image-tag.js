@@ -26,5 +26,5 @@ export default Ember.Component.extend({
 
   willDestroyElement() {
     this.$(".cl-item-image").off("load");
-  },
+  }
 });

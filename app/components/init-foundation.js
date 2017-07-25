@@ -25,7 +25,7 @@ export default Ember.Component.extend({
       });
       _this.set("foundation", initFoundation);
     });
-  },
+  }
 
   // TODO: Breaks sometime on menu-bar
   // willDestroyElement() {

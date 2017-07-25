@@ -31,5 +31,5 @@ export default DS.Model.extend({
 
   itemImageUrl: Ember.computed.alias("item.displayImageUrl"),
   isRead: Ember.computed.equal('state', 'read'),
-  isUnread: Ember.computed.equal('state', 'unread'),
+  isUnread: Ember.computed.equal('state', 'unread')
 });

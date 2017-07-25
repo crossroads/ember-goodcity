@@ -10,7 +10,7 @@ export default Ember.Component.extend({
     if (box.is(":hidden")) {
       box.slideDown();
       Ember.$(".sticky_title_bar").animate({
-            top : '5%',
+            top : '5%'
         }, 400);
       Ember.run.later(this, this.removeNotification, notification, 6000);
     }
@@ -27,7 +27,7 @@ export default Ember.Component.extend({
       } else {
         Ember.$(".contain-to-grid.notification").slideUp(400, remove);
         Ember.$(".sticky_title_bar").animate({
-              top : '0',
+              top : '0'
           }, 400);
       }
     }

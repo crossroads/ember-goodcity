@@ -47,7 +47,7 @@ export default Ember.Controller.extend({
           deliveryType: 'Gogovan',
           offerId: offer.id,
           scheduleAttributes: scheduleProperties,
-          contactAttributes: contactProperties,
+          contactAttributes: contactProperties
         },
         gogovanOrder: orderDetails.toJSON() };
 

@@ -24,5 +24,5 @@ export default DS.Model.extend({
 
   regionDetails: Ember.computed('flat','building','street', function() {
     return [this.get('flat'), this.get('building'), this.get('street')].compact().join(" ");
-  }),
+  })
 });

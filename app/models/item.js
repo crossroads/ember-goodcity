@@ -121,5 +121,5 @@ export default DS.Model.extend({
 
   pageLink: Ember.computed("state", function(){
      return this.get("isRejected") ? 'review_item.reject' : 'review_item.accept';
-  }),
+  })
 });

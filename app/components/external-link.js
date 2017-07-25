@@ -18,5 +18,5 @@ export default Ember.Component.extend({
   decodeLink: function(){
     var link = this.attrs.linkUrl.value || this.attrs.linkUrl;
     return link.replace(/&amp;/g, '&');
-  },
+  }
 });

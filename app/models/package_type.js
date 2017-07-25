@@ -9,5 +9,5 @@ export default DS.Model.extend({
   isItemTypeNode: attr('boolean', {defaultValue: false}),
 
   items:          hasMany('item', { async: false }),
-  packages:       hasMany('package', { async: false }),
+  packages:       hasMany('package', { async: false })
 });

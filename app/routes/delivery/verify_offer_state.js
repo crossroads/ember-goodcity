@@ -21,5 +21,5 @@ export default AuthorizeRoute.extend({
         this.transitionTo('offer.transport_details', offer);
       }
     }
-  },
+  }
 });

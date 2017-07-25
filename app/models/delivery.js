@@ -30,5 +30,5 @@ export default DS.Model.extend({
 
   completedWithGogovan: Ember.computed('gogovanOrder', 'gogovanOrder.status', function() {
     return this.get("isGogovan") && this.get("gogovanOrder.isCompleted");
-  }),
+  })
 });

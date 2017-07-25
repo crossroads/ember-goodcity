@@ -17,5 +17,5 @@ export default Ember.Controller.extend({
   userMobile: Ember.computed('contact.mobile', 'user', function(){
     var mobile = this.get('contact.mobile') || this.get("user.mobile");
     return mobile ? mobile.split("+852")[1] : "";
-  }),
+  })
 });

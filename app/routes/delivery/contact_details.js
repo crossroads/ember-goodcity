@@ -10,6 +10,6 @@ export default VerifyOfferStateRoute.extend({
     if(!(delivery.get('schedule'))){
       this.transitionTo('delivery.book_timeslot', delivery);
     }
-  },
+  }
 
 });

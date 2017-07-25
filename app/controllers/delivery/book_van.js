@@ -115,6 +115,6 @@ export default addressDetails.extend({
           loadingView.destroy();
           controller.transitionToRoute('delivery.confirm_van', {queryParams: {placeOrder: true}});
         });
-    },
+    }
   }
 });

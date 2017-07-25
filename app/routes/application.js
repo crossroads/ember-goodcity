@@ -7,6 +7,7 @@ const { getOwner } = Ember;
 export default Ember.Route.extend(preloadDataMixin, {
   cordova: Ember.inject.service(),
   i18n: Ember.inject.service(),
+  isErrPopUpAlreadyShown: false,
 
   _loadDataStore: function(){
     return this.preloadData(true).catch(error => {
@@ -105,7 +106,12 @@ export default Ember.Route.extend(preloadDataMixin, {
         this.get("messageBox").alert(this.get("i18n").t("offline_error"));
       } else {
         this.get("logger").error(reason);
-        this.get("messageBox").alert(this.get("i18n").t("unexpected_error"));
+        if(!this.get('isErrPopUpAlreadyShown')) {
+          this.set('isErrPopUpAlreadyShown', true);
+          this.get("messageBox").alert(this.get("i18n").t("unexpected_error"), () => {
+            this.set('isErrPopUpAlreadyShown', false);
+          });
+        }
       }
     } catch (err) {}
   },
