@@ -87,7 +87,7 @@ export default Ember.Route.extend(preloadDataMixin, {
     try
     {
       var status;
-      try { status = parseInt(reason.errors[0].status); }
+      try { status = parseInt(reason.errors[0].status, 10); }
       catch (err) { status = reason.status; }
 
       if(reason.name === "QuotaExceededError") {
@@ -130,7 +130,7 @@ export default Ember.Route.extend(preloadDataMixin, {
     // so in this scenario redirect to home for 404
     error(reason) {
       try {
-        var errorStatus = parseInt(reason.status || reason.errors && reason.errors[0].status)
+        var errorStatus = parseInt(reason.status || reason.errors && reason.errors[0].status, 10)
         if ([403, 404].indexOf(errorStatus) >= 0) {
           this.get("messageBox").alert(this.get("i18n").t(errorStatus+"_error"), () => this.transitionTo("/"));
         } else {

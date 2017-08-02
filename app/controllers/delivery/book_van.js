@@ -59,7 +59,7 @@ export default addressDetails.extend({
       "840": "2:00", "870": "2:30",
       "900": "3:00" }
     for(var minutes in slots) {
-      var period = parseInt(minutes) >= 720 ? this.locale("gogovan.book_van.pm") : this.locale("gogovan.book_van.am");
+      var period = parseInt(minutes, 10) >= 720 ? this.locale("gogovan.book_van.pm") : this.locale("gogovan.book_van.am");
       options.push({id: minutes, name: slots[minutes] + " " + period});
     }
     return options;
@@ -78,7 +78,7 @@ export default addressDetails.extend({
       var delivery = controller.store.peekRecord('delivery', deliveryId);
       var gogovanOptionId = controller.get('selectedGogovanOption');
 
-      selectedDate.setMinutes(selectedDate.getMinutes() + parseInt(controller.get('selectedTime.id')));
+      selectedDate.setMinutes(selectedDate.getMinutes() + parseInt(controller.get('selectedTime.id'), 10));
 
       var requestProperties = {};
       requestProperties.pickupTime = selectedDate;
