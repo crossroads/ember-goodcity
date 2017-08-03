@@ -153,7 +153,7 @@
                     }
                 },
                 enumerable: propertyDescriptor.enumerable,
-                configurable: propertyDescriptor.configurable,
+                configurable: propertyDescriptor.configurable
             });
         }
         cleansePropertySetter("innerHTML", function (propertyDescriptor, target, elements) {
