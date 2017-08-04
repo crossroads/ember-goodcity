@@ -262,16 +262,8 @@ export default DS.Model.extend({
     return (this.get("delivery.gogovanOrder.status") || "") === "completed";
   }),
 
-  receivedOrClosed() {
-    return !(this.get('isClosed') || this.get('hasReceived'));
-  },
-
-  isCompletedGGV() {
-    return this.get("itemCount") > 0 && !this.get("hasCompleteGGVOrder");
-  },
-
   showOfferIcons: Ember.computed('hasCompleteGGVOrder','itemCount', 'isClosed', 'hasReceived', function(){
-    return this.receivedOrClosed(); && this.isCompletedGGV();
+    return this.get("itemCount") > 0 && !(this.get('isClosed') || this.get('hasReceived')) && !this.get("hasCompleteGGVOrder");
   }),
 
   statusBarClass: Ember.computed('state', function(){
