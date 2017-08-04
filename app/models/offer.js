@@ -147,10 +147,8 @@ export default DS.Model.extend({
     return (this.get("approvedItems").length > 0) && this.get('isReviewed');
   }),
 
-  status: Ember.computed('state', function(){
-    var state = this.get('state');
-    var status;
-    switch(state) {
+  getOfferStatus(state) {
+    return switch(state) {
       case 'draft': return this.locale('offers.index.complete_offer');
       case 'under_review' : return this.locale('offers.index.in_review');
       case 'submitted' : return this.locale('offers.index.awaiting_review');
@@ -160,7 +158,12 @@ export default DS.Model.extend({
       case 'received' : return this.locale('offers.index.received');
       case 'receiving' : return this.locale('offers.index.receiving');
       case 'inactive' : return this.locale('offers.index.inactive');
-    }
+    };
+  },
+
+  status: Ember.computed('state', function(){
+    var state = this.get('state');
+    var status = this.getOfferStatus(state);
     return status;
   }),
 
