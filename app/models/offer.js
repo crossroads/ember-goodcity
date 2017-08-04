@@ -148,7 +148,7 @@ export default DS.Model.extend({
   }),
 
   getOfferStatus(state) {
-    return switch(state) {
+    var offerStatus = switch(state) {
       case 'draft': return this.locale('offers.index.complete_offer');
       case 'under_review' : return this.locale('offers.index.in_review');
       case 'submitted' : return this.locale('offers.index.awaiting_review');
@@ -159,6 +159,7 @@ export default DS.Model.extend({
       case 'receiving' : return this.locale('offers.index.receiving');
       case 'inactive' : return this.locale('offers.index.inactive');
     };
+    return offerStatus;
   },
 
   status: Ember.computed('state', function(){
