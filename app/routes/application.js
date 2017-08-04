@@ -115,6 +115,32 @@ export default Ember.Route.extend(preloadDataMixin, {
     this.get("messageBox").alert(this.get("i18n").t("QuotaExceededError"));
   },
 
+  somethingWentWrong(reason) {
+    this.get("logger").error(reason);
+    if(!this.get('isErrPopUpAlreadyShown')) {
+      this.set('isErrPopUpAlreadyShown', true);
+      this.get("messageBox").alert(this.get("i18n").t("unexpected_error"), () => {
+        this.set('isErrPopUpAlreadyShown', false);
+      });
+    }
+  },
+
+  quotaExceededError(reason) {
+    this.get("logger").error(reason);
+    this.get("messageBox").alert(this.get("i18n").t("QuotaExceededError"));
+  },
+
+  notFoundError(reason) {
+    this.get("logger").error(reason);
+    this.get("messageBox").alert(this.get("i18n").t(status+"_error"));
+  },
+
+  unauthorizedError() {
+    if (this.session.get('isLoggedIn')) {
+      this.controllerFor("application").send('logMeOut');
+    }
+  },
+
   handleError: function(reason) {
     try
     {
@@ -127,24 +153,15 @@ export default Ember.Route.extend(preloadDataMixin, {
       } else if(reason.name === "QuotaExceededError") {
         this.quotaExceededError(reason);
       } else if (status === 401) {
-        if (this.session.get('isLoggedIn')) {
-          this.controllerFor("application").send('logMeOut');
-        }
+        this.unauthorizedError();
       } else if ([403, 404].indexOf(status) >= 0) {
-        this.get("logger").error(reason);
-        this.get("messageBox").alert(this.get("i18n").t(status+"_error"));
+        this.notFoundError(reason);
       } else if (status === 0) {
         // status 0 means request was aborted, this could be due to connection failure
         // but can also mean request was manually cancelled
         this.get("messageBox").alert(this.get("i18n").t("offline_error"));
       } else {
-        this.get("logger").error(reason);
-        if(!this.get('isErrPopUpAlreadyShown')) {
-          this.set('isErrPopUpAlreadyShown', true);
-          this.get("messageBox").alert(this.get("i18n").t("unexpected_error"), () => {
-            this.set('isErrPopUpAlreadyShown', false);
-          });
-        }
+        this.somethingWentWrong(reason);
       }
     } catch (err) {
       console.log(err);
