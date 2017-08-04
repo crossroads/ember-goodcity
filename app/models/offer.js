@@ -158,7 +158,7 @@ export default DS.Model.extend({
       case 'received' : return this.locale('offers.index.received');
       case 'receiving' : return this.locale('offers.index.receiving');
       case 'inactive' : return this.locale('offers.index.inactive');
-    };
+    }
   },
 
   status: Ember.computed('state', function(){
