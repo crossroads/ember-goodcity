@@ -83,38 +83,47 @@ export default Ember.Route.extend(preloadDataMixin, {
   logger: Ember.inject.service(),
   messageBox: Ember.inject.service(),
 
+  offlineError(reason){
+    this.get("messageBox").alert(this.get("i18n").t("offline_error"));
+    if(!reason.isAdapterError){
+      this.get("logger").error(reason);
+    }
+  },
+
+  quotaExceededError(reason){
+    this.get("logger").error(reason);
+    this.get("messageBox").alert(this.get("i18n").t("QuotaExceededError"));
+  },
+
   handleError: function(reason) {
     try
     {
       var status;
-      let hasPopup = Ember.$('.reveal-modal:visible').length > 0;
       try { status = parseInt(reason.errors[0].status, 10); }
       catch (err) { status = reason.status; }
-      if(!hasPopup){
-        if(reason.isAdapterError && !window.navigator.onLine && !hasPopup){
-          this.get("messageBox").alert(this.get("i18n").t("offline_error"));
-        } else if(reason.name === "QuotaExceededError") {
-          this.get("logger").error(reason);
-          this.get("messageBox").alert(this.get("i18n").t("QuotaExceededError"));
-        } else if (status === 401) {
-          if (this.session.get('isLoggedIn')) {
-            this.controllerFor("application").send('logMeOut');
-          }
-        } else if ([403, 404].indexOf(status) >= 0) {
-          this.get("logger").error(reason);
-          this.get("messageBox").alert(this.get("i18n").t(status+"_error"));
-        } else if (status === 0) {
-          // status 0 means request was aborted, this could be due to connection failure
-          // but can also mean request was manually cancelled
-          this.get("messageBox").alert(this.get("i18n").t("offline_error"));
-        } else {
-          this.get("logger").error(reason);
-          if(!this.get('isErrPopUpAlreadyShown')) {
-            this.set('isErrPopUpAlreadyShown', true);
-            this.get("messageBox").alert(this.get("i18n").t("unexpected_error"), () => {
-              this.set('isErrPopUpAlreadyShown', false);
-            });
-          }
+
+      if(!window.navigator.onLine){
+        this.offlineError(reason);
+      } else if(reason.name === "QuotaExceededError") {
+        this.quotaExceededError(reason);
+      } else if (status === 401) {
+        if (this.session.get('isLoggedIn')) {
+          this.controllerFor("application").send('logMeOut');
+        }
+      } else if ([403, 404].indexOf(status) >= 0) {
+        this.get("logger").error(reason);
+        this.get("messageBox").alert(this.get("i18n").t(status+"_error"));
+      } else if (status === 0) {
+        // status 0 means request was aborted, this could be due to connection failure
+        // but can also mean request was manually cancelled
+        this.get("messageBox").alert(this.get("i18n").t("offline_error"));
+      } else {
+        this.get("logger").error(reason);
+        if(!this.get('isErrPopUpAlreadyShown')) {
+          this.set('isErrPopUpAlreadyShown', true);
+          this.get("messageBox").alert(this.get("i18n").t("unexpected_error"), () => {
+            this.set('isErrPopUpAlreadyShown', false);
+          });
         }
       }
     } catch (err) {}
