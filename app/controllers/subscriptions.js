@@ -137,13 +137,9 @@ export default Ember.Controller.extend({
 
   getDataWithCompactLocationIds(data, type) {
     if(this.get("appName") === "admin.goodcity") {
-      if(type === "Package") {
-        let pkg = data.item.Package;
-        data.item.Package.packages_location_ids = pkg.packages_location_ids.compact();
-        return data;
-      } else if(type === "package") {
-        let pkg = data.item.package;
-        data.item.package.packages_location_ids = pkg.packages_location_ids.compact();
+      if(type.toLowerCase() === "package") {
+        let pkg = data.item[type];
+        data.item[type].packages_location_ids = pkg.packages_location_ids.compact();
         return data;
       }
     } else {
@@ -153,11 +149,11 @@ export default Ember.Controller.extend({
           if(msgId){
             let msg = this.store.peekRecord("message", msgId);
             if(!msg) {
-              type === "Item" ? data.item.Item.message_ids.removeObject(msgId) : data.item.Offer.message_ids.removeObject(msgId);
+              data.item[type].message_ids.removeObject(msgId);
             }
           }
         })
-        type === "Item" ? data.item.Item.message_ids = data.item.Item.message_ids.compact() : data.item.Offer.message_ids = data.item.Offer.message_ids.compact();
+        data.item[type].message_ids = data.item[type].message_ids.compact();
         return data;
       }
     }
