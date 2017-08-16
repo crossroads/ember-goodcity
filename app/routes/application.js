@@ -8,6 +8,7 @@ export default Ember.Route.extend(preloadDataMixin, {
   cordova: Ember.inject.service(),
   i18n: Ember.inject.service(),
   isErrPopUpAlreadyShown: false,
+  isOfflineErrAlreadyShown: false,
 
   _loadDataStore: function(){
     return this.preloadData(true).catch(error => {
@@ -83,16 +84,34 @@ export default Ember.Route.extend(preloadDataMixin, {
   logger: Ember.inject.service(),
   messageBox: Ember.inject.service(),
 
+  offlineError(reason){
+    if(!this.get('isOfflineErrAlreadyShown')) {
+      this.set('isOfflineErrAlreadyShown', true);
+      this.get("messageBox").alert(this.get("i18n").t("offline_error"), () => {
+        this.set('isOfflineErrAlreadyShown', false);
+      });
+      if(!reason.isAdapterError){
+        this.get("logger").error(reason);
+      }
+    }
+  },
+
+  quotaExceededError(reason){
+    this.get("logger").error(reason);
+    this.get("messageBox").alert(this.get("i18n").t("QuotaExceededError"));
+  },
+
   handleError: function(reason) {
     try
     {
       var status;
-      try { status = parseInt(reason.errors[0].status); }
+      try { status = parseInt(reason.errors[0].status, 10); }
       catch (err) { status = reason.status; }
 
-      if(reason.name === "QuotaExceededError") {
-        this.get("logger").error(reason);
-        this.get("messageBox").alert(this.get("i18n").t("QuotaExceededError"));
+      if(!window.navigator.onLine){
+        this.offlineError(reason);
+      } else if(reason.name === "QuotaExceededError") {
+        this.quotaExceededError(reason);
       } else if (status === 401) {
         if (this.session.get('isLoggedIn')) {
           this.controllerFor("application").send('logMeOut');
@@ -130,7 +149,7 @@ export default Ember.Route.extend(preloadDataMixin, {
     // so in this scenario redirect to home for 404
     error(reason) {
       try {
-        var errorStatus = parseInt(reason.status || reason.errors && reason.errors[0].status)
+        var errorStatus = parseInt(reason.status || reason.errors && reason.errors[0].status, 10)
         if ([403, 404].indexOf(errorStatus) >= 0) {
           this.get("messageBox").alert(this.get("i18n").t(errorStatus+"_error"), () => this.transitionTo("/"));
         } else {

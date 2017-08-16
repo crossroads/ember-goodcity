@@ -18,7 +18,7 @@ export default DS.Model.extend({
     var slot = (this.get('slotName') || '').match(/\d+/);
     var day_time = ''
     if(slot) {
-      slot = parseInt(slot);
+      slot = parseInt(slot, 10);
       day_time = this.get("i18n").t("day." + ((slot > 8 && slot < 12 ) ? "morning" : "afternoon"));
     }
     return day_time;
