@@ -8,6 +8,7 @@ export default Ember.Route.extend(preloadDataMixin, {
   cordova: Ember.inject.service(),
   i18n: Ember.inject.service(),
   isErrPopUpAlreadyShown: false,
+  isOfflineErrAlreadyShown: false,
 
   _loadDataStore: function(){
     return this.preloadData(true).catch(error => {
@@ -84,9 +85,14 @@ export default Ember.Route.extend(preloadDataMixin, {
   messageBox: Ember.inject.service(),
 
   offlineError(reason){
-    this.get("messageBox").alert(this.get("i18n").t("offline_error"));
-    if(!reason.isAdapterError){
-      this.get("logger").error(reason);
+    if(!this.get('isOfflineErrAlreadyShown')) {
+      this.set('isOfflineErrAlreadyShown', true);
+      this.get("messageBox").alert(this.get("i18n").t("offline_error"), () => {
+        this.set('isOfflineErrAlreadyShown', false);
+      });
+      if(!reason.isAdapterError){
+        this.get("logger").error(reason);
+      }
     }
   },
 
