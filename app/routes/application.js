@@ -25,6 +25,20 @@ export default Ember.Route.extend(preloadDataMixin, {
     });
   },
 
+  init() {
+    var _this = this;
+    var storageHandler = function (object) {
+      if(!window.localStorage.getItem('authToken')) {
+        object.get('messageBox').alert(object.get("i18n").t('must_login'), () => {
+          object.transitionTo('login');
+        });
+      }
+    };
+    window.addEventListener("storage", function() {
+      storageHandler(_this);
+    }, false);
+  },
+
   beforeModel(transition = []) {
     try {
       window.localStorage.test = "isSafariPrivateBrowser";
