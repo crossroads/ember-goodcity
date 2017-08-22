@@ -9,6 +9,8 @@ export default Ember.Route.extend(preloadDataMixin, {
   i18n: Ember.inject.service(),
   isErrPopUpAlreadyShown: false,
   isOfflineErrAlreadyShown: false,
+  logger: Ember.inject.service(),
+  messageBox: Ember.inject.service(),
 
   _loadDataStore: function(){
     return this.preloadData(true).catch(error => {
@@ -25,24 +27,21 @@ export default Ember.Route.extend(preloadDataMixin, {
     });
   },
 
-  beforeModel(transition = []) {
-
-    window.addEventListener("storage", function() {
-      storageHandler(_this);
-    }, false);
-
+  init() {
     var _this = this;
     var storageHandler = function (object) {
       if(!window.localStorage.getItem('authToken')) {
         object.get('messageBox').alert(object.get("i18n").t('must_login'), () => {
-          var loginController = this.controllerFor('login');
-          loginController.set('attemptedTransition', transition);
-          this.transitionTo('login');
-          return false;
+          window.location.reload();
         });
       }
     };
+    window.addEventListener("storage", function() {
+      storageHandler(_this);
+    }, false);
+  },
 
+  beforeModel(transition = []) {
     try {
       window.localStorage.test = "isSafariPrivateBrowser";
     } catch (e) {
@@ -98,8 +97,7 @@ export default Ember.Route.extend(preloadDataMixin, {
     }
   },
 
-  logger: Ember.inject.service(),
-  messageBox: Ember.inject.service(),
+
 
   offlineError(reason){
     if(!this.get('isOfflineErrAlreadyShown')) {
