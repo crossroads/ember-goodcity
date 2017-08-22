@@ -25,21 +25,24 @@ export default Ember.Route.extend(preloadDataMixin, {
     });
   },
 
-  init() {
+  beforeModel(transition = []) {
+
+    window.addEventListener("storage", function() {
+      storageHandler(_this);
+    }, false);
+
     var _this = this;
     var storageHandler = function (object) {
       if(!window.localStorage.getItem('authToken')) {
         object.get('messageBox').alert(object.get("i18n").t('must_login'), () => {
-          _this.transitionTo('/');
+          var loginController = this.controllerFor('login');
+          loginController.set('attemptedTransition', transition);
+          this.transitionTo('login');
+          return false;
         });
       }
     };
-    window.addEventListener("storage", function() {
-      storageHandler(_this);
-    }, false);
-  },
 
-  beforeModel(transition = []) {
     try {
       window.localStorage.test = "isSafariPrivateBrowser";
     } catch (e) {
