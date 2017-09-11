@@ -12,7 +12,7 @@ export default Ember.Service.extend({
     if (config.environment === "production" || config.staging) {
       var userName = this.get("session.currentUser.fullName");
       var userId = this.get("session.currentUser.id");
-      var error = reason instanceof Error || typeof reason != "object" ?
+      var error = reason instanceof Error || typeof reason !== "object" ?
           reason : JSON.stringify(reason);
       var environment = config.staging ? "staging" : config.environment;
       var version = `${config.APP.SHA} (shared ${config.APP.SHARED_SHA})`;
