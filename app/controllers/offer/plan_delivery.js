@@ -25,7 +25,7 @@ export default Ember.Controller.extend({
 
       new AjaxPromise("/gogovan_orders/calculate_price", "POST", this.session.get('authToken'), params)
         .then(data => {
-          var coupon = undefined;
+          var coupon;
           if(data.breakdown) {
             coupon = data.breakdown.coupon_discount;
           }

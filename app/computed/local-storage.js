@@ -3,11 +3,15 @@ import config from '../config/environment';
 
 var storageSupported = false;
 try { localStorage.test = 2; delete localStorage.test; storageSupported = true; }
-catch(err) {}
+catch(err) {
+  console.log(err);
+}
 
 var cookiesSupported = false;
 try { Ember.$.cookie('test', 2); Ember.$.removeCookie('test'); cookiesSupported = true; }
-catch(err) {}
+catch(err) {
+  console.log(err);
+}
 
 var localStorageProvider = {
   get(key) {
