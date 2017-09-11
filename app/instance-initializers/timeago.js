@@ -26,7 +26,7 @@ export default {
       }
     });
 
-    if (config.environment != "test") {
+    if (config.environment !== "test") {
       Ember.run.later(this, this.updateTime, 60000);
     }
   },

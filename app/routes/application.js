@@ -145,7 +145,9 @@ export default Ember.Route.extend(preloadDataMixin, {
           });
         }
       }
-    } catch (err) {}
+    } catch (err) {
+      console.log(err);
+    }
   },
 
   actions: {
@@ -168,7 +170,9 @@ export default Ember.Route.extend(preloadDataMixin, {
         } else {
           this.handleError(reason);
         }
-      } catch (err) {}
+      } catch (err) {
+        console.log(err);
+      }
     },
 
     willTransition(transition) {

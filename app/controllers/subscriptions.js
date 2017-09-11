@@ -203,7 +203,7 @@ export default Ember.Controller.extend({
 
       var messageRoute = this.get("messagesUtil").getRoute(data.item[type]);
       var messageUrl = router.generate.apply(router, messageRoute);
-      var messageUrl = messageUrl.split("#").get("lastObject");
+      messageUrl = messageUrl.split("#").get("lastObject");
 
       if (currentUrl.indexOf(messageUrl) >= 0) {
         var message = this.store.peekRecord("message", item.id);
