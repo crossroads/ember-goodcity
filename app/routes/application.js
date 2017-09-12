@@ -125,11 +125,6 @@ export default Ember.Route.extend(preloadDataMixin, {
     }
   },
 
-  quotaExceededError(reason) {
-    this.get("logger").error(reason);
-    this.get("messageBox").alert(this.get("i18n").t("QuotaExceededError"));
-  },
-
   notFoundError(reason) {
     this.get("logger").error(reason);
     this.get("messageBox").alert(this.get("i18n").t(status+"_error"));
