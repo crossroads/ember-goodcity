@@ -6,7 +6,7 @@ moduleForModel('delivery', 'Delivery Model', {
 });
 
 test('Relationships with other models', function(assert){
-  assert.expect(4);
+  assert.expect(8);
 
   var delivery = this.store().modelFor('delivery');
   var relationshipWithOffer = Ember.get(delivery, 'relationshipsByName').get('offer');
@@ -16,9 +16,16 @@ test('Relationships with other models', function(assert){
 
 
   assert.equal(relationshipWithOffer.key, 'offer');
+  assert.equal(relationshipWithOffer.kind, 'belongsTo');
+
   assert.equal(relationshipWithContact.key, 'contact');
+  assert.equal(relationshipWithContact.kind, 'belongsTo');
+
   assert.equal(relationshipWithSchedule.key, 'schedule');
+  assert.equal(relationshipWithSchedule.kind, 'belongsTo');
+
   assert.equal(relationshipWithGogovanOrder.key, 'gogovanOrder');
+  assert.equal(relationshipWithGogovanOrder.kind, 'belongsTo');
 });
 
 test('computed property: isGogovan', function(assert){

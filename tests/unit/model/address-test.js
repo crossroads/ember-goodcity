@@ -6,14 +6,17 @@ moduleForModel('address', 'Address Model', {
 });
 
 test('Relationships with other models', function(assert){
-  assert.expect(2);
+  assert.expect(4);
 
   var address = this.store().modelFor('address');
   var relationshipsWithDistrict = Ember.get(address, 'relationshipsByName').get('district');
   var relationshipsWithAddressable = Ember.get(address, 'relationshipsByName').get('addressable');
 
   assert.equal(relationshipsWithDistrict.key, 'district');
+  assert.equal(relationshipsWithDistrict.kind, 'belongsTo');
+
   assert.equal(relationshipsWithAddressable.key, 'addressable');
+  assert.equal(relationshipsWithAddressable.kind, 'belongsTo');
 });
 
 test('Address is a valid ember-data Model', function(assert){
