@@ -9,6 +9,8 @@ dependencies:
     - yarn link
     - yarn add codeclimate-test-reporter
     - yarn add bower ember-cli@2.9.0 phantomjs-prebuilt
+    - yarn
+    - bower install
   cache_directories:
     - "bower_components"    # relative to the build directory
     - ~/.yarn
