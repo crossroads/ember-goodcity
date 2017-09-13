@@ -6,9 +6,9 @@ dependencies:
   pre:
     - if ! (which yarn); then curl -o- -L https://yarnpkg.com/install.sh | bash; fi
   post:
-    - yarn add bower
     - yarn link
     - yarn add codeclimate-test-reporter
+    - yarn add bower ember-cli@2.9.0 phantomjs-prebuilt
   cache_directories:
     - "bower_components"    # relative to the build directory
     - ~/.yarn
