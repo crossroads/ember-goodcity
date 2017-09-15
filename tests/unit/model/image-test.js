@@ -6,7 +6,7 @@ moduleForModel('image', 'Image Model', {
 });
 
 test('check attributes', function(assert){
-  assert.expect(1);
+  assert.expect(3);
   var model = this.subject();
   var angle = Object.keys(model.toJSON()).indexOf('angle') > -1;
   var cloudinaryId = Object.keys(model.toJSON()).indexOf('cloudinaryId') > -1;
