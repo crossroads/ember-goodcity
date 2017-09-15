@@ -1,6 +1,6 @@
 import { test, moduleForModel } from 'ember-qunit';
 
-moduleForModel('gogoven_transport', 'GogovenTransport Model', {
+moduleForModel('gogovan_transport', 'GogovenTransport Model', {
 });
 
 test('check attributes', function(assert){

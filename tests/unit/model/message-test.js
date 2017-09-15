@@ -32,7 +32,7 @@ test('Relationships with other models', function(assert){
   assert.equal(relationshipsWithItem.key, 'item');
   assert.equal(relationshipsWithItem.kind, 'belongsTo');
 
-  assert.equal(relationshipsWithUser.key, 'user');
+  assert.equal(relationshipsWithUser.key, 'sender');
   assert.equal(relationshipsWithUser.kind, 'belongsTo');
 
   assert.equal(relationshipsWithOffer.key, 'offer');
