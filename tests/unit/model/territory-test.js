@@ -6,7 +6,7 @@ moduleForModel('territory', 'Territory Model', {
 });
 
 test('check attributes', function(assert){
-  assert.expect(6);
+  assert.expect(1);
   var model = this.subject();
   var name = Object.keys(model.toJSON()).indexOf('name') > -1;
 
