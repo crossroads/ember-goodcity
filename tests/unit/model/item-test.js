@@ -6,6 +6,24 @@ moduleForModel('item', 'Item Model', {
     'model:rejection_reason']
 });
 
+test('check attributes', function(assert){
+  assert.expect(3);
+  var model = this.subject();
+  var donorDescription = Object.keys(model.toJSON()).indexOf('donorDescription') > -1;
+  var state = Object.keys(model.toJSON()).indexOf('state') > -1;
+  var rejectReason = Object.keys(model.toJSON()).indexOf('rejectReason') > -1;
+  var rejectionComments = Object.keys(model.toJSON()).indexOf('rejectionComments') > -1;
+  var createdAt = Object.keys(model.toJSON()).indexOf('createdAt') > -1;
+  var updatedAt = Object.keys(model.toJSON()).indexOf('updatedAt') > -1;
+
+  assert.ok(rejectionComments);
+  assert.ok(createdAt);
+  assert.ok(updatedAt);
+  assert.ok(donorDescription);
+  assert.ok(state);
+  assert.ok(rejectReason);
+});
+
 test('Relationships with other models', function(assert){
   assert.expect(14);
 
