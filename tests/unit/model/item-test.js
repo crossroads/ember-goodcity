@@ -7,7 +7,7 @@ moduleForModel('item', 'Item Model', {
 });
 
 test('check attributes', function(assert){
-  assert.expect(3);
+  assert.expect(6);
   var model = this.subject();
   var donorDescription = Object.keys(model.toJSON()).indexOf('donorDescription') > -1;
   var state = Object.keys(model.toJSON()).indexOf('state') > -1;
