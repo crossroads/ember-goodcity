@@ -2,7 +2,7 @@ import { test, moduleForModel } from 'ember-qunit';
 import Ember from 'ember';
 
 moduleForModel('contact', 'Contact Model', {
-  needs: ['model:delivery']
+  needs: ['model:delivery', 'model:address', 'model:addressable']
 });
 
 test('check attributes', function(assert){
