@@ -1,5 +1,4 @@
 import { test, moduleForModel } from 'ember-qunit';
-import Ember from 'ember';
 
 moduleForModel('cancellation_reason', 'CancellationReason Model', {
 });
