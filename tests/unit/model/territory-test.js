@@ -5,6 +5,14 @@ moduleForModel('territory', 'Territory Model', {
   needs: ['model:district']
 });
 
+test('check attributes', function(assert){
+  assert.expect(1);
+  var model = this.subject();
+  var name = Object.keys(model.toJSON()).indexOf('name') > -1;
+
+  assert.ok(name);
+});
+
 test('Relationships with other models', function(assert){
   assert.expect(2);
 

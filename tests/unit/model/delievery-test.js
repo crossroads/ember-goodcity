@@ -5,6 +5,18 @@ moduleForModel('delivery', 'Delivery Model', {
   needs: ['model:offer', 'model:contact', 'model:schedule', 'model:gogovan_order']
 });
 
+test('check attributes', function(assert){
+  assert.expect(3);
+  var model = this.subject();
+  var start = Object.keys(model.toJSON()).indexOf('start') > -1;
+  var finish = Object.keys(model.toJSON()).indexOf('finish') > -1;
+  var deliveryType = Object.keys(model.toJSON()).indexOf('deliveryType') > -1;
+
+  assert.ok(start);
+  assert.ok(finish);
+  assert.ok(deliveryType);
+});
+
 test('Relationships with other models', function(assert){
   assert.expect(8);
 
