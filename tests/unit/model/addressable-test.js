@@ -9,8 +9,8 @@ test('Relationships with other models', function(assert){
   assert.expect(2);
 
   var addressable = this.store().modelFor('addressable');
-  var relationshipsWithDistrict = Ember.get(addressable, 'relationshipsByName').get('address');
+  var relationshipsWithAddress = Ember.get(addressable, 'relationshipsByName').get('address');
 
-  assert.equal(relationshipsWithDistrict.key, 'address');
-  assert.equal(relationshipsWithDistrict.kind, 'belongsTo');
+  assert.equal(relationshipsWithAddress.key, 'address');
+  assert.equal(relationshipsWithAddress.kind, 'belongsTo');
 });
