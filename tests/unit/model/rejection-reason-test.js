@@ -2,7 +2,7 @@ import { test, moduleForModel } from 'ember-qunit';
 import Ember from 'ember';
 
 moduleForModel('rejection_reason', 'RejectionReason Model', {
-  needs: ['model:district']
+  needs: ['model:item']
 });
 
 test('check attributes', function(assert){
