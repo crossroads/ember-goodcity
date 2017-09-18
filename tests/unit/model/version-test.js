@@ -4,7 +4,7 @@ moduleForModel('version', 'Version Model', {
 });
 
 test('check attributes', function(assert){
-  assert.expect(1);
+  assert.expect(7);
   var model = this.subject();
   var itemType = Object.keys(model.toJSON()).indexOf('itemType') > -1;
   var itemId = Object.keys(model.toJSON()).indexOf('itemId') > -1;
