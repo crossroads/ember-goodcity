@@ -18,7 +18,7 @@ test('check attributes', function(assert){
 });
 
 test('Relationships with other models', function(assert){
-  assert.expect(2);
+  assert.expect(4);
 
   var packageType = this.store().modelFor('package_type');
   var relationshipsWithItem = Ember.get(packageType, 'relationshipsByName').get('items');
