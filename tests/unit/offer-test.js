@@ -69,10 +69,10 @@ test('Relationships with other models', function(assert){
   var relationshipsWithMessage = Ember.get(offer, 'relationshipsByName').get('messages');
 
   assert.equal(relationshipsWithMessage.key, 'messages');
-  assert.equal(relationshipsWithMessage.kind, 'hasmany');
+  assert.equal(relationshipsWithMessage.kind, 'hasMany');
 
   assert.equal(relationshipsWithItem.key, 'items');
-  assert.equal(relationshipsWithItem.kind, 'hasmany');
+  assert.equal(relationshipsWithItem.kind, 'hasMany');
 
   assert.equal(relationshipsWithUser.key, 'createdBy');
   assert.equal(relationshipsWithUser.kind, 'belongsTo');
