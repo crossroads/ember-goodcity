@@ -34,7 +34,7 @@ test('Relationships with other models', function(assert){
   assert.equal(relationshipsWithPermission.key, 'permission');
   assert.equal(relationshipsWithPermission.kind, 'belongsTo');
 
-  assert.equal(relationshipsWithReviewedOffers.key, 'ReviewedOffers');
+  assert.equal(relationshipsWithReviewedOffers.key, 'reviewedOffers');
   assert.equal(relationshipsWithReviewedOffers.kind, 'hasMany');
 
   assert.equal(relationshipsWithImage.key, 'image');
