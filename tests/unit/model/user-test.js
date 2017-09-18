@@ -2,7 +2,7 @@ import { test, moduleForModel } from 'ember-qunit';
 import Ember from 'ember';
 
 moduleForModel('user', 'User Model', {
-  needs: ['model:image', 'model:permission', 'model:offer']
+  needs: ['model:image', 'model:permission', 'model:offer', 'model:address']
 });
 
 test('check attributes', function(assert){
@@ -30,6 +30,9 @@ test('Relationships with other models', function(assert){
   var relationshipsWithImage = Ember.get(user, 'relationshipsByName').get('image');
   var relationshipsWithPermission = Ember.get(user, 'relationshipsByName').get('permission');
   var relationshipsWithReviewedOffers = Ember.get(user, 'relationshipsByName').get('reviewedOffers');
+
+  assert.equal(relationshipsWithPermission.key, 'permission');
+  assert.equal(relationshipsWithPermission.kind, 'belongsTo');
 
   assert.equal(relationshipsWithReviewedOffers.key, 'ReviewedOffers');
   assert.equal(relationshipsWithReviewedOffers.kind, 'hasMany');
