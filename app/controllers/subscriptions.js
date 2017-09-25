@@ -135,47 +135,68 @@ export default Ember.Controller.extend({
     run(success);
   },
 
-  getDataWithCompactLocationIds(data, type) {
+  // each action below is an event in a channel
+  update_store: function(data, success) {
+    this.store.pushPayload(data.sender);
+
+    var type = Object.keys(data.item)[0];
+
+    var pkg;
+    if(type === "Package") {
+      pkg = data.item.Package;
+    } else if(type === "package") {
+      pkg = data.item.package;
+    }
+
     if(this.get("appName") === "admin.goodcity") {
-      if(type === "Package") {
-        let pkg = data.item.Package;
-        data.item.Package.packages_location_ids = pkg.packages_location_ids.compact();
-        return data;
-      } else if(type === "package") {
-        let pkg = data.item.package;
-        data.item.package.packages_location_ids = pkg.packages_location_ids.compact();
-        return data;
+      if((type === "Package" || type === "package") && pkg && pkg.packages_location_ids) {
+        type === "Package" ? data.item.Package.packages_location_ids = pkg.packages_location_ids.compact() : data.item.package.packages_location_ids = pkg.packages_location_ids.compact();
       }
-    } else {
+    }
+
+    if(this.get("appName") === "app.goodcity") {
       if((type === "Item" && data.item.Item && data.item.Item.message_ids) || (type === "Offer" && data.item.Offer && data.item.Offer.message_ids)) {
-        let message_ids = type === "Item" ? data.item.Item.message_ids : data.item.Offer.message_ids;
+        var message_ids = type === "Item" ? data.item.Item.message_ids : data.item.Offer.message_ids;
         message_ids.forEach(msgId => {
           if(msgId){
-            let msg = this.store.peekRecord("message", msgId);
+            var msg = this.store.peekRecord("message", msgId);
             if(!msg) {
               type === "Item" ? data.item.Item.message_ids.removeObject(msgId) : data.item.Offer.message_ids.removeObject(msgId);
             }
           }
         })
         type === "Item" ? data.item.Item.message_ids = data.item.Item.message_ids.compact() : data.item.Offer.message_ids = data.item.Offer.message_ids.compact();
-        return data;
       }
     }
-  },
+    // use extend to make a copy of data.item[type] so object is not normalized for use by
+    // messagesUtil in mark message read code below
+    var item = Ember.$.extend({}, data.item[type]);
+    this.store.normalize(type, item);
 
-  updateData(data, existingItem){
+    var existingItem = this.store.peekRecord(type, item.id);
+
+    // update_store message is sent before response to APP save so ignore
+    var fromCurrentUser = parseInt(data.sender.user.id, 10) === parseInt(this.session.get("currentUser.id"), 10);
+    var hasNewItemSaving = this.store.peekAll(type).any(function(o) { return o.id === null && o.get("isSaving"); });
+    var existingItemIsSaving = existingItem && existingItem.get("isSaving"); // isSaving is true during delete as well
+    if (fromCurrentUser && (data.operation === "create" && hasNewItemSaving || existingItemIsSaving)) {
+      run(success);
+      return;
+    }
+
     if (data.operation === "update" && !existingItem) {
       this.store.findRecord(type, item.id);
     } else if (["create","update"].contains(data.operation)) {
-        let payload = {};
+        var payload = {};
         payload[type] = item;
         this.store.pushPayload(payload);
     } else if (existingItem) { //delete
       this.store.unloadRecord(existingItem);
     }
-  },
 
-  markAsRead(type, item) {
+    run(success);
+
+    // mark message as read if message will appear in current view
     if (type === "message") {
       var router = this.get("target");
       var currentUrl = window.location.href.split("#").get("lastObject");
@@ -206,34 +227,5 @@ export default Ember.Controller.extend({
         }
       }
     }
-  },
-
-  // each action below is an event in a channel
-  update_store: function(data, success) {
-    this.store.pushPayload(data.sender);
-
-    var type = Object.keys(data.item)[0];
-
-    data = this.getDataWithCompactLocationIds(data, type);
-    // use extend to make a copy of data.item[type] so object is not normalized for use by
-    // messagesUtil in mark message read code below
-    var item = Ember.$.extend({}, data.item[type]);
-    this.store.normalize(type, item);
-
-    var existingItem = this.store.peekRecord(type, item.id);
-
-    // update_store message is sent before response to APP save so ignore
-    var fromCurrentUser = parseInt(data.sender.user.id, 10) === parseInt(this.session.get("currentUser.id"), 10);
-    var hasNewItemSaving = this.store.peekAll(type).any(function(o) { return o.id === null && o.get("isSaving"); });
-    var existingItemIsSaving = existingItem && existingItem.get("isSaving"); // isSaving is true during delete as well
-    if (fromCurrentUser && (data.operation === "create" && hasNewItemSaving || existingItemIsSaving)) {
-      run(success);
-      return;
-    }
-
-    this.updateData(data, existingItem);
-    run(success);
-    // mark message as read if message will appear in current view
-    this.markAsRead(type, item);
   }
 });
