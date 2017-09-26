@@ -26,7 +26,7 @@ I18nTranslationsZhTw =
   "remove" : "移除"
   "yes" : "是"
   "no" : "否"
-  "ok" : "可以"
+  "ok" : "確定"
   "index.title" : "國際十字路會呈獻"
   "index.donate_goods" : "捐贈剩餘物資，援助需要人士"
   "index.how" : "要怎樣做？"
