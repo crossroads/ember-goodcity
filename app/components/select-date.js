@@ -75,7 +75,7 @@ export default Ember.TextField.extend({
     if(list) {
       available_count = list.length;
       for (var i = available_count - 1; i >= 0; i--) {
-        var date = new Date(list[i]);
+        date = new Date(list[i]);
         var date_array = [];
         date_array.push(date.getFullYear());
         date_array.push(date.getMonth());

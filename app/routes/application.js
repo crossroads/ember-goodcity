@@ -9,6 +9,8 @@ export default Ember.Route.extend(preloadDataMixin, {
   i18n: Ember.inject.service(),
   isErrPopUpAlreadyShown: false,
   isOfflineErrAlreadyShown: false,
+  logger: Ember.inject.service(),
+  messageBox: Ember.inject.service(),
 
   _loadDataStore: function(){
     return this.preloadData(true).catch(error => {
@@ -25,7 +27,20 @@ export default Ember.Route.extend(preloadDataMixin, {
     });
   },
 
+  init() {
+    var _this = this;
+    var storageHandler = function (object) {
+      if(!window.localStorage.getItem('authToken')) {
+          window.location.reload();
+      }
+    };
+    window.addEventListener("storage", function() {
+      storageHandler(_this);
+    }, false);
+  },
+
   beforeModel(transition = []) {
+    var language;
     try {
       window.localStorage.test = "isSafariPrivateBrowser";
     } catch (e) {
@@ -33,11 +48,11 @@ export default Ember.Route.extend(preloadDataMixin, {
     }
     window.localStorage.removeItem('test');
     if (transition.queryParams.ln) {
-      var language = transition.queryParams.ln === "zh-tw" ? "zh-tw" : "en";
+      language = transition.queryParams.ln === "zh-tw" ? "zh-tw" : "en";
       this.set('session.language', language);
     }
 
-    var language = this.session.get("language") || "en";
+    language = this.session.get("language") || "en";
     moment.locale(language);
     this.set("i18n.locale", language);
 
@@ -81,8 +96,7 @@ export default Ember.Route.extend(preloadDataMixin, {
     }
   },
 
-  logger: Ember.inject.service(),
-  messageBox: Ember.inject.service(),
+
 
   offlineError(reason){
     if(!this.get('isOfflineErrAlreadyShown')) {
@@ -101,6 +115,27 @@ export default Ember.Route.extend(preloadDataMixin, {
     this.get("messageBox").alert(this.get("i18n").t("QuotaExceededError"));
   },
 
+  somethingWentWrong(reason) {
+    this.get("logger").error(reason);
+    if(!this.get('isErrPopUpAlreadyShown')) {
+      this.set('isErrPopUpAlreadyShown', true);
+      this.get("messageBox").alert(this.get("i18n").t("unexpected_error"), () => {
+        this.set('isErrPopUpAlreadyShown', false);
+      });
+    }
+  },
+
+  notFoundError(reason) {
+    this.get("logger").error(reason);
+    this.get("messageBox").alert(this.get("i18n").t(status+"_error"));
+  },
+
+  unauthorizedError() {
+    if (this.session.get('isLoggedIn')) {
+      this.controllerFor("application").send('logMeOut');
+    }
+  },
+
   handleError: function(reason) {
     try
     {
@@ -113,26 +148,19 @@ export default Ember.Route.extend(preloadDataMixin, {
       } else if(reason.name === "QuotaExceededError") {
         this.quotaExceededError(reason);
       } else if (status === 401) {
-        if (this.session.get('isLoggedIn')) {
-          this.controllerFor("application").send('logMeOut');
-        }
+        this.unauthorizedError();
       } else if ([403, 404].indexOf(status) >= 0) {
-        this.get("logger").error(reason);
-        this.get("messageBox").alert(this.get("i18n").t(status+"_error"));
+        this.notFoundError(reason);
       } else if (status === 0) {
         // status 0 means request was aborted, this could be due to connection failure
         // but can also mean request was manually cancelled
         this.get("messageBox").alert(this.get("i18n").t("offline_error"));
       } else {
-        this.get("logger").error(reason);
-        if(!this.get('isErrPopUpAlreadyShown')) {
-          this.set('isErrPopUpAlreadyShown', true);
-          this.get("messageBox").alert(this.get("i18n").t("unexpected_error"), () => {
-            this.set('isErrPopUpAlreadyShown', false);
-          });
-        }
+        this.somethingWentWrong(reason);
       }
-    } catch (err) {}
+    } catch (err) {
+      console.log(err);
+    }
   },
 
   actions: {
@@ -155,7 +183,9 @@ export default Ember.Route.extend(preloadDataMixin, {
         } else {
           this.handleError(reason);
         }
-      } catch (err) {}
+      } catch (err) {
+        console.log(err);
+      }
     },
 
     willTransition(transition) {

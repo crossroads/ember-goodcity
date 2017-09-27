@@ -52,7 +52,7 @@ export default Ember.Service.extend({
 
       if(verifyIOS && _this.isIOS()) { return false; }
 
-      if (config.staging && typeof TestFairy != 'undefined') {
+      if (config.staging && typeof TestFairy !== 'undefined') {
         TestFairy.begin('a362fd4ae199930a7a1a1b6daa6f729ac923b506');
       }
 

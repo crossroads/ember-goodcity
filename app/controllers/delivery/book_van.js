@@ -19,7 +19,7 @@ export default addressDetails.extend({
   i18n: Ember.inject.service(),
 
   isSelectedVan: Ember.computed("selectedGogovanOption", function(){
-    return this.get("selectedGogovanOption") == "1";
+    return this.get("selectedGogovanOption") === "1";
   }),
 
   offer: Ember.computed("deliveryController", {
