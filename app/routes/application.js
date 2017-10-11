@@ -32,7 +32,7 @@ export default Ember.Route.extend(preloadDataMixin, {
     window.localStorage.setItem('authTokenAlreadyRemoved', false);
     var storageHandler = function (object) {
       var authToken = window.localStorage.getItem('authToken');
-      if(authToken !== null && authToken.length === 0 && !window.localStorage.getItem('authTokenAlreadyRemoved')) {
+      if(authToken !== null && authToken.length === 0 && window.localStorage.getItem('authTokenAlreadyRemoved') === "false") {
           window.localStorage.setItem('authTokenAlreadyRemoved', true);
           window.location.reload();
       }
