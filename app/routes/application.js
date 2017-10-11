@@ -148,9 +148,7 @@ export default Ember.Route.extend(preloadDataMixin, {
         this.offlineError(reason);
       } else if(reason.name === "QuotaExceededError") {
         this.quotaExceededError(reason);
-      } else if (reason.name === "NotFoundError" && reason.code === 8) {
-        return false;
-      }else if (status === 401) {
+      } else if (status === 401) {
         this.unauthorizedError();
       } else if ([403, 404].indexOf(status) >= 0) {
         this.notFoundError(reason);
