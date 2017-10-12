@@ -27,12 +27,11 @@ export default Ember.Route.extend(preloadDataMixin, {
     });
   },
 
-  checkAuthToken(transition) {
+  init() {
     var _this = this;
     var storageHandler = function (object) {
       var authToken = window.localStorage.getItem('authToken');
       if(authToken !== null && authToken.length === 0) {
-        transition.abort();
         object.get('messageBox').alert(object.get("i18n").t('must_login'), () => {
           object.transitionTo('login');
         });
@@ -55,7 +54,7 @@ export default Ember.Route.extend(preloadDataMixin, {
       language = transition.queryParams.ln === "zh-tw" ? "zh-tw" : "en";
       this.set('session.language', language);
     }
-    this.checkAuthToken(transition);
+
     language = this.session.get("language") || "en";
     moment.locale(language);
     this.set("i18n.locale", language);
