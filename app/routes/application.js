@@ -32,7 +32,7 @@ export default Ember.Route.extend(preloadDataMixin, {
     var _this = this;
     var storageHandler = function (object) {
       var currentPath = window.location.href;
-      if(!window.localStorage.getItem('authToken') && !object.get('isMustLoginAlreadyShown') && !(currentPath.includes("login") || currentPath.includes("authenticate")) {
+      if(!window.localStorage.getItem('authToken') && !object.get('isMustLoginAlreadyShown') && !(currentPath.includes("login") || currentPath.includes("authenticate"))) {
         object.set('isMustLoginAlreadyShown', true);
         object.store.unloadAll('user_profile');
         object.get('messageBox').alert(object.get("i18n").t('must_login'), () => {
