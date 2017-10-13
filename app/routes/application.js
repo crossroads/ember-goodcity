@@ -32,6 +32,9 @@ export default Ember.Route.extend(preloadDataMixin, {
     var storageHandler = function (object) {
       if(!window.localStorage.getItem('authToken')) {
         object.store.unloadAll('user_profile');
+        object.get('messageBox').alert(object.get("i18n").t('must_login'), () => {
+          window.location.reload();
+        });
       }
     };
     window.addEventListener("storage", function() {
