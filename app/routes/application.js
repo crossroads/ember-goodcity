@@ -11,6 +11,7 @@ export default Ember.Route.extend(preloadDataMixin, {
   isOfflineErrAlreadyShown: false,
   logger: Ember.inject.service(),
   messageBox: Ember.inject.service(),
+  isMustLoginAlreadyShown: false,
 
   _loadDataStore: function(){
     return this.preloadData(true).catch(error => {
@@ -30,7 +31,8 @@ export default Ember.Route.extend(preloadDataMixin, {
   init() {
     var _this = this;
     var storageHandler = function (object) {
-      if(!window.localStorage.getItem('authToken')) {
+      if(!window.localStorage.getItem('authToken') && !object.get('isMustLoginAlreadyShown')) {
+        object.set('isMustLoginAlreadyShown', true);
         object.store.unloadAll('user_profile');
         object.get('messageBox').alert(object.get("i18n").t('must_login'), () => {
           window.location.reload();
