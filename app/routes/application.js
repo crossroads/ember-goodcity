@@ -32,7 +32,6 @@ export default Ember.Route.extend(preloadDataMixin, {
     var storageHandler = function (object) {
       if(!window.localStorage.getItem('authToken')) {
         object.store.unloadAll('user_profile');
-        object.session.set('otpAuthKey', null);
       }
     };
     window.addEventListener("storage", function() {
