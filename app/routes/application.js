@@ -40,7 +40,7 @@ export default Ember.Route.extend(preloadDataMixin, {
           window.location.reload();
         });
       } else if(authToken && (currentPath.includes("login") || currentPath.includes("authenticate"))) {
-        object.transitionTo("/offers");
+        window.location.reload();
       }
     };
     window.addEventListener("storage", function() {
