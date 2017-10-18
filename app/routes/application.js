@@ -33,6 +33,8 @@ export default Ember.Route.extend(preloadDataMixin, {
     var storageHandler = function (object) {
       var currentPath = window.location.href;
       var authToken = window.localStorage.getItem('authToken');
+      var currentUser = object.get('session.currentUser');
+
       if(!authToken && !object.get('isMustLoginAlreadyShown') && !(currentPath.includes("login") || currentPath.includes("authenticate"))) {
         object.set('isMustLoginAlreadyShown', true);
         object.store.unloadAll('user_profile');
@@ -40,7 +42,24 @@ export default Ember.Route.extend(preloadDataMixin, {
           window.location.reload();
         });
       } else if(authToken && !currentPath.includes("offer") && (currentPath.includes("login") || currentPath.includes("authenticate"))) {
-        object.transitionTo("/");
+        if(currentPath.includes("app")) {
+          if(currentUser) {
+            object.transitionTo('/offers');
+          } else {
+            object._loadDataStore();
+          }
+        } else if(currentPath.includes("admin")) {
+          if(currentUser) {
+            var myOffers = object.store.peekAll('offer').filterBy('reviewedBy.id', currentUser.get('id'));
+            if(myOffers.get('length') > 0) {
+              object.transitionTo('my_list');
+            } else {
+              object.transitionTo('offers.submitted');
+            }
+          } else {
+            object._loadDataStore();
+          }
+        }
       }
     };
     window.addEventListener("storage", function() {
