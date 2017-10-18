@@ -12,6 +12,7 @@ export default Ember.Route.extend(preloadDataMixin, {
   logger: Ember.inject.service(),
   messageBox: Ember.inject.service(),
   isMustLoginAlreadyShown: false,
+  isalreadyLoggedinShown: false,
 
   _loadDataStore: function(){
     return this.preloadData(true).catch(error => {
@@ -33,33 +34,17 @@ export default Ember.Route.extend(preloadDataMixin, {
     var storageHandler = function (object) {
       var currentPath = window.location.href;
       var authToken = window.localStorage.getItem('authToken');
-      var currentUser = object.get('session.currentUser');
-
       if(!authToken && !object.get('isMustLoginAlreadyShown') && !(currentPath.includes("login") || currentPath.includes("authenticate"))) {
         object.set('isMustLoginAlreadyShown', true);
         object.store.unloadAll('user_profile');
         object.get('messageBox').alert(object.get("i18n").t('must_login'), () => {
           window.location.reload();
         });
-      } else if(authToken && !currentPath.includes("offer") && (currentPath.includes("login") || currentPath.includes("authenticate"))) {
-        if(currentPath.includes("app")) {
-          if(currentUser) {
-            object.transitionTo('/offers');
-          } else {
-            object._loadDataStore();
-          }
-        } else if(currentPath.includes("admin")) {
-          if(currentUser) {
-            var myOffers = object.store.peekAll('offer').filterBy('reviewedBy.id', currentUser.get('id'));
-            if(myOffers.get('length') > 0) {
-              object.transitionTo('my_list');
-            } else {
-              object.transitionTo('offers.submitted');
-            }
-          } else {
-            object._loadDataStore();
-          }
-        }
+      } else if(!object.get("isalreadyLoggedinShown") authToken && !currentPath.includes("offer") &&(currentPath.includes("login") || currentPath.includes("authenticate"))) {
+        object.set("isalreadyLoggedinShown", true);
+        object.get('messageBox').alert("Logged in from another window, press ok to refresh.", () => {
+          window.location.reload();
+        });
       }
     };
     window.addEventListener("storage", function() {
