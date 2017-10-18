@@ -39,7 +39,7 @@ export default Ember.Route.extend(preloadDataMixin, {
         object.get('messageBox').alert(object.get("i18n").t('must_login'), () => {
           window.location.reload();
         });
-      } else if(authToken && (currentPath.includes("login") || currentPath.includes("authenticate"))) {
+      } else if(authToken && !currentPath.includes("offer") && (currentPath.includes("login") || currentPath.includes("authenticate"))) {
         window.location.reload();
       }
     };
