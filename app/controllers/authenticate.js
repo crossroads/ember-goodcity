@@ -53,7 +53,7 @@ export default Ember.Controller.extend({
           this.transitionToRoute('/authenticate');
         })
         .catch(error => {
-          if ([422, 403].contains(error.status)) {
+          if ([422, 403].includes(error.status)) {
             Ember.$('#mobile').closest('.mobile').addClass('error');
             return;
           }
