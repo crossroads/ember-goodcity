@@ -59,6 +59,10 @@ export default Ember.Component.extend({
 
   isMaxCharLengthReached: Ember.computed.equal('charactersKeyedIn', 'maxlength'),
 
+  valueChanged: Ember.observer('value', function() {
+    this.send("displayCharCount");
+  }),
+
   keyUp: function () {
     this.send("displayCharCount");
   },
