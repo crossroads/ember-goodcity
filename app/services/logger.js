@@ -28,8 +28,7 @@ export default Ember.Service.extend({
       });
       airbrake.setHost(config.APP.AIRBRAKE_HOST);
       airbrake.notify({ error, context: { userId, userName, environment, version } });
-      Ember.Logger.error(error);
-      rollbar.critical(error);
+      rollbar.error(error);
     }
   }
 });
