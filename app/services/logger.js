@@ -1,5 +1,6 @@
 import Ember from "ember";
 import config from "../config/environment";
+import rollbar from 'rollbar';
 
 export default Ember.Service.extend({
   session: Ember.inject.service(),
@@ -27,6 +28,8 @@ export default Ember.Service.extend({
       });
       airbrake.setHost(config.APP.AIRBRAKE_HOST);
       airbrake.notify({ error, context: { userId, userName, environment, version } });
+      Ember.Logger.error(error);
+      rollbar.critical(error);
     }
   }
 });
