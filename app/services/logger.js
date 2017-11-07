@@ -10,8 +10,8 @@ export default Ember.Service.extend({
           reason : JSON.stringify(reason);
   },
 
-  notifyRollBar(error, userId, userName) {
-    rollbar.error(error, { id: userId, username: userName, environment: environment});
+  notifyRollBar(error, log_details) {
+    rollbar.error(error, log_details);
   },
 
   error: function(reason) {
@@ -32,7 +32,7 @@ export default Ember.Service.extend({
       });
       airbrake.setHost(config.APP.AIRBRAKE_HOST);
       airbrake.notify({ error, context: { userId, userName, environment, version } });
-      this.notifyRollBar(error, userId, userName, environment);
+      this.notifyRollBar(error, { id: userId, username: userName, environment: environment});
     }
   }
 });
