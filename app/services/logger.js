@@ -29,8 +29,8 @@ export default Ember.Service.extend({
       });
       airbrake.setHost(config.APP.AIRBRAKE_HOST);
       airbrake.notify({ error, context: { userId, userName, environment, version } });
-      this.get('rollbar').error(error, data = { id: userId, username: userName, environment: environment});
       this.set('rollbar.currentUser', currentUser);
+      this.get('rollbar').error(error, data = { id: userId, username: userName, environment: environment});
     }
   }
 });
