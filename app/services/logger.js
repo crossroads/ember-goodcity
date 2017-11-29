@@ -16,6 +16,7 @@ export default Ember.Service.extend({
     }
     console.info(reason);
     if (config.environment === "production" || config.staging) {
+      var data;
       var currentUser = this.get("session.currentUser");
       var userName = currentUser.get("fullName");
       var userId = currentUser.get("id");
