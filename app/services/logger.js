@@ -3,6 +3,7 @@ import config from "../config/environment";
 
 export default Ember.Service.extend({
   session: Ember.inject.service(),
+  rollbar: Ember.inject.service(),
 
   getReason(reason) {
     return reason instanceof Error || typeof reason !== "object" ?
@@ -15,8 +16,10 @@ export default Ember.Service.extend({
     }
     console.info(reason);
     if (config.environment === "production" || config.staging) {
-      var userName = this.get("session.currentUser.fullName");
-      var userId = this.get("session.currentUser.id");
+      var data;
+      var currentUser = this.get("session.currentUser");
+      var userName = currentUser.get("fullName");
+      var userId = currentUser.get("id");
       var error = this.getReason(reason);
       var environment = config.staging ? "staging" : config.environment;
       var version = `${config.APP.SHA} (shared ${config.APP.SHARED_SHA})`;
@@ -27,6 +30,8 @@ export default Ember.Service.extend({
       });
       airbrake.setHost(config.APP.AIRBRAKE_HOST);
       airbrake.notify({ error, context: { userId, userName, environment, version } });
+      this.set('rollbar.currentUser', currentUser);
+      this.get('rollbar').error(error, data = { id: userId, username: userName, environment: environment});
     }
   }
 });
