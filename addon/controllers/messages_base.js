@@ -95,6 +95,16 @@ export default Ember.Controller.extend({
       values.createdAt = new Date();
       values.sender = this.store.peekRecord("user", this.get("session.currentUser.id"));
 
+      var offerId = values.offer.id;
+      var msg = values.body;
+      var beginIndex = msg.indexOf("[")+1;
+      var endIndex   = msg.indexOf("]");
+      var url_with_text = msg.slice(beginIndex, endIndex);
+      var url_text_begin = url_with_text.indexOf("|");
+      var url_text = url_with_text.slice(0, url_text_begin);
+
+      values.body = msg.replace("["+url_with_text+"]",`<a href='/offers/${offerId}/plan_delivery'>${url_text}</a>`);
+
       var message = this.store.createRecord("message", values);
       message.save()
         .then(() => { this.set("body", ""); })
