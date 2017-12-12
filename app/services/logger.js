@@ -23,13 +23,6 @@ export default Ember.Service.extend({
       var error = this.getReason(reason);
       var environment = config.staging ? "staging" : config.environment;
       var version = `${config.APP.SHA} (shared ${config.APP.SHARED_SHA})`;
-
-      var airbrake = new airbrakeJs.Client({
-        projectId: config.APP.AIRBRAKE_PROJECT_ID,
-        projectKey: config.APP.AIRBRAKE_PROJECT_KEY
-      });
-      airbrake.setHost(config.APP.AIRBRAKE_HOST);
-      airbrake.notify({ error, context: { userId, userName, environment, version } });
       this.set('rollbar.currentUser', currentUser);
       this.get('rollbar').error(error, data = { id: userId, username: userName, environment: environment});
     }
