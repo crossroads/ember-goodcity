@@ -61,7 +61,7 @@ export default Ember.Route.extend(preloadDataMixin, {
       this.get("messageBox").alert(this.get("i18n").t("QuotaExceededError"));
     }
     if(localStrg) {
-      window.localStorage.removeItem('test');
+      localStrg.removeItem('test');
     }
     if (transition.queryParams.ln) {
       language = transition.queryParams.ln === "zh-tw" ? "zh-tw" : "en";
