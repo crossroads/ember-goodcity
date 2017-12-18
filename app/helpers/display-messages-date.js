@@ -9,12 +9,12 @@ export default Ember.Helper.helper(function(value) {
 
   var day_difference = (current_time - message_date) / _MS_PER_DAY;
 
-  if(!message_date) {
+  if (!message_date) {
     return "";
-  } else if(day_difference < 1) {
-    var time = moment(message_date).format('HH:mm');
+  } else if (day_difference < 1) {
+    // var time = moment(message_date).format('HH:mm');
     return todayText;
-  } else if(day_difference < 7) {
+  } else if (day_difference < 7) {
     return moment(message_date).format('dddd');
   } else {
     return moment(message_date).format('DD MMM, YYYY');

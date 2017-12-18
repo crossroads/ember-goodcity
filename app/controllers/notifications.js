@@ -15,7 +15,7 @@ export default Ember.Controller.extend({
     }
   }),
 
-  nextNotification: Ember.computed('model.[]', function(){
+  nextNotification: Ember.computed('model.[]', function() {
     //retrieveNotification is not implemented here because it needs to call itself
     return this.retrieveNotification();
   }),
@@ -44,9 +44,9 @@ export default Ember.Controller.extend({
     return notification;
   },
 
-  itemImageUrl: Ember.computed('nextNotification', function(){
+  itemImageUrl: Ember.computed('nextNotification', function() {
     var itemId = this.get("nextNotification.item_id");
-    if(itemId) {
+    if (itemId) {
       var item = this.store.peekRecord("item", itemId);
       return item ? item.get("displayImageUrl") : null;
     } else {
@@ -56,7 +56,7 @@ export default Ember.Controller.extend({
 
   showItemImage: Ember.computed.notEmpty("itemImageUrl"),
 
-  senderImageUrl: Ember.computed('nextNotification', function(){
+  senderImageUrl: Ember.computed('nextNotification', function() {
     var notification = this.get("nextNotification");
     if (!notification) { return null; }
     var sender = this.store.peekRecord("user", notification.author_id);
@@ -86,7 +86,7 @@ export default Ember.Controller.extend({
   },
 
   acceptCall: function(notification) {
-    new AjaxPromise("/twilio_inbound/accept_call", "GET", this.get('session.authToken'), { donor_id: notification.author_id })
+    new AjaxPromise("/twilio_inbound/accept_call", "GET", this.get('session.authToken'), { donor_id: notification.author_id });
   },
 
   actions: {

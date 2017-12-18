@@ -1,5 +1,5 @@
-import Ember from "ember";
 import config from "../config/environment";
+
 const { getOwner } = Ember;
 
 function run(func) {
@@ -25,16 +25,16 @@ export default Ember.Controller.extend({
     text: ""
   },
 
-  updateStatus: Ember.observer('socket', function () {
+  updateStatus: Ember.observer('socket', function() {
     var socket = this.get("socket");
     var online = navigator.connection ? navigator.connection.type !== "none" : navigator.onLine;
     online = socket && socket.connected && online;
     var hidden = !this.session.get("isLoggedIn") || (online && config.environment === "production" && config.staging !== true);
     var text = !online ? this.get("i18n").t("socket_offline_error") :
       "Online - " + this.session.get("currentUser.fullName") + " (" + socket.io.engine.transport.name + ")";
-    this.set("status", {"online": online, "hidden": hidden, "text": text});
+    this.set("status", { "online": online, "hidden": hidden, "text": text });
 
-    if(!this.session.get("currentUser.fullName") && online) {
+    if (!this.session.get("currentUser.fullName") && online) {
       var currentUrl = getOwner(this).lookup("router:main").get("url");
       if (currentUrl === "/offline") {
         this.transitionToRoute("/");
@@ -45,7 +45,7 @@ export default Ember.Controller.extend({
   }),
 
   // resync if offline longer than deviceTtl
-  checkdeviceTtl: Ember.observer('status.online', function () {
+  checkdeviceTtl: Ember.observer('status.online', function() {
     var online = this.get("status.online");
     var deviceTtl = this.get("deviceTtl");
     if (online && deviceTtl !== 0 && (Date.now() - this.get("lastOnline")) > deviceTtl * 1000) {
@@ -69,10 +69,10 @@ export default Ember.Controller.extend({
         "?token=" + encodeURIComponent(this.session.get("authToken")) +
         "&deviceId=" + this.get("deviceId") +
         "&meta=appName:" + config.APP.NAME;
-        // pass mutilple meta values by seperating '|' like this
-        // "&meta=appName:" + config.APP.NAME +"|version:" + config.APP.NAME;
+      // pass mutilple meta values by seperating '|' like this
+      // "&meta=appName:" + config.APP.NAME +"|version:" + config.APP.NAME;
 
-      var socket = io(connectUrl, {autoConnect:false,forceNew:true});
+      var socket = io(connectUrl, { autoConnect: false, forceNew: true });
       this.set("socket", socket);
       socket.on("connect", function() {
         updateStatus();
@@ -82,7 +82,7 @@ export default Ember.Controller.extend({
       socket.on("error", Ember.run.bind(this, function(reason) {
         // ignore xhr post error related to no internet connection
         if (typeof reason !== "object" || reason.type !== "TransportError" && reason.message !== "xhr post error") {
-          if(reason.indexOf("Auth") === 0){
+          if (reason.indexOf("Auth") === 0) {
             this.transitionToRoute('login');
           } else {
             this.get("logger").error(reason);
@@ -109,7 +109,7 @@ export default Ember.Controller.extend({
     },
 
     unloadNotifications() {
-      this.get("notifications").send("unloadNotifications")
+      this.get("notifications").send("unloadNotifications");
     }
   },
 
@@ -123,9 +123,7 @@ export default Ember.Controller.extend({
   },
 
   resync: function() {
-    var offer_params = this.get("session.isAdminApp") ?
-        { states: ["nondraft"] }:
-        { states: ["for_donor"] };
+    var offer_params = this.get("session.isAdminApp") ? { states: ["nondraft"] } : { states: ["for_donor"] };
     this.store.query('offer', offer_params);
   },
 
@@ -142,29 +140,29 @@ export default Ember.Controller.extend({
     var type = Object.keys(data.item)[0];
 
     var pkg;
-    if(type === "Package") {
+    if (type === "Package") {
       pkg = data.item.Package;
-    } else if(type === "package") {
+    } else if (type === "package") {
       pkg = data.item.package;
     }
 
-    if(this.get("appName") === "admin.goodcity") {
-      if((type === "Package" || type === "package") && pkg && pkg.packages_location_ids) {
+    if (this.get("appName") === "admin.goodcity") {
+      if ((type === "Package" || type === "package") && pkg && pkg.packages_location_ids) {
         type === "Package" ? data.item.Package.packages_location_ids = pkg.packages_location_ids.compact() : data.item.package.packages_location_ids = pkg.packages_location_ids.compact();
       }
     }
 
-    if(this.get("appName") === "app.goodcity") {
-      if((type === "Item" && data.item.Item && data.item.Item.message_ids) || (type === "Offer" && data.item.Offer && data.item.Offer.message_ids)) {
+    if (this.get("appName") === "app.goodcity") {
+      if ((type === "Item" && data.item.Item && data.item.Item.message_ids) || (type === "Offer" && data.item.Offer && data.item.Offer.message_ids)) {
         var message_ids = type === "Item" ? data.item.Item.message_ids : data.item.Offer.message_ids;
         message_ids.forEach(msgId => {
-          if(msgId){
+          if (msgId) {
             var msg = this.store.peekRecord("message", msgId);
-            if(!msg) {
+            if (!msg) {
               type === "Item" ? data.item.Item.message_ids.removeObject(msgId) : data.item.Offer.message_ids.removeObject(msgId);
             }
           }
-        })
+        });
         type === "Item" ? data.item.Item.message_ids = data.item.Item.message_ids.compact() : data.item.Offer.message_ids = data.item.Offer.message_ids.compact();
       }
     }
@@ -186,10 +184,10 @@ export default Ember.Controller.extend({
 
     if (data.operation === "update" && !existingItem) {
       this.store.findRecord(type, item.id);
-    } else if (["create","update"].includes(data.operation)) {
-        var payload = {};
-        payload[type] = item;
-        this.store.pushPayload(payload);
+    } else if (["create", "update"].includes(data.operation)) {
+      var payload = {};
+      payload[type] = item;
+      this.store.pushPayload(payload);
     } else if (existingItem) { //delete
       this.store.unloadRecord(existingItem);
     }
@@ -207,18 +205,18 @@ export default Ember.Controller.extend({
 
       if (currentUrl.indexOf(messageUrl) >= 0) {
         var message = this.store.peekRecord("message", item.id);
-        if(message && !message.get("isRead")) {
+        if (message && !message.get("isRead")) {
           this.get("messagesUtil").markRead(message);
 
           var scrollOffset;
-          if(Ember.$(".message-textbar").length > 0) {
+          if (Ember.$(".message-textbar").length > 0) {
             scrollOffset = Ember.$(document).height();
           }
 
           var screenHeight = document.documentElement.clientHeight;
           var pageHeight = document.documentElement.scrollHeight;
 
-          if(scrollOffset && pageHeight > screenHeight) {
+          if (scrollOffset && pageHeight > screenHeight) {
             Ember.run.later(this, function() {
               window.scrollTo(0, scrollOffset);
             });

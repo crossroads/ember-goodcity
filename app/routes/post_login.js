@@ -1,12 +1,12 @@
 import Ember from 'ember';
-import config from '../config/environment';
-import AjaxPromise from '../utils/ajax-promise';
+// import config from '../config/environment';
+// import AjaxPromise from '../utils/ajax-promise';
 import preloadDataMixin from '../mixins/preload_data';
 
 export default Ember.Route.extend(preloadDataMixin, {
   cordova: Ember.inject.service(),
 
-  beforeModel(transition) {
+  beforeModel() {
     Ember.run(() => this.controllerFor('application').send('logMeIn'));
     return this.preloadData().catch(error => {
       if (error.status === 0) {
@@ -19,7 +19,7 @@ export default Ember.Route.extend(preloadDataMixin, {
 
   afterModel() {
 
-    if(this.get("session.isAdminApp")) {
+    if (this.get("session.isAdminApp")) {
       this.loadStaticData().catch(error => {
         if (error.status === 0) {
           this.transitionTo("offline");
@@ -38,7 +38,7 @@ export default Ember.Route.extend(preloadDataMixin, {
       var currentUser = this.get('session.currentUser');
       if (this.get('session.isAdminApp')) {
         var myOffers = this.store.peekAll('offer').filterBy('reviewedBy.id', currentUser.get('id'));
-        if(myOffers.get('length') > 0) {
+        if (myOffers.get('length') > 0) {
           this.transitionTo('my_list');
         } else {
           this.transitionTo('offers');
