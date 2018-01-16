@@ -11,6 +11,8 @@ export default Ember.Route.extend(preloadDataMixin, {
   isOfflineErrAlreadyShown: false,
   logger: Ember.inject.service(),
   messageBox: Ember.inject.service(),
+  isMustLoginAlreadyShown: false,
+  isalreadyLoggedinShown: false,
 
   _loadDataStore: function(){
     return this.preloadData(true).catch(error => {
@@ -30,8 +32,19 @@ export default Ember.Route.extend(preloadDataMixin, {
   init() {
     var _this = this;
     var storageHandler = function (object) {
-      if(!window.localStorage.getItem('authToken')) {
+      var currentPath = window.location.href;
+      var authToken = window.localStorage.getItem('authToken');
+      if(!authToken && window.location.pathname !== "/" && window.location.pathname !== "/register" && !object.get('isMustLoginAlreadyShown') && !(currentPath.includes("login") || currentPath.includes("authenticate"))) {
+        object.set('isMustLoginAlreadyShown', true);
+        object.store.unloadAll('user_profile');
+        object.get('messageBox').alert(object.get("i18n").t('must_login'), () => {
           window.location.reload();
+        });
+      } else if(!object.get("isalreadyLoggedinShown") && authToken && !currentPath.includes("offer") &&(currentPath.includes("login") || currentPath.includes("authenticate"))) {
+        object.set("isalreadyLoggedinShown", true);
+        object.get('messageBox').alert("Logged in from another window, press ok to refresh.", () => {
+          window.location.reload();
+        });
       }
     };
     window.addEventListener("storage", function() {
@@ -41,12 +54,15 @@ export default Ember.Route.extend(preloadDataMixin, {
 
   beforeModel(transition = []) {
     var language;
+    var localStrg = window.localStorage;
     try {
-      window.localStorage.test = "isSafariPrivateBrowser";
+      localStrg.test = "isSafariPrivateBrowser";
     } catch (e) {
       this.get("messageBox").alert(this.get("i18n").t("QuotaExceededError"));
     }
-    window.localStorage.removeItem('test');
+    if(localStrg) {
+      localStrg.removeItem('test');
+    }
     if (transition.queryParams.ln) {
       language = transition.queryParams.ln === "zh-tw" ? "zh-tw" : "en";
       this.set('session.language', language);

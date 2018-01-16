@@ -39,7 +39,7 @@ export default Ember.Component.extend({
   currentCountBinding: 'inputControl.value.length',
 
   charactersKeyedIn: Ember.computed('currentCount', function(){
-    var control_val = this.get('inputControl.value') || "";
+    var control_val = this.get('value') || "";
     var total_count = 0, special_chars, special_chars_length;
 
     special_chars = control_val ? control_val.match(/(\r\n|\n|\r)/g) : "";
@@ -58,6 +58,10 @@ export default Ember.Component.extend({
   }).volatile(),
 
   isMaxCharLengthReached: Ember.computed.equal('charactersKeyedIn', 'maxlength'),
+
+  valueChanged: Ember.observer('value', function() {
+    this.send("displayCharCount");
+  }),
 
   keyUp: function () {
     this.send("displayCharCount");

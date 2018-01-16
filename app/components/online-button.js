@@ -8,7 +8,7 @@ import Ember from "ember";
  * Note actionArgs="['test']" causes json parse error, but this works actionArgs='["test"]'
  */
 
-export default Ember.Component.extend(Ember.ViewTargetActionSupport, {
+export default Ember.Component.extend(Ember.TargetActionSupport, {
   tagName: "button",
   attributeBindings: ["disabled"],
   disabled: false,
