@@ -285,19 +285,21 @@ export default DS.Model.extend({
   }),
 
   statusBarClass: Ember.computed('state', function() {
+    var retState = "";
     if (this.get("isSubmitted")) {
-      return "is-submitted";
+      retState = "is-submitted";
     } else if (this.get("isUnderReview")) {
-      return "is-under-review";
+      retState = "is-under-review";
     } else if (this.get("isReviewed")) {
-      return "is-reviewed";
+      retState = "is-reviewed";
     } else if (this.get("isScheduled")) {
-      return "is-scheduled";
+      retState = "is-scheduled";
     } else if (this.get("isClosed")) {
-      return "is-closed";
+      retState = "is-closed";
     } else if (this.get("hasReceived")) {
-      return "is-received";
+      retState = "is-received";
     }
+    return retState;
   }),
 
   showDeliveryDetails: Ember.computed('state', function() {
