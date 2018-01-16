@@ -1,3 +1,4 @@
+import Ember from "ember";
 import AjaxPromise from './../../utils/ajax-promise';
 import addressDetails from './address_details';
 import { translationMacro as t } from "ember-i18n";
@@ -18,7 +19,7 @@ export default addressDetails.extend({
   timePrompt: t("gogovan.book_van.time"),
   i18n: Ember.inject.service(),
 
-  isSelectedVan: Ember.computed("selectedGogovanOption", function(){
+  isSelectedVan: Ember.computed("selectedGogovanOption", function() {
     return this.get("selectedGogovanOption") === "1";
   }),
 
@@ -33,7 +34,7 @@ export default addressDetails.extend({
 
   available_dates: Ember.computed('available_dates.[]', {
     get: function() {
-      new AjaxPromise("/available_dates", "GET", this.get('session.authToken'), {schedule_days: 120})
+      new AjaxPromise("/available_dates", "GET", this.get('session.authToken'), { schedule_days: 120 })
         .then(data => this.set("available_dates", data));
     },
     set: function(key, value) {
@@ -41,26 +42,33 @@ export default addressDetails.extend({
     }
   }),
 
-  gogovanOptions: Ember.computed(function(){
+  gogovanOptions: Ember.computed(function() {
     var allOptions = this.store.peekAll('gogovan_transport');
     return allOptions.rejectBy('disabled', true).sortBy('id');
   }),
 
-  selectedGogovanOption: Ember.computed('gogovanOptions', 'offer', function(){
+  selectedGogovanOption: Ember.computed('gogovanOptions', 'offer', function() {
     return this.get("offer.gogovanTransport.id") || this.get('gogovanOptions.firstObject.id');
   }),
 
-  timeSlots: Ember.computed(function(){
+  timeSlots: Ember.computed(function() {
     var options = [];
-    var slots = {"600": "10:00", "630": "10:30",
-      "660": "11:00",  "690": "11:30",
-      "720": "12:00", "750": "12:30",
-      "780": "1:00",  "810": "1:30",
-      "840": "2:00", "870": "2:30",
-      "900": "3:00" }
-    for(var minutes in slots) {
+    var slots = {
+      "600": "10:00",
+      "630": "10:30",
+      "660": "11:00",
+      "690": "11:30",
+      "720": "12:00",
+      "750": "12:30",
+      "780": "1:00",
+      "810": "1:30",
+      "840": "2:00",
+      "870": "2:30",
+      "900": "3:00"
+    };
+    for (var minutes in slots) {
       var period = parseInt(minutes, 10) >= 720 ? this.locale("gogovan.book_van.pm") : this.locale("gogovan.book_van.am");
-      options.push({id: minutes, name: slots[minutes] + " " + period});
+      options.push({ id: minutes, name: slots[minutes] + " " + period });
     }
     return options;
   }),
@@ -91,7 +99,7 @@ export default addressDetails.extend({
       requestProperties.offerId = delivery.get('offer.id');
       requestProperties.gogovanOptionId = gogovanOptionId;
 
-      if(this.get("isSelectedVan")) {
+      if (this.get("isSelectedVan")) {
         requestProperties.needOver6ft = this.get("longerGoods");
         requestProperties.removeNet = this.get("longGoodSelection");
       }
@@ -99,22 +107,22 @@ export default addressDetails.extend({
       var order = controller.store.createRecord('gogovan_order', requestProperties);
       order.set('delivery', delivery);
       new AjaxPromise("/gogovan_orders/calculate_price", "POST", controller.get('session.authToken'), requestProperties).then(function(data) {
-         var coupon = data.breakdown.coupon_discount;
-          if(coupon) {
-            var discount = coupon.value.toString();
-            order.set("isDiscountAvailable", true);
-            order.set("couponDiscount", discount.slice(0, 1) + "$" + discount.slice(1));
-          } else {
-            order.set("isDiscountAvailable", false);
-          }
-          order.set('baseFee', data.base);
-          order.set('total', data.total);
-          order.set('needEnglishFee', data.breakdown.speak_english && data.breakdown.speak_english.value);
-          order.set('needCartFee', (data.breakdown.borrow_carts && data.breakdown.borrow_carts.value) || (data.breakdown.borrow_forklift_pcs && data.breakdown.borrow_forklift_pcs.value));
-          order.set('removeNetFee', data.breakdown.remove_net && data.breakdown.remove_net.value);
-          loadingView.destroy();
-          controller.transitionToRoute('delivery.confirm_van', {queryParams: {placeOrder: true}});
-        });
+        var coupon = data.breakdown.coupon_discount;
+        if (coupon) {
+          var discount = coupon.value.toString();
+          order.set("isDiscountAvailable", true);
+          order.set("couponDiscount", discount.slice(0, 1) + "$" + discount.slice(1));
+        } else {
+          order.set("isDiscountAvailable", false);
+        }
+        order.set('baseFee', data.base);
+        order.set('total', data.total);
+        order.set('needEnglishFee', data.breakdown.speak_english && data.breakdown.speak_english.value);
+        order.set('needCartFee', (data.breakdown.borrow_carts && data.breakdown.borrow_carts.value) || (data.breakdown.borrow_forklift_pcs && data.breakdown.borrow_forklift_pcs.value));
+        order.set('removeNetFee', data.breakdown.remove_net && data.breakdown.remove_net.value);
+        loadingView.destroy();
+        controller.transitionToRoute('delivery.confirm_van', { queryParams: { placeOrder: true } });
+      });
     }
   }
 });
