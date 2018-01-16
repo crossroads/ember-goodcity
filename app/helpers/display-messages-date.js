@@ -12,7 +12,6 @@ export default Ember.Helper.helper(function(value) {
   if (!message_date) {
     return "";
   } else if (day_difference < 1) {
-    // var time = moment(message_date).format('HH:mm');
     return todayText;
   } else if (day_difference < 7) {
     return moment(message_date).format('dddd');

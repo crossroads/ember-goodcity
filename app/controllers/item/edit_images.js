@@ -26,7 +26,6 @@ export default Ember.Controller.extend({
   previousRoute: null,
 
   initActionSheet: function(onSuccess) {
-    // var _this = this;
     return window.plugins.actionsheet.show({
       buttonLabels: [this.locale("edit_images.upload").string, this.locale("edit_images.camera").string, this.locale("edit_images.cancel").string]
     }, function(buttonIndex) {
@@ -206,7 +205,7 @@ export default Ember.Controller.extend({
   },
 
   removeImage: function(controller, item) {
-    // var _this = this;
+
     var img = item.get("images.firstObject");
     var loadingView = getOwner(controller).lookup('component:loading').append();
     img.deleteRecord();

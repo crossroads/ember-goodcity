@@ -1,6 +1,4 @@
 import Ember from 'ember';
-// import AjaxPromise from '../utils/ajax-promise';
-// import config from '../config/environment';
 import preloadDataMixin from '../mixins/preload_data';
 const { getOwner } = Ember;
 

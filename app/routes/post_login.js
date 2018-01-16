@@ -1,6 +1,4 @@
 import Ember from 'ember';
-// import config from '../config/environment';
-// import AjaxPromise from '../utils/ajax-promise';
 import preloadDataMixin from '../mixins/preload_data';
 
 export default Ember.Route.extend(preloadDataMixin, {
