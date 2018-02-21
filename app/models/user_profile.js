@@ -14,13 +14,34 @@ export default Addressable.extend({
   // permission:  DS.belongsTo('permission', { async: false }),
   userRoles: DS.hasMany('userRoles', { async: false }),
 
-  roleNames: Ember.computed('userRoles.[]', function(){
-    var roleNames = []
+  roles: Ember.computed('userRoles.[]', function(){
+    var roles = []
     this.get('userRoles').forEach(userRole => {
-      roleNames.push(userRole.get('role.name'));
+      roles.push(userRole.get('role'));
+    });
+    return roles;
+  }),
+
+  roleNames: Ember.computed('roles', function(){
+    var roleNames = [];
+    this.get('roles').forEach(role => {
+      roleNames.push(role.get('name'));
     });
     return roleNames;
   }),
+
+  permissionNames: Ember.computed('roles', function(){
+    debugger
+    var permissionNames = []
+    this.get('roles').forEach(role => {
+      role.get('rolePermisions').forEach(rolePermision => {
+        permissionNames.push(rolePermision.get('permission.name'));
+      });
+    });
+    return permissionNames;
+  }),
+
+  // permissionNames
 
   isReviewer: Ember.computed('roleNames', function(){
     return this.get('roleNames').includes('Reviewer');
