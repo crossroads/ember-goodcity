@@ -1,5 +1,5 @@
 import { test, moduleForModel } from 'ember-qunit';
-import Ember from 'ember';
+// import Ember from 'ember';
 
 moduleForModel('user_profile', 'UserProfile Model', {
   needs: ['model:permission', 'model:user', 'model:address']
@@ -21,12 +21,12 @@ test('check attributes', function(assert){
   assert.ok(firstName);
 });
 
-test('Relationships with other models', function(assert){
-  assert.expect(2);
+// test('Relationships with other models', function(assert){
+//   assert.expect(2);
 
-  var user = this.store().modelFor('user');
-  var relationshipsWithPermission = Ember.get(user, 'relationshipsByName').get('permission');
+//   var user = this.store().modelFor('user');
+//   var relationshipsWithPermission = Ember.get(user, 'relationshipsByName').get('permission');
 
-  assert.equal(relationshipsWithPermission.key, 'permission');
-  assert.equal(relationshipsWithPermission.kind, 'belongsTo');
-});
+//   assert.equal(relationshipsWithPermission.key, 'permission');
+//   assert.equal(relationshipsWithPermission.kind, 'belongsTo');
+// });

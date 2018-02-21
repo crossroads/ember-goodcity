@@ -20,6 +20,8 @@ export default Addressable.extend({
   reviewedOffers: hasMany('offers', { inverse: 'reviewedBy', async: false }),
   donations: hasMany('offers', { inverse: 'createdBy', async: false }),
 
+  userRoles: hasMany('userRoles', { async: false }),
+
   i18n: Ember.inject.service(),
 
   isSupervisor: Ember.computed.equal("permission.name", "Supervisor"),
