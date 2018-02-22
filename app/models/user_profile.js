@@ -34,7 +34,7 @@ export default Addressable.extend({
     debugger
     var permissionNames = []
     this.get('roles').forEach(role => {
-      role.get('rolePermisions').forEach(rolePermision => {
+      role.get('rolePermissions').forEach(rolePermision => {
         permissionNames.push(rolePermision.get('permission.name'));
       });
     });
@@ -49,6 +49,14 @@ export default Addressable.extend({
 
   isSupervisor: Ember.computed('roleNames', function(){
     return this.get('roleNames').includes('Supervisor');
+  }),
+
+  canManageUsers: Ember.computed('permissionNames', function(){
+    return this.get('permissionNames').includes('can_manage_users');
+  }),
+
+  canManageHolidays: Ember.computed('permissionNames', function(){
+    return this.get('permissionNames').includes('can_manage_holidays');
   }),
 
   isDonor: Ember.computed.empty('roleNames'),
