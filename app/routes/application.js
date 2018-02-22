@@ -27,18 +27,22 @@ export default Ember.Route.extend(preloadDataMixin, {
     });
   },
 
+  isCurrentPathLoginOrAuthenticate(currentPath) {
+    return (currentPath.indexOf("login") >= 0 || currentPath.indexOf("authenticate") >= 0);
+  },
+
   init() {
     var _this = this;
     var storageHandler = function(object) {
       var currentPath = window.location.href;
       var authToken = window.localStorage.getItem('authToken');
-      if (!authToken && window.location.pathname !== "/" && window.location.pathname !== "/register" && !object.get('isMustLoginAlreadyShown') && !(currentPath.includes("login") || currentPath.includes("authenticate"))) {
+      if (!authToken && window.location.pathname !== "/" && window.location.pathname !== "/register" && !object.get('isMustLoginAlreadyShown') && !isCurrentPathLoginOrAuthenticate(currentPath)) {
         object.set('isMustLoginAlreadyShown', true);
         object.store.unloadAll('user_profile');
         object.get('messageBox').alert(object.get("i18n").t('must_login'), () => {
           window.location.reload();
         });
-      } else if (!object.get("isalreadyLoggedinShown") && authToken && !currentPath.includes("offer") && (currentPath.includes("login") || currentPath.includes("authenticate"))) {
+      } else if (!object.get("isalreadyLoggedinShown") && authToken && !(currentPath.indexOf("offer") >= 0) && isCurrentPathLoginOrAuthenticate(currentPath)) {
         object.set("isalreadyLoggedinShown", true);
         object.get('messageBox').alert("Logged in from another window, press ok to refresh.", () => {
           window.location.reload();
@@ -50,8 +54,7 @@ export default Ember.Route.extend(preloadDataMixin, {
     }, false);
   },
 
-  beforeModel(transition = []) {
-    var language;
+  checkSafariPrivateBrowser() {
     var localStrg = window.localStorage;
     try {
       localStrg.test = "isSafariPrivateBrowser";
@@ -61,6 +64,11 @@ export default Ember.Route.extend(preloadDataMixin, {
     if (localStrg) {
       localStrg.removeItem('test');
     }
+  },
+
+  beforeModel(transition = []) {
+    var language;
+    this.checkSafariPrivateBrowser();
     if (transition.queryParams.ln) {
       language = transition.queryParams.ln === "zh-tw" ? "zh-tw" : "en";
       this.set('session.language', language);
