@@ -54,8 +54,7 @@ export default Ember.Route.extend(preloadDataMixin, {
     }, false);
   },
 
-  beforeModel(transition = []) {
-    var language;
+  checkSafariPrivateBrowser() {
     var localStrg = window.localStorage;
     try {
       localStrg.test = "isSafariPrivateBrowser";
@@ -65,6 +64,11 @@ export default Ember.Route.extend(preloadDataMixin, {
     if (localStrg) {
       localStrg.removeItem('test');
     }
+  },
+
+  beforeModel(transition = []) {
+    var language;
+    this.checkSafariPrivateBrowser();
     if (transition.queryParams.ln) {
       language = transition.queryParams.ln === "zh-tw" ? "zh-tw" : "en";
       this.set('session.language', language);
