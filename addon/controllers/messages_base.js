@@ -1,6 +1,7 @@
 import Ember from "ember";
 
 export default Ember.Controller.extend({
+  messageLinkConvertor: Ember.inject.service(),
 
   body: "",
   offerController: Ember.inject.controller('offer'),
@@ -94,7 +95,7 @@ export default Ember.Controller.extend({
       var values = this.getProperties("body", "offer", "item", "isPrivate");
       values.createdAt = new Date();
       values.sender = this.store.peekRecord("user", this.get("session.currentUser.id"));
-
+      this.get("messageLinkConvertor").convert(values);
       var message = this.store.createRecord("message", values);
       message.save()
         .then(() => { this.set("body", ""); })
