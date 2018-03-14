@@ -8,6 +8,16 @@ export default Ember.Component.extend({
     return this.get("className") ? `.${this.get('className')}` : document;
   }),
 
+  click() {
+    Ember.run.later(function() {
+      if($('.off-canvas-wrap.move-right')[0]) {
+        $('html').css('overflow', 'hidden');
+      } else {
+        $('html').css('overflow', 'auto');
+      }
+    }, 100);
+  },
+
   didInsertElement() {
     var className = this.get("currentClassName");
     var _this = this;
