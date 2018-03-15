@@ -31,7 +31,6 @@ export default Addressable.extend({
   }),
 
   permissionNames: Ember.computed('roles', function(){
-    debugger
     var permissionNames = []
     this.get('roles').forEach(role => {
       role.get('rolePermissions').forEach(rolePermision => {
