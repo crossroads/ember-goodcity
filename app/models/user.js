@@ -16,11 +16,23 @@ export default Addressable.extend({
   lastDisconnected: attr('date'),
 
   image: belongsTo('image', { async: false }),
-  permission: belongsTo('permission', { async: false }),
+  permission: belongsTo('permission', { async: true }),
   reviewedOffers: hasMany('offers', { inverse: 'reviewedBy', async: false }),
   donations: hasMany('offers', { inverse: 'createdBy', async: false }),
 
   userRoles: hasMany('userRoles', { async: false }),
+
+  roles: Ember.computed('userRoles.[]', function(){
+    var roles = []
+    this.get('userRoles').forEach(userRole => {
+      roles.push(userRole.get('role'));
+    });
+    return roles;
+  }),
+
+  roleIds: Ember.computed('roles', function(){
+    return this.get('roles').getEach('id');
+  }),
 
   i18n: Ember.inject.service(),
 

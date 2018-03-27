@@ -3,12 +3,18 @@ import Ember from 'ember';
 export default Ember.Component.extend({
   tagName: "input",
   type: "checkbox",
-  collected: [2,5,7],
+  collected: [],
   attributeBindings: [ "name", "type", "value", "checked", "labelText", "disabled", "collected" ],
   disabled: false,
 
+  // didRender() {
+  //   // this._super(...arguments);
+  //   debugger;
+  //   this.set("collected", this.get('userRoles').mapBy('id'));
+  // },
+
   click() {
-    // this.set("collected")
+    // this.set("collected", this.get('userRoles').mapBy('id'));
     this.get("collected").pushObject(this.$().val());
   },
 

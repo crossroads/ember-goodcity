@@ -487,17 +487,17 @@ label input {
   margin: rem-calc(0 1) !important;
   padding: rem-calc(9 5);
   color: $white;
-  /* font-size: rem-calc(15) !important; */
+  font-size: rem-calc(15) !important;
   border: 1px solid $white;
   width: 100%;
   text-align: center;
 }
 
-input[type="radio"] {
+input[type="checkbox"] {
   display: none;
 }
 
-input[type="radio"]:checked + label  {
+input[type="checkbox"]:checked + label  {
   background: $coral-red;
   border: 1px solid $coral-red;
 }
