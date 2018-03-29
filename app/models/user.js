@@ -11,6 +11,7 @@ export default Addressable.extend({
   lastName: attr('string'),
   mobile: attr('string'),
   createdAt: attr('date'),
+  userRoleIds: attr(''),
 
   lastConnected: attr('date'),
   lastDisconnected: attr('date'),
@@ -30,8 +31,8 @@ export default Addressable.extend({
     return roles;
   }),
 
-  roleIds: Ember.computed('roles', function(){
-    return this.get('roles').getEach('id');
+  roleIds: Ember.computed('userRoles.[]', function(){
+    return this.get('userRoles').getEach('roleId');
   }),
 
   i18n: Ember.inject.service(),
@@ -73,5 +74,4 @@ export default Addressable.extend({
       return this.get("i18n").t('online');
     }
   })
-
 });
