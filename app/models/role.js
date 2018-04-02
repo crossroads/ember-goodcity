@@ -4,7 +4,8 @@ var attr = DS.attr, hasMany = DS.hasMany;
 
 export default DS.Model.extend({
   name: attr('string'),
-  rolePermissions: hasMany('rolePermissions', { async: false })
+  rolePermissions: hasMany('rolePermissions', { async: false }),
+  users: hasMany('users', { async: false })
 
   // permissionNames: Ember.computed('rolePermissions.[]', function(){
   //   var permissionNames = [];

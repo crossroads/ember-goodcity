@@ -6,5 +6,5 @@ export default DS.Model.extend({
   userId: attr('number'),
   roleId: attr('number'),
   user: belongsTo('user', { async: false }),
-  role: belongsTo('role', { async: false })
+  role: belongsTo('role', { async: true })
 });
