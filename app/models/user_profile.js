@@ -11,7 +11,6 @@ export default Addressable.extend({
   donationAmount: attr('string'),
   donationDate: attr('date'),
 
-  // permission:  DS.belongsTo('permission', { async: false }),
   userRoles: DS.hasMany('userRoles', { async: false }),
 
   roles: Ember.computed('userRoles.[]', function(){
@@ -39,8 +38,6 @@ export default Addressable.extend({
     });
     return permissionNames;
   }),
-
-  // permissionNames
 
   isReviewer: Ember.computed('roleNames', function(){
     return this.get('roleNames').includes('Reviewer');

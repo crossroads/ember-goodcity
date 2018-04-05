@@ -6,11 +6,4 @@ export default DS.Model.extend({
   name: attr('string'),
   rolePermissions: hasMany('rolePermissions', { async: false }),
   users: hasMany('users', { async: false })
-
-  // permissionNames: Ember.computed('rolePermissions.[]', function(){
-  //   var permissionNames = [];
-  //   this.get('rolePermissions').forEach(rolePermission => {
-  //     permissionNames.push(this.get('rolePermission.permission.name'));
-  //   });
-  // })
 });
