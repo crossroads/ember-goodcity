@@ -22,11 +22,9 @@ export default Addressable.extend({
   }),
 
   roleNames: Ember.computed('roles', function(){
-    var roleNames = [];
-    this.get('roles').forEach(role => {
-      roleNames.push(role.get('name'));
-    });
-    return roleNames;
+    if(this.get('roles.length')){
+      return this.get('roles').getEach('name');
+    }
   }),
 
   permissionNames: Ember.computed('roles', function(){
