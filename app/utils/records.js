@@ -1,11 +1,11 @@
 import Ember from "ember";
-import config from "../config/environment";
+// import config from "../config/environment";
 
 export default {
   // this function navigates the relationship tree unloading records unless
   // related record is a taxonomy type or user
   unloadRecordTree: function(record) {
-    var taxonomyTypes = ["territory", "district", "package-type","donor-condition","rejection-reason","permission", "timeslot", "gogovan-transport", "crossroads-transport", "version", "user"]
+    var taxonomyTypes = ["territory", "district", "package-type", "donor-condition", "rejection-reason", "permission", "timeslot", "gogovan-transport", "crossroads-transport", "version", "user"];
 
     // TO_DO FIX ISSUE WITH DELETION
     // var taxonomyTypes = config.APP.PRELOAD_TYPES
@@ -35,8 +35,8 @@ export default {
         Ember.run.next(() => record.get(name).then(r => unload(r)));
       } else {
         try {
-         unload(record.get(name));
-        } catch(e) { throw e;}
+          unload(record.get(name));
+        } catch (e) { throw e; }
       }
     });
 

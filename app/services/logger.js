@@ -7,7 +7,7 @@ export default Ember.Service.extend({
 
   getReason(reason) {
     return reason instanceof Error || typeof reason !== "object" ?
-          reason : JSON.stringify(reason);
+      reason : JSON.stringify(reason);
   },
 
   error: function(reason) {
@@ -24,7 +24,7 @@ export default Ember.Service.extend({
       var environment = config.staging ? "staging" : config.environment;
       var version = `${config.APP.SHA} (shared ${config.APP.SHARED_SHA})`;
       this.set('rollbar.currentUser', currentUser);
-      this.get('rollbar').error(error, data = { id: userId, username: userName, environment: environment});
+      this.get('rollbar').error(error, data = { id: userId, username: userName, environment: environment });
     }
   }
 });

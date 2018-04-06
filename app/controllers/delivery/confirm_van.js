@@ -9,11 +9,11 @@ export default Ember.Controller.extend({
   user: Ember.computed.alias('delivery.offer.createdBy'),
   orderDetails: Ember.computed.alias('model'),
 
-  mobileNumber: Ember.computed('user.mobile', function(){
+  mobileNumber: Ember.computed('user.mobile', function() {
     return this.get("user.mobile").replace(/\+852/, "");
   }),
 
-  districtName: Ember.computed('model.districtId', function(){
+  districtName: Ember.computed('model.districtId', function() {
     var district = this.store.peekRecord("district", this.get('model.districtId'));
     return district.get('name');
   }),
@@ -39,7 +39,7 @@ export default Ember.Controller.extend({
       orderDetails.setProperties({ name: name, mobile: mobile, offerId: offer.get('id') });
       var handleError = error => { loadingView.destroy(); throw error; };
 
-      contactProperties.addressAttributes = { addressType: 'collection', districtId: orderDetails.get('districtId') }
+      contactProperties.addressAttributes = { addressType: 'collection', districtId: orderDetails.get('districtId') };
 
       var properties = {
         delivery: {
@@ -49,7 +49,8 @@ export default Ember.Controller.extend({
           scheduleAttributes: scheduleProperties,
           contactAttributes: contactProperties
         },
-        gogovanOrder: orderDetails.toJSON() };
+        gogovanOrder: orderDetails.toJSON()
+      };
 
       new AjaxPromise("/confirm_delivery", "POST", this.get('session.authToken'), properties)
         .then(function(data) {
@@ -58,7 +59,7 @@ export default Ember.Controller.extend({
           offer.set('state', 'scheduled');
           loadingView.destroy();
 
-          if(controller.get("session.isAdminApp")) {
+          if (controller.get("session.isAdminApp")) {
             controller.transitionToRoute('review_offer.logistics', offer);
           } else {
             controller.transitionToRoute('offer.transport_details', offer);
@@ -66,7 +67,7 @@ export default Ember.Controller.extend({
         }).catch(error => {
           loadingView.destroy();
           throw error;
-      });
+        });
     }
   }
 });

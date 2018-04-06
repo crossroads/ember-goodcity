@@ -1,4 +1,3 @@
-import Ember from 'ember';
 import config from '../config/environment';
 
 export default Ember.Controller.extend({
@@ -16,11 +15,11 @@ export default Ember.Controller.extend({
     }
   }),
 
-  supportGCLink: Ember.computed('session.language', function(){
+  supportGCLink: Ember.computed('session.language', function() {
     return this.get('session.language') === 'zh-tw' ? "https://www.goodcity.hk/get_involved_zh.html" : "https://www.goodcity.hk/get_involved.html";
   }),
 
-  appVersion: Ember.computed(function(){
+  appVersion: Ember.computed(function() {
     return config.cordova.enabled ? config.APP.VERSION : null;
   }),
 
@@ -45,8 +44,8 @@ export default Ember.Controller.extend({
       this.get('subscriptions').send('wire');
     },
 
-    rateApp(){
-      if(this.get("cordova").isIOS()){
+    rateApp() {
+      if (this.get("cordova").isIOS()) {
         this.set("app_id", config.APP.IOS_APP_ID);
       }
       LaunchReview.launch(this.get("app_id"));

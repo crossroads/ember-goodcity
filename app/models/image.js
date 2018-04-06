@@ -5,16 +5,16 @@ var attr = DS.attr,
   belongsTo = DS.belongsTo;
 
 export default DS.Model.extend({
-  favourite:     attr('boolean'),
-  cloudinaryId:  attr('string'),
-  item:          belongsTo('item', { async: false }),
-  angle:         attr('number'),
+  favourite: attr('boolean'),
+  cloudinaryId: attr('string'),
+  item: belongsTo('item', { async: false }),
+  angle: attr('number'),
 
-  imageUrl: Ember.computed('cloudinaryId', 'angle', function(){
+  imageUrl: Ember.computed('cloudinaryId', 'angle', function() {
     return this.generateUrl();
   }),
 
-  thumbImageUrl: Ember.computed('cloudinaryId', 'angle', function(){
+  thumbImageUrl: Ember.computed('cloudinaryId', 'angle', function() {
     return this.generateUrl(120, 120, true);
   }),
 
@@ -37,7 +37,7 @@ export default DS.Model.extend({
       secure: true,
       protocol: 'https:'
     };
-    if(angle) { options["angle"] = angle }
+    if (angle) { options["angle"] = angle; }
     return Ember.$.cloudinary.url(filename, options);
   }
 });

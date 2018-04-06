@@ -1,3 +1,4 @@
+import Ember from "ember";
 import ValidatableForm from 'ember-cli-html5-validation/components/validatable-form';
 
 // This component will resolve the issue with `checkValidity()` function in Android 4.4.2
@@ -8,10 +9,10 @@ export default ValidatableForm.extend({
     var form = this.get('element');
     var allValidElements = true;
 
-    if(form.checkValidity()) {
-      $('form input, form select, form textarea').each(function(){
+    if (form.checkValidity()) {
+      $('form input, form select, form textarea').each(function() {
         allValidElements = this.validity.valid;
-        if(!allValidElements) {
+        if (!allValidElements) {
           Ember.$(this).trigger("invalid"); // to highlight invalid field
           return false;
         }
@@ -32,7 +33,7 @@ export default ValidatableForm.extend({
   scrollToFirstError: function() {
     var form = this.get('element');
 
-    for (var i = 0 ; i !== form.elements.length ; ++i) {
+    for (var i = 0; i !== form.elements.length; ++i) {
       if (!form.elements[i].validity.valid) {
         Ember.$(form.elements[i]).trigger("invalid");
       }
