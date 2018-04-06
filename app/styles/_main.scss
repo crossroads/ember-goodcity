@@ -502,6 +502,11 @@ input[type="radio"]:checked + label  {
   border: 1px solid $coral-red;
 }
 
+input[type="checkbox"]:checked + label {
+  background: $coral-red;
+  border: 1px solid $coral-red;
+}
+
 .styled-select {
   width: 100%;
   height: 36px;
