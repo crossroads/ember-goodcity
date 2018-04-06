@@ -11,14 +11,29 @@ export default Addressable.extend({
   lastName: attr('string'),
   mobile: attr('string'),
   createdAt: attr('date'),
+  userRoleIds: attr(''),
 
   lastConnected: attr('date'),
   lastDisconnected: attr('date'),
 
   image: belongsTo('image', { async: false }),
-  permission: belongsTo('permission', { async: false }),
+  permission: belongsTo('permission', { async: true }),
   reviewedOffers: hasMany('offers', { inverse: 'reviewedBy', async: false }),
   donations: hasMany('offers', { inverse: 'createdBy', async: false }),
+
+  userRoles: hasMany('userRoles', { async: false }),
+
+  roles: Ember.computed('userRoles.[]', function(){
+    var roles = []
+    this.get('userRoles').forEach(userRole => {
+      roles.push(userRole.get('role'));
+    });
+    return roles;
+  }),
+
+  roleIds: Ember.computed('userRoles.[]', function(){
+    return this.get('userRoles').getEach('roleId');
+  }),
 
   i18n: Ember.inject.service(),
 
@@ -59,5 +74,4 @@ export default Addressable.extend({
       return this.get("i18n").t('online');
     }
   })
-
 });

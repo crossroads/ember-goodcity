@@ -175,6 +175,8 @@ export default Ember.Route.extend(preloadDataMixin, {
         // status 0 means request was aborted, this could be due to connection failure
         // but can also mean request was manually cancelled
         this.get("messageBox").alert(this.get("i18n").t("offline_error"));
+      } else if (reason.name === "NotFoundError" && reason.code === 8) {
+        return false;
       } else {
         this.somethingWentWrong(reason);
       }
