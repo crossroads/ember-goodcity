@@ -42,7 +42,7 @@ export default Ember.Route.extend(preloadDataMixin, {
         object.get('messageBox').alert(object.get("i18n").t('must_login'), () => {
           window.location.reload();
         });
-      } else if (!object.get("isalreadyLoggedinShown") && authToken && !(currentPath.indexOf("offer") >= 0) && this.isCurrentPathLoginOrAuthenticate(currentPath)) {
+      } else if (!object.get("isalreadyLoggedinShown") && authToken && !(currentPath.indexOf("offer") >= 0) && object.isCurrentPathLoginOrAuthenticate(currentPath)) {
         object.set("isalreadyLoggedinShown", true);
         object.get('messageBox').alert("Logged in from another window, press ok to refresh.", () => {
           window.location.reload();
