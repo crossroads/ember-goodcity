@@ -48,7 +48,6 @@ export default Ember.Controller.extend({
       if (this.get("cordova").isIOS()) {
         this.set("app_id", config.APP.IOS_APP_ID);
       }
-      debugger
       LaunchReview.launch(this.get("app_id"));
     }
   }
