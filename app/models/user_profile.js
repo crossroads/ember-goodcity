@@ -43,25 +43,25 @@ export default Addressable.extend({
 
   isReviewer: Ember.computed('roleNames', function(){
     if(this.get('permissionNames.length')){
-      return this.get('roleNames').includes('Reviewer');
+      return this.get('roleNames').indexOf('Reviewer') >= 0;
     }
   }),
 
   isSupervisor: Ember.computed('roleNames', function(){
     if(this.get('permissionNames.length')){
-      return this.get('roleNames').includes('Supervisor');
+      return this.get('roleNames').indexOf('Supervisor') >= 0;
     }
   }),
 
   canManageUsers: Ember.computed('permissionNames', function(){
     if(this.get('permissionNames.length')){
-      return this.get('permissionNames').includes('can_manage_users');
+      return this.get('permissionNames').indexOf('can_manage_users') >= 0;
     }
   }),
 
   canManageHolidays: Ember.computed('permissionNames', function(){
     if(this.get('permissionNames.length')){
-      return this.get('permissionNames').includes('can_manage_holidays');
+      return this.get('permissionNames').indexOf('can_manage_holidays') >= 0;
     }
   }),
 
