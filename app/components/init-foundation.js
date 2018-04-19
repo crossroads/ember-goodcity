@@ -1,10 +1,8 @@
 import Ember from 'ember';
-import config from '../config/environment';
 
 export default Ember.Component.extend({
 
   foundation: null,
-  isMobileApp: config.cordova.enabled,
 
   currentClassName: Ember.computed("className", function(){
     return this.get("className") ? `.${this.get('className')}` : document;
@@ -12,11 +10,10 @@ export default Ember.Component.extend({
 
   click() {
     Ember.run.later(function() {
-      let mobileApp = this.get("isMobileApp");
       if($('.off-canvas-wrap.move-right')[0]) {
-        mobileApp ? $('body').css('overflow', 'hidden') : $('html').css('overflow', 'hidden');
+        $('html').css('overflow', 'hidden');
       } else {
-        mobileApp ? $('body').css('overflow', 'auto') : $('html').css('overflow', 'auto');
+        $('html').css('overflow', 'auto');
       }
     }, 100);
   },
