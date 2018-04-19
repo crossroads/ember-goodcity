@@ -184,7 +184,7 @@ export default Ember.Controller.extend({
 
     if (data.operation === "update" && !existingItem) {
       this.store.findRecord(type, item.id);
-    } else if (["create", "update"].includes(data.operation)) {
+    } else if (["create", "update"].indexOf(data.operation) >= 0) {
       var payload = {};
       payload[type] = item;
       this.store.pushPayload(payload);

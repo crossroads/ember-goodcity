@@ -7,7 +7,7 @@ export default Ember.Component.extend({
   checked: false,
 
   didInsertElement() {
-    var isCurrentRole = this.get('selection').includes(parseInt(this.get('selected')));
+    var isCurrentRole = this.get('selection').indexOf(parseInt(this.get('selected'))) >= 0;
     if(isCurrentRole){
       this.$().prop('checked', true);
       this.sendAction('action', this.get('value'), true);
