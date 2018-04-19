@@ -11,7 +11,6 @@ export default Ember.Component.extend({
 
   click() {
     Ember.run.later(function() {
-      let mobileApp = this.get("isMobileApp");
       if($('.off-canvas-wrap.move-right')[0]) {
         config.cordova.enabled ? $('.main-section').css('overflow', 'hidden') : $('html').css('overflow', 'hidden');
       } else {
