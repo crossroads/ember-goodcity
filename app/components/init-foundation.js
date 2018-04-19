@@ -12,9 +12,9 @@ export default Ember.Component.extend({
   click() {
     Ember.run.later(function() {
       if($('.off-canvas-wrap.move-right')[0]) {
-        config.cordova.enabled ? $('.main-section').css('overflow', 'hidden') : $('html').css('overflow', 'hidden');
+        config.cordova.enabled ? $('body').css('overflow', 'hidden') : $('html').css('overflow', 'hidden');
       } else {
-        config.cordova.enabled ? $('.main-section').css('overflow', 'auto') : $('html').css('overflow', 'auto');
+        config.cordova.enabled ? $('body').css('overflow', 'auto') : $('html').css('overflow', 'auto');
       }
     }, 100);
   },
