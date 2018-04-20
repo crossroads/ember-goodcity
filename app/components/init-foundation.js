@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import config from '../config/environment';
 
 export default Ember.Component.extend({
 
@@ -11,9 +12,9 @@ export default Ember.Component.extend({
   click() {
     Ember.run.later(function() {
       if($('.off-canvas-wrap.move-right')[0]) {
-        $('body').css('overflow', 'hidden');
+        config.cordova.enabled ? $('body').css('position', 'fixed') : $('body').css('overflow', 'hidden');
       } else {
-        $('body').css('overflow', 'auto');
+        config.cordova.enabled ? $('body').css('position', 'inherit') : $('body').css('overflow', 'auto');
       }
     }, 100);
   },
