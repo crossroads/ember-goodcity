@@ -147,7 +147,7 @@ export default Ember.Route.extend(preloadDataMixin, {
     }
   },
 
-  notFoundError(reason) {
+  notFoundError(reason, status) {
     this.get("logger").error(reason);
     this.get("messageBox").alert(this.get("i18n").t(status + "_error"));
   },
@@ -170,7 +170,7 @@ export default Ember.Route.extend(preloadDataMixin, {
       } else if (status === 401) {
         this.unauthorizedError();
       } else if ([403, 404].indexOf(status) >= 0) {
-        this.notFoundError(reason);
+        this.notFoundError(reason, status);
       } else if (status === 0) {
         // status 0 means request was aborted, this could be due to connection failure
         // but can also mean request was manually cancelled
