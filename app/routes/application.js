@@ -27,8 +27,8 @@ export default Ember.Route.extend(preloadDataMixin, {
     });
   },
 
-  isCurrentPathLoginOrAuthenticate(currentPath) {
-    return (currentPath.indexOf("login") >= 0 || currentPath.indexOf("authenticate") >= 0);
+  isUnAuthenticatedPath(currentPath) {
+    return (currentPath.indexOf("login") >= 0 || currentPath.indexOf("authenticate") >= 0 || currentPath.indexOf("pics") >= 0 || currentPath.indexOf("terms_and_conditions") >= 0);
   },
 
   init() {
@@ -36,13 +36,13 @@ export default Ember.Route.extend(preloadDataMixin, {
     var storageHandler = function(object) {
       var currentPath = window.location.href;
       var authToken = window.localStorage.getItem('authToken');
-      if (!authToken && window.location.pathname !== "/" && window.location.pathname !== "/register" && !object.get('isMustLoginAlreadyShown') && !object.isCurrentPathLoginOrAuthenticate(currentPath)) {
+      if (!authToken && window.location.pathname !== "/" && window.location.pathname !== "/register" && !object.get('isMustLoginAlreadyShown') && !object.isUnAuthenticatedPath(currentPath)) {
         object.set('isMustLoginAlreadyShown', true);
         object.store.unloadAll('user_profile');
         object.get('messageBox').alert(object.get("i18n").t('must_login'), () => {
           window.location.reload();
         });
-      } else if (!object.get("isalreadyLoggedinShown") && authToken && !(currentPath.indexOf("offer") >= 0) && object.isCurrentPathLoginOrAuthenticate(currentPath)) {
+      } else if (object.get("isalreadyLoggedinShown") && authToken && !(currentPath.indexOf("offer") >= 0) && object.isUnAuthenticatedPath(currentPath)) {
         object.set("isalreadyLoggedinShown", true);
         object.get('messageBox').alert("Logged in from another window, press ok to refresh.", () => {
           window.location.reload();
