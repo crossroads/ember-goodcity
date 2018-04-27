@@ -40,6 +40,8 @@ export default Ember.Route.extend(preloadDataMixin, {
         object.set('isMustLoginAlreadyShown', true);
         object.store.unloadAll('user_profile');
         object.get('messageBox').alert(object.get("i18n").t('must_login'), () => {
+          object.session.clear();
+          object.store.unloadAll();
           window.location.reload();
         });
       } else if (object.get("isalreadyLoggedinShown") && authToken && !(currentPath.indexOf("offer") >= 0) && object.isUnAuthenticatedPath(currentPath)) {
