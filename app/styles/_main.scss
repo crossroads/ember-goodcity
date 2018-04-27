@@ -497,11 +497,9 @@ input[type="radio"] {
   display: none;
 }
 
-.user-profile {
-  input[type="radio"]:checked + label  {
-    background: $coral-red;
-    border: 1px solid $coral-red;
-  }
+input[type="radio"]:checked + label  {
+  background: $coral-red;
+  border: 1px solid $coral-red;
 }
 
 input[type="checkbox"]:checked + label {
