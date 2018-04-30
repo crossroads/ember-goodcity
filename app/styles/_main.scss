@@ -502,9 +502,11 @@ input[type="radio"]:checked + label  {
   border: 1px solid $coral-red;
 }
 
-input[type="checkbox"]:checked + label {
-  background: $coral-red;
-  border: 1px solid $coral-red;
+.user-profile {
+  input[type="checkbox"]:checked + label {
+    background: $coral-red;
+    border: 1px solid $coral-red;
+  }
 }
 
 .styled-select {
