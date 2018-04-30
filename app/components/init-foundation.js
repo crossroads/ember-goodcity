@@ -12,7 +12,7 @@ export default Ember.Component.extend({
   click() {
     Ember.run.later(function() {
       if($('.off-canvas-wrap.move-right')[0]) {
-        config.cordova.enabled ? $('body').css('position', 'fixed') : $('body').css('overflow', 'hidden');
+        $('body').css('overflow', 'hidden');
       } else {
         config.cordova.enabled ? $('body').css('position', 'inherit') : $('body').css('overflow', 'auto');
       }
