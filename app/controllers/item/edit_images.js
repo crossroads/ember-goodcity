@@ -63,12 +63,6 @@ export default Ember.Controller.extend({
     //then id order. If another image is made favourite then deleted the first image
     //by id order is made favourite which can be second image in list which seems random.
 
-    //Unloading unnecessary images
-    var pkgImages = this.get("item.images").filterBy('packageId');
-    if(pkgImages.length) {
-      pkgImages.forEach(img => this.store.unloadRecord(img));
-    }
-
     //Sort by id ascending except place new images id = 0 at end
     return (this.get("item.images") || Ember.A()).filterBy('itemId').toArray().sort(function(a, b) {
       a = parseInt(a.get("id"), 10);
