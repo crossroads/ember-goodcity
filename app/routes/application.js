@@ -27,8 +27,8 @@ export default Ember.Route.extend(preloadDataMixin, {
     });
   },
 
-  isCurrentPathLoginOrAuthenticate(currentPath) {
-    return (currentPath.indexOf("login") >= 0 || currentPath.indexOf("authenticate") >= 0);
+  isUnAuthenticatedPath(currentPath) {
+    return (currentPath.indexOf("login") >= 0 || currentPath.indexOf("authenticate") >= 0 || currentPath.indexOf("pics") >= 0 || currentPath.indexOf("terms_and_conditions") >= 0);
   },
 
   init() {
@@ -36,13 +36,15 @@ export default Ember.Route.extend(preloadDataMixin, {
     var storageHandler = function(object) {
       var currentPath = window.location.href;
       var authToken = window.localStorage.getItem('authToken');
-      if (!authToken && window.location.pathname !== "/" && window.location.pathname !== "/register" && !object.get('isMustLoginAlreadyShown') && !object.isCurrentPathLoginOrAuthenticate(currentPath)) {
+      if (!authToken && window.location.pathname !== "/" && window.location.pathname !== "/register" && !object.get('isMustLoginAlreadyShown') && !object.isUnAuthenticatedPath(currentPath)) {
         object.set('isMustLoginAlreadyShown', true);
         object.store.unloadAll('user_profile');
         object.get('messageBox').alert(object.get("i18n").t('must_login'), () => {
+          object.session.clear();
+          object.store.unloadAll();
           window.location.reload();
         });
-      } else if (!object.get("isalreadyLoggedinShown") && authToken && !(currentPath.indexOf("offer") >= 0) && this.isCurrentPathLoginOrAuthenticate(currentPath)) {
+      } else if (object.get("isalreadyLoggedinShown") && authToken && !(currentPath.indexOf("offer") >= 0) && object.isUnAuthenticatedPath(currentPath)) {
         object.set("isalreadyLoggedinShown", true);
         object.get('messageBox').alert("Logged in from another window, press ok to refresh.", () => {
           window.location.reload();
@@ -147,7 +149,7 @@ export default Ember.Route.extend(preloadDataMixin, {
     }
   },
 
-  notFoundError(reason) {
+  notFoundError(reason, status) {
     this.get("logger").error(reason);
     this.get("messageBox").alert(this.get("i18n").t(status + "_error"));
   },
@@ -170,11 +172,13 @@ export default Ember.Route.extend(preloadDataMixin, {
       } else if (status === 401) {
         this.unauthorizedError();
       } else if ([403, 404].indexOf(status) >= 0) {
-        this.notFoundError(reason);
+        this.notFoundError(reason, status);
       } else if (status === 0) {
         // status 0 means request was aborted, this could be due to connection failure
         // but can also mean request was manually cancelled
         this.get("messageBox").alert(this.get("i18n").t("offline_error"));
+      } else if (reason.name === "NotFoundError" && reason.code === 8) {
+        return false;
       } else {
         this.somethingWentWrong(reason);
       }

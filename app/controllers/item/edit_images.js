@@ -64,7 +64,7 @@ export default Ember.Controller.extend({
     //by id order is made favourite which can be second image in list which seems random.
 
     //Sort by id ascending except place new images id = 0 at end
-    return (this.get("item.images") || Ember.A()).toArray().sort(function(a, b) {
+    return (this.get("item.images") || Ember.A()).filterBy('itemId').toArray().sort(function(a, b) {
       a = parseInt(a.get("id"), 10);
       b = parseInt(b.get("id"), 10);
       if (a === 0) { return 1; }

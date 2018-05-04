@@ -12,6 +12,7 @@ export default Ember.Component.extend(Ember.TargetActionSupport, {
   tagName: "button",
   attributeBindings: ["disabled"],
   disabled: false,
+  offer: null,
 
   updateDisabled: null,
   disabledOverride: false,
@@ -22,6 +23,9 @@ export default Ember.Component.extend(Ember.TargetActionSupport, {
       this.set("disabled", !online || this.get("disabledOverride"));
     });
     this.updateDisabled();
+    if(this.get("offer")) {
+      this.get("offer.state") === "received" ? this.set("disabled", true) : this.set("disabled", false);
+    }
     window.addEventListener("online", this.updateDisabled);
     window.addEventListener("offline", this.updateDisabled);
   },
