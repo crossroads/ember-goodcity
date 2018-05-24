@@ -123,7 +123,7 @@ export default Ember.Controller.extend({
   },
 
   resync: function() {
-    if ( !navigator.online ) { return false };
+    if ( !navigator.onLine ) { return false };
     var offer_params = this.get("session.isAdminApp") ? { states: ["nondraft"] } : { states: ["for_donor"] };
     this.store.query('offer', offer_params);
   },
