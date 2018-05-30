@@ -171,6 +171,11 @@ export default Ember.Controller.extend({
     var item = Ember.$.extend({}, data.item[type]);
     this.store.normalize(type, item);
 
+    if(type === "designation" || type === "Designation") {
+      this.store.pushPayload(data.item);
+      return false;
+    }
+
     var existingItem = this.store.peekRecord(type, item.id);
 
     // update_store message is sent before response to APP save so ignore
