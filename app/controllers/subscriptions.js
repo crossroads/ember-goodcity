@@ -153,6 +153,7 @@ export default Ember.Controller.extend({
     }
 
     if (this.get("appName") === "app.goodcity") {
+      if(type.toLowerCase() === "designation" && data.operation === "create") { return false; }
       if ((type === "Item" && data.item.Item && data.item.Item.message_ids) || (type === "Offer" && data.item.Offer && data.item.Offer.message_ids)) {
         var message_ids = type === "Item" ? data.item.Item.message_ids : data.item.Offer.message_ids;
         message_ids.forEach(msgId => {
