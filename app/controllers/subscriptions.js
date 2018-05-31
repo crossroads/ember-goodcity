@@ -154,6 +154,7 @@ export default Ember.Controller.extend({
     }
 
     if (this.get("appName") === "app.goodcity") {
+      if(type.toLowerCase() === "designation") { return false; }
       if ((type === "Item" && data.item.Item && data.item.Item.message_ids) || (type === "Offer" && data.item.Offer && data.item.Offer.message_ids)) {
         var message_ids = type === "Item" ? data.item.Item.message_ids : data.item.Offer.message_ids;
         message_ids.forEach(msgId => {
@@ -171,6 +172,11 @@ export default Ember.Controller.extend({
     // messagesUtil in mark message read code below
     var item = Ember.$.extend({}, data.item[type]);
     this.store.normalize(type, item);
+
+    if(type.toLowerCase() === "designation") {
+      this.store.pushPayload(data.item);
+      return false;
+    }
 
     var existingItem = this.store.peekRecord(type, item.id);
 
