@@ -123,6 +123,7 @@ export default Ember.Controller.extend({
   },
 
   resync: function() {
+    if ( !navigator.onLine ) { return false };
     var offer_params = this.get("session.isAdminApp") ? { states: ["nondraft"] } : { states: ["for_donor"] };
     this.store.query('offer', offer_params);
   },
@@ -147,12 +148,17 @@ export default Ember.Controller.extend({
     }
 
     if (this.get("appName") === "admin.goodcity") {
+      if(type.toLowerCase() === "designation") {
+        this.store.pushPayload(data.item);
+        return false;
+      }
       if ((type === "Package" || type === "package") && pkg && pkg.packages_location_ids) {
         type === "Package" ? data.item.Package.packages_location_ids = pkg.packages_location_ids.compact() : data.item.package.packages_location_ids = pkg.packages_location_ids.compact();
       }
     }
 
     if (this.get("appName") === "app.goodcity") {
+      if(type.toLowerCase() === "designation") { return false; }
       if ((type === "Item" && data.item.Item && data.item.Item.message_ids) || (type === "Offer" && data.item.Offer && data.item.Offer.message_ids)) {
         var message_ids = type === "Item" ? data.item.Item.message_ids : data.item.Offer.message_ids;
         message_ids.forEach(msgId => {
@@ -170,6 +176,11 @@ export default Ember.Controller.extend({
     // messagesUtil in mark message read code below
     var item = Ember.$.extend({}, data.item[type]);
     this.store.normalize(type, item);
+
+    if(type.toLowerCase() === "designation") {
+      this.store.pushPayload(data.item);
+      return false;
+    }
 
     var existingItem = this.store.peekRecord(type, item.id);
 
