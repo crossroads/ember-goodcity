@@ -148,6 +148,10 @@ export default Ember.Controller.extend({
     }
 
     if (this.get("appName") === "admin.goodcity") {
+      if(type.toLowerCase() === "designation") {
+        this.store.pushPayload(data.item);
+        return false;
+      }
       if ((type === "Package" || type === "package") && pkg && pkg.packages_location_ids) {
         type === "Package" ? data.item.Package.packages_location_ids = pkg.packages_location_ids.compact() : data.item.package.packages_location_ids = pkg.packages_location_ids.compact();
       }
