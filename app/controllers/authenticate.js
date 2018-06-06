@@ -45,6 +45,7 @@ export default Ember.Controller.extend({
     resendPin() {
       var mobile = this.get('mobile');
       var loadingView = getOwner(this).lookup('component:loading').append();
+      var _this = this;
 
       new AjaxPromise("/auth/send_pin", "POST", null, {mobile: mobile})
         .then(data => {
@@ -53,7 +54,11 @@ export default Ember.Controller.extend({
           this.transitionToRoute('/authenticate');
         })
         .catch(error => {
-          if ([422, 403].indexOf(error.status) >= 0) {
+           if([401].includes(error.status)) {
+             _this.get("messageBox").alert("You are not authorized.", () => {
+              _this.transitionToRoute("/");
+             });
+          } else if ([422, 403].includes(error.status)) {
             Ember.$('#mobile').closest('.mobile').addClass('error');
             return;
           }
