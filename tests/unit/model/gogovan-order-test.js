@@ -2,7 +2,7 @@ import { test, moduleForModel } from 'ember-qunit';
 import Ember from 'ember';
 
 moduleForModel('gogovan_order', 'GogovanOrder Model', {
-  needs: ['model:delivery']
+  needs: ['model:delivery', 'service:i18n']
 });
 
 test('check attributes', function(assert){
