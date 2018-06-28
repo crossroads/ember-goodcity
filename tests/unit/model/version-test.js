@@ -1,6 +1,7 @@
 import { test, moduleForModel } from 'ember-qunit';
 
 moduleForModel('version', 'Version Model', {
+  needs: ['service:i18n']
 });
 
 test('check attributes', function(assert){
