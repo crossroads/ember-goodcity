@@ -6,14 +6,15 @@ export default Ember.Service.extend({
   cordova: Ember.inject.service(),
 
   promptReviewModal() {
-    if(this.get("isMobileApp") && this.get("cordova").isIOS()) {
+    if(this.get("isMobileApp")) {
       AppRate.preferences = {
         displayAppName: config.APP.REVIEW_APP_NAME,
         usesUntilPrompt: 1,
-        promptAgainForEachNewVersion: false,
+        promptAgainForEachNewVersion: true,
         inAppReview: true,
         storeAppURL: {
-          ios: config.APP.APPLE_APP_ID
+          ios: config.APP.APPLE_APP_ID,
+          android: config.APP.ANDROID_APP_URL,
         },
         customLocale: {
           title: "Would you mind rating %@?",
@@ -25,6 +26,17 @@ export default Ember.Service.extend({
           noButtonLabel: "Not really",
           appRatePromptTitle: 'Do you like using %@',
           feedbackPromptTitle: 'Mind giving us some feedback?',
+        },
+        callbacks: {
+          handleNegativeFeedback: function(){
+            console.log("negative feedback registered");
+          },
+          onRateDialogShow: function(){
+            console.log("Rate dilogue shown");
+          },
+          onButtonClicked: function(buttonIndex){
+            console.log("onButtonClicked -> " + buttonIndex + "clicked");
+          }
         }
       };
       AppRate.promptForRating();
