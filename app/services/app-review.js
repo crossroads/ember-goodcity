@@ -4,6 +4,7 @@ import config from '../config/environment';
 export default Ember.Service.extend({
   isMobileApp: config.cordova.enabled,
   cordova: Ember.inject.service(),
+  i18n: Ember.inject.service(),
 
   promptReviewModal() {
     if(this.get("isMobileApp")) {
@@ -17,14 +18,14 @@ export default Ember.Service.extend({
           android: config.APP.ANDROID_APP_URL,
         },
         customLocale: {
-          title: "Would you mind rating %@?",
-          message: "It won’t take more than a minute and helps to promote our app. Thanks for your support!",
+          title: "Rate us!",
+          message: "It won’t take more than a minute and helps to promote our app. Thanks for your support :)",
           cancelButtonLabel: "No, Thanks",
           laterButtonLabel: "Remind Me Later",
-          rateButtonLabel: "Rate It Now",
+          rateButtonLabel: "Sure",
           yesButtonLabel: "Yes!",
           noButtonLabel: "Not really",
-          appRatePromptTitle: 'Do you like using %@',
+          appRatePromptTitle: 'Thank you, We greatly appreciate your kindness and generosity. Give %@ a rating?',
           feedbackPromptTitle: 'Mind giving us some feedback?',
         },
         callbacks: {
