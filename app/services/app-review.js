@@ -7,6 +7,8 @@ export default Ember.Service.extend({
   i18n: Ember.inject.service(),
 
   promptReviewModal() {
+    var _this = this;
+    var i18n = _this.get("i18n");
     if(this.get("isMobileApp")) {
       AppRate.preferences = {
         displayAppName: config.APP.REVIEW_APP_NAME,
@@ -18,15 +20,15 @@ export default Ember.Service.extend({
           android: config.APP.ANDROID_APP_URL,
         },
         customLocale: {
-          title: "Rate us!",
-          message: "It won’t take more than a minute and helps to promote our app. Thanks for your support :)",
-          cancelButtonLabel: "No, Thanks",
-          laterButtonLabel: "Remind Me Later",
-          rateButtonLabel: "Sure",
-          yesButtonLabel: "Yes!",
-          noButtonLabel: "Not really",
-          appRatePromptTitle: 'Thank you, We greatly appreciate your kindness and generosity. Give %@ a rating?',
-          feedbackPromptTitle: 'Mind giving us some feedback?',
+          title: i18n.t("app_review.title"),
+          message: i18n.t("app_review.message"),
+          cancelButtonLabel: i18n.t("app_review.cancel_button_label"),
+          laterButtonLabel: i18n.t("app_review.later_button_label"),
+          rateButtonLabel: i18n.t("app_review.rate_button_label"),
+          yesButtonLabel: i18n.t("app_review.yes_button_label"),
+          noButtonLabel: i18n.t("app_review.no_button_label"),
+          appRatePromptTitle: i18n.t("app_review.app_rate_prompt_title"),
+          feedbackPromptTitle: i18n.t("app_review.feedback_prompt_title"),
         },
         callbacks: {
           handleNegativeFeedback: function(){
@@ -40,7 +42,7 @@ export default Ember.Service.extend({
           }
         }
       };
-      AppRate.promptForRating();
+      AppRate.promptForRating(true);
     }
   }
 });

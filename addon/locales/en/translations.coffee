@@ -51,6 +51,17 @@ I18nTranslationsEn =
   "version": "Version"
   "crossroads_foundation": "Crossroads Foundation"
 
+  "app_review":
+    "title": "Rate us!"
+    "message": "It won’t take more than a minute and helps to promote our app. Thanks for your support :)"
+    "cancel_button_label": "No, Thanks"
+    "later_button_label": "Remind Me Later"
+    "rate_button_label": "Sure"
+    "yes_button_label": "Yes!"
+    "no_button_label": "Not really"
+    "app_rate_prompt_title": "Thank you, We greatly appreciate your kindness and generosity. Give GoodCity a rating?"
+    "feedback_prompt_title": "Mind giving us some feedback?"
+
   "menu":
     "terms": "Terms of Use"
     "policy": "Privacy Policy"
