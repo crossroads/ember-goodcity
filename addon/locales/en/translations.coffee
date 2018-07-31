@@ -6,6 +6,7 @@ I18nTranslationsEn =
   "delete_confirm": "Are you sure? This cannot be undone."
   "online": "Online"
   "not_connected": "Not Connected"
+  "not_now": "Not Now"
 
   "crossroads" : "Crossroads"
   "language": "en"
@@ -141,6 +142,7 @@ I18nTranslationsEn =
 
     "cancel":
       "cancel_title": "Cancel Booking"
+      "cancel_transport": "Cancel Transport"
       "modify_title": "Modify Booking"
       "no_ggv_cancel": "Unfortunately we cannot cancel a confirmed GoGoVan booking for you."
       "no_ggv_modify": "Unfortunately we cannot modify a confirmed GoGoVan booking for you."

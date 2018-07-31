@@ -6,6 +6,7 @@ I18nTranslationsZhTw =
   "delete_confirm": "一旦刪除將無法還原，你確定嗎？"
   "online": "在線"
   "not_connected": "未連線"
+  "not_now": "Not Now"
 
   "crossroads" : "十字路會"
   "language": "繁體中文"
@@ -141,6 +142,7 @@ I18nTranslationsZhTw =
 
     "cancel":
       "cancel_title": "取消預約"
+      "cancel_transport": "Cancel Transport"
       "modify_title": "修改預約"
       "no_ggv_cancel": "我們無法取消已確認的GoGoVan預約，請見諒。"
       "no_ggv_modify": "我們無法修改已確認的GoGoVan預約，請見諒。"
