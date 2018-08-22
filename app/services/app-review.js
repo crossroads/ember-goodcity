@@ -13,7 +13,7 @@ export default Ember.Service.extend({
       AppRate.preferences = {
         displayAppName: config.APP.REVIEW_APP_NAME,
         usesUntilPrompt: 1,
-        promptAgainForEachNewVersion: true,
+        promptAgainForEachNewVersion: false,
         inAppReview: true,
         storeAppURL: {
           ios: config.APP.APPLE_APP_ID,
