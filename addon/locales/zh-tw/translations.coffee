@@ -53,7 +53,7 @@ I18nTranslationsZhTw =
   "crossroads_foundation": "十字路會"
 
   "app_review":
-    "title": "Would you mind rating GoodCity"
+    "title": "Would you mind rating GoodCity?"
     "message": "It won’t take more than a minute and helps to promote our app. Thanks for your support!"
     "cancel_button_label": "No, Thanks"
     "later_button_label": "Remind Me Later"
