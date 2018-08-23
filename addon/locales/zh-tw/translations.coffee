@@ -53,15 +53,15 @@ I18nTranslationsZhTw =
   "crossroads_foundation": "十字路會"
 
   "app_review":
-    "title": "Rate us!" "給我們評分吧!"
-    "message": "It won’t take more than a minute and helps to promote our app. Thanks for your support :)" "不需一分鐘便能幫助推廣我們的應用程式。感謝您的支持:)＂
-    "cancel_button_label": "No, Thanks" "不用了, 謝謝"
-    "later_button_label": "Remind Me Later" "稍後再提醒我"
-    "rate_button_label": "Sure" "好的"
-    "yes_button_label": "Yes!" "是!"
-    "no_button_label": "Not really" "不是"
-    "app_rate_prompt_title": "Thank you, We appreciate your kindness. Give GoodCity a rating?" "謝謝，我們非常感激您的善舉。給好人好巿評分？
-    "feedback_prompt_title": "Mind giving us some feedback?" "請分享閣下的意見。＂
+    "title":"給我們評分吧!"
+    "message": "不需一分鐘便能幫助推廣我們的應用程式。感謝您的支持:)＂
+    "cancel_button_label":"不用了, 謝謝"
+    "later_button_label":"稍後再提醒我"
+    "rate_button_label":"好的"
+    "yes_button_label":"是!"
+    "no_button_label":"不是"
+    "app_rate_prompt_title":"謝謝，我們非常感激您的善心和慷慨。要給好人好巿評分嗎？
+    "feedback_prompt_title":"請分享閣下的意見。＂
 
   "menu":
     "terms": "使用條款"
