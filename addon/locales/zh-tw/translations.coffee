@@ -53,14 +53,14 @@ I18nTranslationsZhTw =
   "crossroads_foundation": "十字路會"
 
   "app_review":
-    "title": "Rate us!"
-    "message": "It won’t take more than a minute and helps to promote our app. Thanks for your support :)"
+    "title": "Would you mind rating GoodCity"
+    "message": "It won’t take more than a minute and helps to promote our app. Thanks for your support!"
     "cancel_button_label": "No, Thanks"
     "later_button_label": "Remind Me Later"
-    "rate_button_label": "Sure"
+    "rate_button_label": "Rate It Now"
     "yes_button_label": "Yes!"
     "no_button_label": "Not really"
-    "app_rate_prompt_title": "Thank you, We greatly appreciate your kindness and generosity. Give GoodCity a rating?"
+    "app_rate_prompt_title": "Do you like using GoodCity?"
     "feedback_prompt_title": "Mind giving us some feedback?"
 
   "menu":
