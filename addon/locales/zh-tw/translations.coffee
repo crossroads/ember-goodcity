@@ -54,14 +54,14 @@ I18nTranslationsZhTw =
 
   "app_review":
     "title":"給我們評分吧!"
-    "message": "不需一分鐘便能幫助推廣我們的應用程式。感謝您的支持:)＂
-    "cancel_button_label":"不用了, 謝謝"
-    "later_button_label":"稍後再提醒我"
-    "rate_button_label":"好的"
-    "yes_button_label":"是!"
-    "no_button_label":"不是"
+    "message": "不需一分鐘便能幫助推廣我們的應用程式。感謝您的支持 :)"
+    "cancel_button_label": "不用了, 謝謝"
+    "later_button_label": "稍後再提醒我"
+    "rate_button_label": "好的"
+    "yes_button_label": "是!"
+    "no_button_label": "不是"
     "app_rate_prompt_title":"謝謝，我們非常感激您的善心和慷慨。要給好人好巿評分嗎？"
-    "feedback_prompt_title":"請分享閣下的意見。＂
+    "feedback_prompt_title":"請分享閣下的意見。"
 
   "menu":
     "terms": "使用條款"
