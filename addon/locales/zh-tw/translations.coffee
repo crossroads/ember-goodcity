@@ -6,6 +6,7 @@ I18nTranslationsZhTw =
   "delete_confirm": "一旦刪除將無法還原，你確定嗎？"
   "online": "在線"
   "not_connected": "未連線"
+  "not_now": "Not Now"
 
   "crossroads" : "十字路會"
   "language": "繁體中文"
@@ -50,6 +51,17 @@ I18nTranslationsZhTw =
   "items_text": "物資"
   "version": "版本"
   "crossroads_foundation": "十字路會"
+
+  "app_review":
+    "title":"給我們評分吧!"
+    "message": "不需一分鐘便能幫助推廣我們的應用程式。感謝您的支持 :)"
+    "cancel_button_label": "不用了, 謝謝"
+    "later_button_label": "稍後再提醒我"
+    "rate_button_label": "好的"
+    "yes_button_label": "是!"
+    "no_button_label": "不是"
+    "app_rate_prompt_title":"謝謝，我們非常感激您的善心和慷慨。要給好人好巿評分嗎？"
+    "feedback_prompt_title":"請分享閣下的意見。"
 
   "menu":
     "terms": "使用條款"
@@ -130,6 +142,7 @@ I18nTranslationsZhTw =
 
     "cancel":
       "cancel_title": "取消預約"
+      "cancel_transport": "Cancel Transport"
       "modify_title": "修改預約"
       "no_ggv_cancel": "我們無法取消已確認的GoGoVan預約，請見諒。"
       "no_ggv_modify": "我們無法修改已確認的GoGoVan預約，請見諒。"

@@ -6,6 +6,7 @@ I18nTranslationsEn =
   "delete_confirm": "Are you sure? This cannot be undone."
   "online": "Online"
   "not_connected": "Not Connected"
+  "not_now": "Not Now"
 
   "crossroads" : "Crossroads"
   "language": "en"
@@ -50,6 +51,17 @@ I18nTranslationsEn =
   "items_text": "items"
   "version": "Version"
   "crossroads_foundation": "Crossroads Foundation"
+
+  "app_review":
+    "title": "Rate us!"
+    "message": "It won’t take more than a minute and helps to promote our app. Thanks for your support :)"
+    "cancel_button_label": "No, Thanks"
+    "later_button_label": "Remind Me Later"
+    "rate_button_label": "Sure"
+    "yes_button_label": "Yes!"
+    "no_button_label": "Not really"
+    "app_rate_prompt_title": "Thank you, We appreciate your kindness. Give GoodCity a rating?"
+    "feedback_prompt_title": "Mind giving us some feedback?"
 
   "menu":
     "terms": "Terms of Use"
@@ -130,6 +142,7 @@ I18nTranslationsEn =
 
     "cancel":
       "cancel_title": "Cancel Booking"
+      "cancel_transport": "Cancel Transport"
       "modify_title": "Modify Booking"
       "no_ggv_cancel": "Unfortunately we cannot cancel a confirmed GoGoVan booking for you."
       "no_ggv_modify": "Unfortunately we cannot modify a confirmed GoGoVan booking for you."

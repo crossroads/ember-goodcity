@@ -52,7 +52,8 @@ export default Ember.Controller.extend({
 
     removeDelivery(delivery) {
       var _this = this;
-      this.get("messageBox").confirm(this.get("i18n").t("delete_confirm"), () => {
+
+      this.get("messageBox").custom(this.get("i18n").t("delete_confirm"), this.get("i18n").t("delivery.cancel.cancel_transport"), () => {
         var loadingView = _this.container.lookup('component:loading').append();
         var offer = delivery.get('offer');
 
@@ -63,7 +64,7 @@ export default Ember.Controller.extend({
             _this.transitionToRoute(route, offer);
           })
           .finally(() => loadingView.destroy());
-      });
+      }, this.get("i18n").t("not_now"), null);
     }
   }
 });
