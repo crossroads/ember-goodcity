@@ -1,4 +1,4 @@
-# Shared.goodcity [![Circle CI](https://circleci.com/gh/crossroads/shared.goodcity.svg?style=svg)](https://circleci.com/gh/crossroads/shared.goodcity)
+# Shared.goodcity [![Circle CI](https://circleci.com/gh/crossroads/shared.goodcity.svg?style=svg)](https://circleci.com/gh/crossroads/shared.goodcity) [![Greenkeeper badge](https://badges.greenkeeper.io/crossroads/shared.goodcity.svg)](https://greenkeeper.io/)
 
 This Ember addon forms the shared code for the [GoodCity Admin](https://github.com/crossroads/admin.goodcity) and [GoodCity App](https://github.com/crossroads/app.goodcity) projects.
 
