@@ -50,8 +50,8 @@ export default Ember.Component.extend({
 
     var maxlength = parseInt(this.get("maxlength"), 10);
     if(total_count > maxlength) {
-      var text = this.get('inputControl.value');
-      this.set('inputControl.value', text.substring(0, maxlength-special_chars_length));
+      var text = this.value;
+      this.set('value', text.substring(0, maxlength-special_chars_length));
     }
 
     return total_count;
