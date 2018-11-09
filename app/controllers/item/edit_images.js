@@ -150,11 +150,15 @@ export default Ember.Controller.extend({
       .then(() => {
         if (withoutImage) {
           loadingView.destroy();
-          _this.transitionToRoute("review_item.accept", _this.get('offer'), item);
+          if (this.get('session.isAdminApp')) {
+            _this.transitionToRoute("review_item.accept", _this.get('offer'), item);
+          } else {
+            _this.send("onNewItem", item);
+          }
         } else {
           this.get("store").createRecord('image', { cloudinaryId: identifier, item: item, favourite: true }).save()
             .then(function() {
-              _this.send("newItem", item);
+              _this.send("onNewItem", item);
               loadingView.destroy();
             });
         }
@@ -243,15 +247,18 @@ export default Ember.Controller.extend({
       }
     },
 
-    //only used for admin
     nextWithoutImage() {
       var item = this.get("item");
       if (item) {
-        this.transitionToRoute("review_item.accept", this.get('offer'), item);
-      } else {
-        var defaultDonorCondition = this.get("store").peekAll("donorCondition").sortBy("id").get("firstObject");
-        this.createItem(defaultDonorCondition, true);
+        if (this.get('session.isAdmingApp')) {
+          return this.transitionToRoute("review_item.accept", this.get('offer'), item);
+        }
+        else if (!item.get('isOffer')) {
+          return this.transitionToRoute("item.edit", item.get("id"));
+        }
       }
+      const defaultDonorCondition = this.get("store").peekAll("donorCondition").sortBy("id").get("firstObject");
+      this.createItem(defaultDonorCondition, true);
     },
 
     back() {
@@ -266,7 +273,7 @@ export default Ember.Controller.extend({
       }
     },
 
-    newItem(item) {
+    onNewItem(item) {
       if (this.get("session.isAdminApp")) {
         this.transitionToRoute("item.edit_images", item.get("id"));
       } else {
@@ -343,8 +350,13 @@ export default Ember.Controller.extend({
 
         this.initActionSheet(onSuccess);
       } else {
-
-        // For web application
+        // On the browser
+        if (this.get('item.isOffer')) {
+          // On the offer page we allow the user to move to the item edition page first
+          // and then upload images from there
+          return this.send('nextWithoutImage');
+        }
+        // On the item edition page we trigger the file selection
         if (navigator.userAgent.match(/iemobile/i)) {
           //don't know why but on windows phone need to click twice in quick succession
           //for dialog to appear
