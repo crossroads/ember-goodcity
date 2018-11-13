@@ -10,6 +10,7 @@ export default Ember.Component.extend({
   btn2Text: "",
   btn2Callback: () => {},
   displayCloseLink: false,
+  router: Ember.inject.service('-routing'),
 
   isVisible: false,
 
@@ -19,6 +20,13 @@ export default Ember.Component.extend({
     } else {
       this.destroy();
     }
+  },
+
+  init() {
+    this._super(...arguments);
+    this.router.addObserver('currentRouteName', () => {
+      this.close();
+    });
   },
 
   actions: {
