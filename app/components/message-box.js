@@ -24,9 +24,7 @@ export default Ember.Component.extend({
 
   init() {
     this._super(...arguments);
-    this.router.addObserver('currentRouteName', () => {
-      this.close();
-    });
+    this.router.addObserver('currentRouteName', () => this.close() );
   },
 
   actions: {
