@@ -41,7 +41,7 @@ export default Ember.Service.extend({
         },
         callbacks: {
           handleNegativeFeedback: function(){
-            console.log("negative feedback registered");
+            window.open('mailto:contact@goodcity.hk','_system');
           },
           onRateDialogShow: function(){
             console.log("Rate dilogue shown");
