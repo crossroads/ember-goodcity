@@ -88,18 +88,18 @@ jobs:
           name: Rebuild Donor app build
           command: |
             curl \
-              -H "Accept: application/json" \
+              --header "Accept: application/json" \
               --header "Content-Type: application/json" \
               --data '{"branch":$BRANCH_NAME}' \
-              --request POST "https://circleci.com/api/v1.1/project/github/crossroads/app.goodcity/build?circle-token=$circle_token"
+              --request POST https://circleci.com/api/v1.1/project/github/crossroads/app.goodcity/build?circle-token=$circle_token
       - run:
           name: Rebuild Admin app build
           command: |
             curl \
-              -H "Accept: application/json" \
+              --header "Accept: application/json" \
               --header "Content-Type: application/json" \
               --data '{"branch":$BRANCH_NAME}' \
-              --request POST "https://circleci.com/api/v1.1/project/github/crossroads/admin.goodcity/build?circle-token=$circle_token"
+              --request POST https://circleci.com/api/v1.1/project/github/crossroads/admin.goodcity/build?circle-token=$circle_token
 
 workflows:
     version: 2
