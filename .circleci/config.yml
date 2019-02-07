@@ -83,12 +83,13 @@ jobs:
       - run:
           name: Setup Environment variables
           command: |
-            echo 'export BRANCH_NAME=$(if [ "$CIRCLE_BRANCH" == "live" ]; then echo live; else echo master; fi)' >> $BASH_ENV
+            echo 'export BRANCH_NAME=$(if [ "$CIRCLE_BRANCH" == "live" ]; then echo "live"; else echo "master"; fi)' >> $BASH_ENV
+            echo "Building for staging (true/false): $BRANCH_NAME"
       - run:
           name: Rebuild Admin and Donor build
           command: |
-            curl -X POST --header "Content-Type: application/json" -d '{"branch":"$BRANCH_NAME"}' https://circleci.com/api/v1.1/project/github/crossroads/admin.goodcity/build?circle-token=$circle_token
-            curl -X POST --header "Content-Type: application/json" -d '{"branch":"$BRANCH_NAME"}' https://circleci.com/api/v1.1/project/github/crossroads/app.goodcity/build?circle-token=$circle_token
+            curl -X POST --header "Content-Type: application/json" -d '{"branch":$BRANCH_NAME}' https://circleci.com/api/v1.1/project/github/crossroads/admin.goodcity/build?circle-token=$circle_token
+            curl -X POST --header "Content-Type: application/json" -d '{"branch":$BRANCH_NAME}' https://circleci.com/api/v1.1/project/github/crossroads/app.goodcity/build?circle-token=$circle_token
 
 workflows:
     version: 2
