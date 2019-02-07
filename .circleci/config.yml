@@ -88,16 +88,16 @@ jobs:
           name: Rebuild Donor app build
           command: |
             curl \
-            -h "Content-Type: application/json" \
+            -H "Content-Type: application/json" \
             -d '{"branch":$BRANCH_NAME}' \
-            -r POST "https://circleci.com/api/v1.1/project/github/crossroads/app.goodcity/build?circle-token=$circle_token"
+            -X POST "https://circleci.com/api/v1.1/project/github/crossroads/app.goodcity/build?circle-token=$circle_token"
       - run:
           name: Rebuild Admin app build
           command: |
             curl \
-            -h '"Content-Type: application/json"' \
+            -H '"Content-Type: application/json"' \
             -d '{"branch":$BRANCH_NAME}' \
-            -r POST "https://circleci.com/api/v1.1/project/github/crossroads/admin.goodcity/build?circle-token=$circle_token"
+            -X POST "https://circleci.com/api/v1.1/project/github/crossroads/admin.goodcity/build?circle-token=$circle_token"
 
 workflows:
     version: 2
