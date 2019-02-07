@@ -85,11 +85,19 @@ jobs:
           command: |
             echo 'export BRANCH_NAME=$(if [ "$CIRCLE_BRANCH" == "live" ]; then echo live; else echo master; fi)' >> $BASH_ENV
       - run:
-          name: Rebuild Admin and Donor build
+          name: Rebuild Donor app build
           command: |
-            echo "Building for branch: $BRANCH_NAME"
-            curl -X POST --header "Content-Type: application/json" -d '{"branch":$BRANCH_NAME}' https://circleci.com/api/v1.1/project/github/crossroads/admin.goodcity/build?circle-token=$circle_token
-            curl -X POST --header "Content-Type: application/json" -d '{"branch":$BRANCH_NAME}' https://circleci.com/api/v1.1/project/github/crossroads/app.goodcity/build?circle-token=$circle_token
+            curl \
+            -h "Content-Type: application/json" \
+            -d '{"branch":$BRANCH_NAME}' \
+            -r POST "https://circleci.com/api/v1.1/project/github/crossroads/app.goodcity/build?circle-token=$circle_token"
+      - run:
+          name: Rebuild Admin app build
+          command: |
+            curl \
+            -h '"Content-Type: application/json"' \
+            -d '{"branch":$BRANCH_NAME}' \
+            -r POST "https://circleci.com/api/v1.1/project/github/crossroads/admin.goodcity/build?circle-token=$circle_token"
 
 workflows:
     version: 2
