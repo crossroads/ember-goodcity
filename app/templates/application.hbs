@@ -2,6 +2,15 @@
   {{outlet "internet_call_status"}}
   {{outlet "notifications"}}
   {{outlet "notification_link"}}
+  {{smart-banner
+    appIdAndroid = app_id
+    appIdIOS = ios_app_id
+    openAfterClose = 7
+    openAfterVisit = false
+    iconUrl = appIcon.imageUrl
+    title = appIcon.appTitle
+    description = 'Crossroads'
+  }}
   {{outlet}}
 {{/init-foundation}}
 

@@ -8,6 +8,7 @@ export default Ember.Controller.extend({
   config,
 
   app_id: config.APP.ANDROID_APP_ID,
+  ios_app_id: config.APP.IOS_APP_ID,
 
   initSubscriptions: Ember.on('init', function() {
     if (this.session.get("isLoggedIn")) {
@@ -15,6 +16,13 @@ export default Ember.Controller.extend({
     }
   }),
 
+  appIcon: Ember.computed('config', function() {
+    if (config.APP.NAME === 'app.goodcity') {
+      return {imageUrl: 'assets/images/donor.png', appTitle: 'GoodCity'};
+    } else {
+      return {imageUrl: 'assets/images/admin.png', appTitle: 'Admin'};
+    }
+  }),
   supportGCLink: Ember.computed('session.language', function() {
     return this.get('session.language') === 'zh-tw' ? "https://www.goodcity.hk/get_involved_zh.html" : "https://www.goodcity.hk/get_involved.html";
   }),
@@ -46,7 +54,7 @@ export default Ember.Controller.extend({
 
     rateApp() {
       if (this.get("cordova").isIOS()) {
-        this.set("app_id", config.APP.IOS_APP_ID);
+        this.set("app_id", this.get('ios_app_id'));
       }
       LaunchReview.launch(this.get("app_id"));
     }
