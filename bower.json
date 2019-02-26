@@ -10,5 +10,8 @@
   },
   "resolutions": {
     "ember": "2.13.0"
+  },
+  "devDependencies": {
+    "localforage": "^1.4.2"
   }
 }
