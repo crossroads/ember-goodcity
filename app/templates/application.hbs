@@ -1,7 +1,4 @@
 {{#init-foundation}}
-  {{outlet "internet_call_status"}}
-  {{outlet "notifications"}}
-  {{outlet "notification_link"}}
   {{#unless isMobileApp}}
     {{smart-banner
       appIdAndroid = app_id
@@ -13,6 +10,9 @@
       description = 'Crossroads'
     }}
   {{/unless}}
+  {{outlet "internet_call_status"}}
+  {{outlet "notifications"}}
+  {{outlet "notification_link"}}
   {{outlet}}
 {{/init-foundation}}
 
