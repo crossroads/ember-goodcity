@@ -8,6 +8,9 @@ export default Ember.Controller.extend({
   config,
 
   app_id: config.APP.ANDROID_APP_ID,
+  ios_app_id: config.APP.IOS_APP_ID,
+  appTitle: config.APP.TITLE,
+  bannerImage: config.APP.BANNER_IMAGE,
 
   initSubscriptions: Ember.on('init', function() {
     if (this.session.get("isLoggedIn")) {
@@ -46,7 +49,7 @@ export default Ember.Controller.extend({
 
     rateApp() {
       if (this.get("cordova").isIOS()) {
-        this.set("app_id", config.APP.IOS_APP_ID);
+        this.set("app_id", this.get('ios_app_id'));
       }
       LaunchReview.launch(this.get("app_id"));
     }

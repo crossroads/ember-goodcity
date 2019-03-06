@@ -23,7 +23,7 @@ export default Ember.Controller.extend({
   retrieveNotification: function(index) {
     // not sure why but model.firstObject is undefined when there's one notification
     var notification = this.get("model") && this.get("model")[index || 0];
-    if (!notification) {
+    if (!notification || notification.category === "new_order" || notification.order_id) {
       return null;
     }
 
