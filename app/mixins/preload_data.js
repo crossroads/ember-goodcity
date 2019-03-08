@@ -25,7 +25,7 @@ export default Ember.Mixin.create({
       );
 
       var offer_params = this.session.get("isAdminApp") ?
-        { states: ["nondraft"] }:
+        { states: ["nondraft"], summarize: true }:
         { states: ["for_donor"] };
       promises.push(
         this.store.query('offer', offer_params)
