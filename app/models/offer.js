@@ -26,6 +26,7 @@ export default DS.Model.extend({
   startReceivingAt: attr('date'),
   cancelReason: attr('string'),
   inactiveAt: attr('date'),
+  displayImageId: attr('number'),
 
   gogovanTransport: belongsTo('gogovan_transport', { async: false }),
   crossroadsTransport: belongsTo('crossroads_transport', { async: false }),
@@ -40,6 +41,7 @@ export default DS.Model.extend({
   reviewedBy: belongsTo('user', { async: false }),
   closedBy: belongsTo('user', { async: false }),
   receivedBy: belongsTo('user', { async: false }),
+  displayImage: belongsTo('image', { async: false }),
 
   // User details
   userName: attr('string'),
@@ -134,7 +136,11 @@ export default DS.Model.extend({
     return this.get('needReview') && (rejectedItems.get('length') === this.get('itemCount'));
   }),
 
-  displayImageUrl: Ember.computed('items.@each.displayImageUrl', function() {
+  displayImageUrl: Ember.computed('displayImage', 'items.@each.displayImageUrl', function() {
+    let dImage = this.get('displayImage');
+    if (dImage) {
+      return dImage.get('thumbImageUrl');
+    }
     return this.get("activeItems.firstObject.displayImageUrl") || "assets/images/default_item.jpg";
   }),
 
