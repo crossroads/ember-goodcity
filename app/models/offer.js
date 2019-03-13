@@ -7,7 +7,7 @@ var attr = DS.attr,
 
 function createCounterOf(collection, opts = {}) {
   let { filter, fallbackProp } = opts;
-  return Ember.computed(fallbackProp, `${collection}.@each.state`, function() {
+  let computer = function() {
     let records = this.get(collection);
     let hasRecords = records && records.length;
 
@@ -19,7 +19,12 @@ function createCounterOf(collection, opts = {}) {
       records = records.filterBy(key, value);
     }
     return records.length;
-  });
+  };
+
+  if (fallbackProp) {
+    return Ember.computed(fallbackProp, `${collection}.@each.state`, computer);
+  }
+  return Ember.computed(`${collection}.@each.state`, computer);
 }
 
 export default DS.Model.extend({
