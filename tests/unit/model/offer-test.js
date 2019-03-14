@@ -2,7 +2,7 @@ import { test, moduleForModel } from 'ember-qunit';
 import Ember from 'ember';
 
 moduleForModel('offer', 'Offer Model', {
-  needs: ['model:gogovanTransport', 'model:crossroadsTransport', 'model:cancellationReason', 'model:item', 'model:message', 'model:delivery', 'model:user', 'service:i18n']
+  needs: ['model:gogovanTransport', 'model:crossroadsTransport', 'model:cancellationReason', 'model:item', 'model:image', 'model:message', 'model:delivery', 'model:user', 'service:i18n']
 });
 
 test('check attributes', function(assert){

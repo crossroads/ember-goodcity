@@ -19,7 +19,7 @@ export default Ember.Controller.extend({
   }),
 
   supportGCLink: Ember.computed('session.language', function() {
-    return this.get('session.language') === 'zh-tw' ? "https://www.goodcity.hk/get_involved_zh.html" : "https://www.goodcity.hk/get_involved.html";
+    return this.get('session.language') === 'zh-tw' ? "https://www.crossroads.org.hk/zh-hant/home/donate-funds/" : "https://www.crossroads.org.hk/home/donate-funds/";
   }),
 
   appVersion: Ember.computed(function() {
