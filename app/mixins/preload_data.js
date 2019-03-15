@@ -3,6 +3,8 @@ import AjaxPromise from "../utils/ajax-promise";
 import config from "../config/environment";
 
 export default Ember.Mixin.create({
+  messages: Ember.inject.service(),
+
   preloadData(includePublicTypes) {
     var promises = [];
     var isDonorApp = this.get("session.isDonorApp");
@@ -48,26 +50,8 @@ export default Ember.Mixin.create({
   runBackgroundTasks() {
     // We don't wait for the following tasks to return
     if (this.session.get("isAdminApp")) {
-      this.loadUnreadMessages();
+      this.get("messages").fetchUnreadMessages();
     }
-  },
-
-  loadUnreadMessages() {
-    let batchSize = 20;
-    let offerIds = this.store.peekAll("offer").mapBy("id");
-    let promises = [];
-
-    while (offerIds.length) {
-      let batch = offerIds.splice(0, batchSize);
-      promises.push(
-        this.store.query("message", {
-          state: "unread",
-          offer_id: batch.join(",")
-        })
-      );
-    }
-
-    return Ember.RSVP.all(promises);
   },
 
   loadStaticData(includePublicTypes) {
