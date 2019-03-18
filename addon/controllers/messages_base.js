@@ -32,7 +32,7 @@ export default Ember.Controller.extend({
           .filterBy("offerId", this.get("offer.id"))
           .filterBy("item", null);
     return messages.filter(m => {
-      return !!m.get("isPrivate") === this.get("isPrivate");
+      return Boolean(m.get("isPrivate")) === this.get("isPrivate");
     });
   }),
 
