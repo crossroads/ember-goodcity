@@ -31,7 +31,9 @@ export default Ember.Controller.extend({
       messages
           .filterBy("offerId", this.get("offer.id"))
           .filterBy("item", null);
-    return messages.filterBy("isPrivate", this.get("isPrivate"));
+    return messages.filter(m => {
+      return !!m.get("isPrivate") === this.get("isPrivate");
+    });
   }),
 
   messagesAndVersions: Ember.computed(
