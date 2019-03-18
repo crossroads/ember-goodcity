@@ -133,6 +133,7 @@ export default Ember.Controller.extend({
       this.set("inProgress", true);
       var values = this.getProperties("body", "offer", "item", "isPrivate");
       values.itemId = this.get("item.id");
+      values.offerId = this.get("offer.id");
       values.createdAt = new Date();
       values.sender = this.store.peekRecord(
         "user",
