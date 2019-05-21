@@ -66,6 +66,7 @@
     "goodcity"
   ],
   "dependencies": {
+    "cryptiles": "^4.1.2",
     "ember-cli-babel": "^5.1.6",
     "ember-cli-coffeescript": "^1.13.2",
     "ember-smart-banner": "0.1.3",
