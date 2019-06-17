@@ -9,7 +9,6 @@ export default Ember.Route.extend(preloadDataMixin, {
   isOfflineErrAlreadyShown: false,
   logger: Ember.inject.service(),
   messageBox: Ember.inject.service(),
-  isMustLoginAlreadyShown: false,
   isalreadyLoggedinShown: false,
 
   _loadDataStore: function() {
@@ -36,14 +35,11 @@ export default Ember.Route.extend(preloadDataMixin, {
     var storageHandler = function(object) {
       var currentPath = window.location.href;
       var authToken = window.localStorage.getItem('authToken');
-      if (!authToken && window.location.pathname !== "/" && window.location.pathname !== "/register" && !object.get('isMustLoginAlreadyShown') && !object.isUnAuthenticatedPath(currentPath)) {
-        object.set('isMustLoginAlreadyShown', true);
+      if (!authToken && window.location.pathname !== "/" && window.location.pathname !== "/register" && !object.isUnAuthenticatedPath(currentPath)) {
         object.store.unloadAll('user_profile');
-        object.get('messageBox').alert(object.get("i18n").t('must_login'), () => {
-          object.session.clear();
-          object.store.unloadAll();
-          window.location.reload();
-        });
+        object.session.clear();
+        object.store.unloadAll();
+        window.location.reload();
       } else if (object.get("isalreadyLoggedinShown") && authToken && !(currentPath.indexOf("offer") >= 0) && object.isUnAuthenticatedPath(currentPath)) {
         object.set("isalreadyLoggedinShown", true);
         object.get('messageBox').alert("Logged in from another window, press ok to refresh.", () => {
