@@ -38,6 +38,7 @@ export default DS.Model.extend({
 	saleable: attr('boolean'),
 	estimatedSize: attr('string'),
 	notes: attr('string'),
+	createdById: attr('string'),
 	createdAt: attr('date'),
 	updatedAt: attr('date'),
 	submittedAt: attr('date'),
