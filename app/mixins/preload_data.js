@@ -29,8 +29,12 @@ export default Ember.Mixin.create({
         })
       );
 
+      var offer_params = this.session.get("isAdminApp")
+        ? { states: ["nondraft"], summarize: true }
+        : { states: ["for_donor"] };
+      promises.push(this.store.query("offer", offer_params));
+
       if (isDonorApp) {
-        promises.push(this.store.query("offer", { states: ["for_donor"] }));
         promises = promises.concat(
           retrieve(config.APP.PRELOAD_AUTHORIZED_TYPES)
         );
@@ -38,7 +42,7 @@ export default Ember.Mixin.create({
     }
 
     return Ember.RSVP.all(promises).then(results => {
-      // this.runBackgroundTasks();
+      this.runBackgroundTasks();
       return results;
     });
   },
