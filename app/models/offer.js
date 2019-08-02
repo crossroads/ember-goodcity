@@ -52,10 +52,12 @@ export default DS.Model.extend({
 	cancelReason: attr('string'),
 	inactiveAt: attr('date'),
 	displayImageCloudinaryId: attr('string'),
+	companyId: attr('string'),
 
 	gogovanTransport: belongsTo('gogovan_transport', { async: false }),
 	crossroadsTransport: belongsTo('crossroads_transport', { async: false }),
 	cancellationReason: belongsTo('cancellation_reason', { async: false }),
+	company: belongsTo('company', { async: false }),
 
 	items: hasMany('item', { async: false }),
 	messages: hasMany('message', { async: true }),
