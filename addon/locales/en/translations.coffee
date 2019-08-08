@@ -42,7 +42,6 @@ I18nTranslationsEn =
   "okay": "Okay"
   "cancel": "Cancel"
   "save": "Save"
-  "must_login": "You must login!"
   "unexpected_error": "Something went wrong"
   "all": "All"
   "thank_you": "Thank you"

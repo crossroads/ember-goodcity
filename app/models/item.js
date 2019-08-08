@@ -96,7 +96,7 @@ export default DS.Model.extend({
   }),
 
   // last message
-  lastMessage: Ember.computed('messages.[]', function(){
+  lastMessage: Ember.computed('messages.[]', 'messages.@each.body', function(){
     return this.get('messages').sortBy('createdAt').get('lastObject');
   }),
 

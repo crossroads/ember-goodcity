@@ -42,7 +42,6 @@ I18nTranslationsZhTw =
   "okay": "確定"
   "cancel": "取消"
   "save": "儲存"
-  "must_login": "請先登入"
   "unexpected_error": "出錯"
   "all": "全部"
   "thank_you": "謝謝"
