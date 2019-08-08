@@ -8,6 +8,7 @@ export default Ember.Mixin.create({
   preloadData(includePublicTypes) {
     var promises = [];
     var isDonorApp = this.get("session.isDonorApp");
+    var isAdminApp = this.get("session.isAdminApp");
 
     var retrieve = types =>
       types.map(type => this.store.findAll(type, { reload: true }));
@@ -32,26 +33,21 @@ export default Ember.Mixin.create({
       var offer_params = this.session.get("isAdminApp")
         ? { states: ["nondraft"], summarize: true }
         : { states: ["for_donor"] };
-      promises.push(this.store.query("offer", offer_params));
 
       if (isDonorApp) {
         promises = promises.concat(
           retrieve(config.APP.PRELOAD_AUTHORIZED_TYPES)
         );
+      } else if (isAdminApp) {
+        promises.push(
+          this.get("messages").fetchUnreadMessageCount()
+        );
       }
     }
 
     return Ember.RSVP.all(promises).then(results => {
-      this.runBackgroundTasks();
       return results;
     });
-  },
-
-  runBackgroundTasks() {
-    // We don't wait for the following tasks to return
-    if (this.session.get("isAdminApp")) {
-      this.get("messages").fetchUnreadMessages();
-    }
   },
 
   loadStaticData(includePublicTypes) {
