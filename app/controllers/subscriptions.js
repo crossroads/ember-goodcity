@@ -8,7 +8,7 @@ function run(func) {
   }
 }
 
-export default Ember.Controller.extend({
+export default Ember.Controller.extend(Ember.Evented, {
 
   notifications: Ember.inject.controller(),
   socket: null,
@@ -17,7 +17,6 @@ export default Ember.Controller.extend({
   deviceId: Math.random().toString().substring(2),
   logger: Ember.inject.service(),
   i18n: Ember.inject.service(),
-  messagesUtil: Ember.inject.service("messages"),
   appName: config.APP.NAME,
   status: {
     online: false,
@@ -203,38 +202,8 @@ export default Ember.Controller.extend({
       this.store.unloadRecord(existingItem);
     }
 
+    this.trigger(`${data.operation}:${type}`, item);
+
     run(success);
-
-    // mark message as read if message will appear in current view
-    if (type === "message") {
-      var router = this.get("target");
-      var currentUrl = window.location.href.split("#").get("lastObject");
-
-      var messageRoute = this.get("messagesUtil").getRoute(data.item[type]);
-      var messageUrl = router.generate.apply(router, messageRoute);
-      messageUrl = messageUrl.split("#").get("lastObject");
-
-      if (currentUrl.indexOf(messageUrl) >= 0) {
-        var message = this.store.peekRecord("message", item.id);
-        if (message && !message.get("isRead")) {
-          this.get("messagesUtil").markRead(message);
-
-          var scrollOffset;
-          if (Ember.$(".message-textbar").length > 0) {
-            scrollOffset = Ember.$(document).height();
-          }
-
-          var screenHeight = document.documentElement.clientHeight;
-          var pageHeight = document.documentElement.scrollHeight;
-
-          if (scrollOffset && pageHeight > screenHeight) {
-            Ember.run.later(this, function() {
-              window.scrollTo(0, scrollOffset);
-            });
-          }
-
-        }
-      }
-    }
   }
 });
