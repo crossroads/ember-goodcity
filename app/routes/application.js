@@ -189,9 +189,14 @@ export default Ember.Route.extend(preloadDataMixin, {
       window.location.reload();
     },
     loading() {
-      Ember.$(".loading-indicator").remove();
-      var view = getOwner(this).lookup('component:loading').append();
-      this.router.one('didTransition', view, 'destroy');
+      if (this._loadingView) {
+        return;
+      }
+      this._loadingView = getOwner(this).lookup('component:loading').append();
+      this.router.one('didTransition', () => {
+        this._loadingView.destroy();
+        this._loadingView = null;
+      });
     },
     // this is hopefully only triggered from promises from routes
     // so in this scenario redirect to home for 404

@@ -45,9 +45,7 @@ export default Ember.Mixin.create({
       }
     }
 
-    return Ember.RSVP.all(promises).then(results => {
-      return results;
-    });
+    return Ember.RSVP.all(promises);
   },
 
   loadStaticData(includePublicTypes) {
