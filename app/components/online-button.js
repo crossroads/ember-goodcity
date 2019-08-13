@@ -9,7 +9,6 @@ import Ember from "ember";
  */
 
 export default Ember.Component.extend(Ember.TargetActionSupport, {
-  tagName: "button",
   attributeBindings: ["disabled"],
   disabled: false,
   offer: null,
