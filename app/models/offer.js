@@ -195,6 +195,10 @@ export default DS.Model.extend({
 		return this.get('computedApprovedItemsCount') > 0 && this.get('isReviewed');
 	}),
 
+	donor: Ember.computed('createdById', function(){
+	  return this.get("createdById") && this.get("createdBy");
+	}),
+
 	getOfferStatus(state) {
 		switch (state) {
 			case 'draft':
