@@ -13,9 +13,13 @@ export default Ember.Controller.extend({
   sortedElements: Ember.computed.sort("messagesAndVersions", "sortProperties"),
   isItemThread: Ember.computed.notEmpty("item"),
 
-  autoMarkAsRead: Ember.on('init', Ember.observer('messages.[]', 'messages.@each.state', function() {
-    Ember.run.debounce(this, this.markConversationAsRead, 1500);
-  })),
+  autoMarkAsRead: Ember.on('init',
+    Ember.observer('isActive', 'messages.[]', 'messages.@each.state', function() {
+      if (this.get('isActive')) {
+        Ember.run.debounce(this, this.markConversationAsRead, 1500);
+      }
+    })
+  ),
 
   disabled: Ember.computed("offer.isCancelled", "item.isDraft", function() {
     return this.get("offer.isCancelled") || this.get("item.isDraft");
