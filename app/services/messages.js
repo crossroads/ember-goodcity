@@ -11,7 +11,12 @@ export default Ember.Service.extend({
   unreadMessageCount: 0,
 
   init() {
-    this.get('subscriptions').on('create:message', ()=> this._incrementCount());
+    this.get('subscriptions').on('create:message', ({ id })=> {
+      const msg = this.get('store').peekRecord("message", id);
+      if (msg.get('isUnread')) {
+        this._incrementCount();
+      }
+    });
   },
 
   fetchUnreadMessages(page, perPage) {
