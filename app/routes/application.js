@@ -135,11 +135,18 @@ export default Ember.Route.extend(preloadDataMixin, {
     this.get("messageBox").alert(this.get("i18n").t("QuotaExceededError"));
   },
 
-  somethingWentWrong(reason) {
+  getErrorMessage(reason) {
+    if (reason.errors[0].detail){
+      var message = reason.errors[0].detail.message;
+    }
+    return message ? message : this.get("i18n").t("unexpected_error");
+  },
+
+  showErrorPopup(reason) {
     this.get("logger").error(reason);
     if (!this.get('isErrPopUpAlreadyShown')) {
       this.set('isErrPopUpAlreadyShown', true);
-      this.get("messageBox").alert(this.get("i18n").t("unexpected_error"), () => {
+      this.get("messageBox").alert(this.getErrorMessage(reason), () => {
         this.set('isErrPopUpAlreadyShown', false);
       });
     }
@@ -176,7 +183,7 @@ export default Ember.Route.extend(preloadDataMixin, {
       } else if (reason.name === "NotFoundError" && reason.code === 8) {
         return false;
       } else {
-        this.somethingWentWrong(reason);
+        this.showErrorPopup(reason);
       }
     } catch (err) {
       console.log(err);
