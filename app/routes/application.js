@@ -75,7 +75,6 @@ export default Ember.Route.extend(preloadDataMixin, {
     language = this.session.get("language") || "en";
     moment.locale(language);
     this.set("i18n.locale", language);
-
     Ember.onerror = window.onerror = error => this.handleError(error);
     return this._loadDataStore();
   },
@@ -135,11 +134,18 @@ export default Ember.Route.extend(preloadDataMixin, {
     this.get("messageBox").alert(this.get("i18n").t("QuotaExceededError"));
   },
 
-  somethingWentWrong(reason) {
+  getErrorMessage(reason) {
+    if (reason.errors[0].detail && reason.errors[0].detail.status == 422) {
+      var message = reason.errors[0].detail.message;
+    }
+    return message ? message : this.get("i18n").t("unexpected_error");
+  },
+
+  showErrorPopup(reason) {
     this.get("logger").error(reason);
     if (!this.get('isErrPopUpAlreadyShown')) {
       this.set('isErrPopUpAlreadyShown', true);
-      this.get("messageBox").alert(this.get("i18n").t("unexpected_error"), () => {
+      this.get("messageBox").alert(this.getErrorMessage(reason), () => {
         this.set('isErrPopUpAlreadyShown', false);
       });
     }
