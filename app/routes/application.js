@@ -182,7 +182,7 @@ export default Ember.Route.extend(preloadDataMixin, {
       } else if (reason.name === "NotFoundError" && reason.code === 8) {
         return false;
       } else {
-        this.somethingWentWrong(reason);
+        this.showErrorPopup(reason);
       }
     } catch (err) {
       console.log(err);
