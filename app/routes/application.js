@@ -136,10 +136,8 @@ export default Ember.Route.extend(preloadDataMixin, {
   },
 
   getErrorMessage(reason) {
-    if (reason.errors[0].detail){
-      var message = reason.errors[0].detail.message;
-    }
-    return message ? message : this.get("i18n").t("unexpected_error");
+    const err = reason.errors[0].detail;
+    return err ? err.message : this.get("i18n").t("unexpected_error");
   },
 
   showErrorPopup(reason) {
