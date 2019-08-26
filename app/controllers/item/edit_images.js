@@ -4,6 +4,8 @@ import config from '../../config/environment';
 const { getOwner } = Ember;
 
 export default Ember.Controller.extend({
+  queryParams: ["isUnplannedPackage"],
+  isUnplannedPackage: false,
   offerController: Ember.inject.controller('offer'),
   offer: Ember.computed.alias("offerController.model"),
   item: Ember.computed.alias("model"),
@@ -216,7 +218,16 @@ export default Ember.Controller.extend({
     img.save()
       .then(i => {
         i.unloadRecord();
-        controller.transitionToRoute("item.edit_images", item);
+        if (this.get("session.isAdminApp") && this.get("isUnplannedPackage")) {
+          const packageId = this.get("item.packages.firstObject.id");
+          controller.transitionToRoute("receive_package", packageId, {
+              queryParams: {
+                isUnplannedPackage: true
+              }
+            });
+        } else {
+          controller.transitionToRoute("item.edit_images", item);
+        }
       })
       .finally(() => loadingView.destroy());
   },
@@ -236,11 +247,21 @@ export default Ember.Controller.extend({
 
   actions: {
     next() {
+      const offer = this.get("offer");
+      const model = this.get("model");
       if (this.get("session.isAdminApp")) {
-        if (history.state && this.get("previousRoute") !== history.state.path) {
+        if (this.get("isUnplannedPackage")) {
+          const packageId = this.get("item.packages.firstObject.id");
+          this.transitionToRoute("receive_package", packageId, {
+              queryParams: {
+                isUnplannedPackage: true
+              }
+            });
+        }
+        else if (history.state && this.get("previousRoute") !== history.state.path) {
           window.history.back();
         } else {
-          this.transitionToRoute("review_item.accept", this.get('offer'), this.get('model'));
+          this.transitionToRoute("review_item.accept", offer, model);
         }
       } else {
         this.transitionToRoute("item.edit");
@@ -250,7 +271,15 @@ export default Ember.Controller.extend({
     nextWithoutImage() {
       var item = this.get("item");
       if (item) {
-        if (this.get('session.isAdmingApp')) {
+        if (this.get('session.isAdminApp')) {
+          if(this.get("isUnplannedPackage")) {
+            const packageId = this.get("item.packages.firstObject.id");
+            return this.transitionToRoute("receive_package", packageId, {
+              queryParams: {
+                isUnplannedPackage: true
+              }
+            });
+          }
           return this.transitionToRoute("review_item.accept", this.get('offer'), item);
         }
         else if (!item.get('isOffer')) {
