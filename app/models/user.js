@@ -12,6 +12,10 @@ export default Addressable.extend({
   mobile: attr('string'),
   createdAt: attr('date'),
   userRoleIds: attr(''),
+  email: attr(''),
+  receiveEmail: attr(''),
+  otherPhone: attr(''),
+  title: attr(''),
 
   lastConnected: attr('date'),
   lastDisconnected: attr('date'),
