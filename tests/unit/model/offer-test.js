@@ -10,6 +10,7 @@ moduleForModel("offer", "Offer Model", {
     "model:image",
     "model:message",
     "model:delivery",
+    "model:company",
     "model:user",
     "service:i18n",
     "service:cloudinaryUtils"
