@@ -73,6 +73,7 @@
     "hoek": "4.2.1",
     "lodash.defaultsdeep": "^4.6.1",
     "lodash.merge": "^4.6.2",
+    "lodash.template": "^4.5.0",
     "minimatch": "^3.0.2"
   },
   "ember-addon": {
