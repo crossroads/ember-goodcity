@@ -11,6 +11,7 @@ export default Ember.Controller.extend({
   ios_app_id: config.APP.IOS_APP_ID,
   appTitle: config.APP.TITLE,
   bannerImage: config.APP.BANNER_IMAGE,
+  showNotification: true,
 
   initSubscriptions: Ember.on('init', function() {
     if (this.session.get("isLoggedIn")) {

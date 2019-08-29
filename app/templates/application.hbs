@@ -12,7 +12,9 @@
   {{/unless}}
   {{outlet "internet_call_status"}}
   {{outlet "notifications"}}
-  {{outlet "notification_link"}}
+  {{#if showNotification}}
+    {{outlet "notification_link"}}
+  {{/if}}
   {{outlet}}
 {{/init-foundation}}
 
