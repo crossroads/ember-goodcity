@@ -75,7 +75,6 @@ export default Ember.Route.extend(preloadDataMixin, {
     language = this.session.get("language") || "en";
     moment.locale(language);
     this.set("i18n.locale", language);
-
     Ember.onerror = window.onerror = error => this.handleError(error);
     return this._loadDataStore();
   },
@@ -136,8 +135,11 @@ export default Ember.Route.extend(preloadDataMixin, {
   },
 
   getErrorMessage(reason) {
-    const err = reason.errors[0].detail;
-    return err ? err.message : this.get("i18n").t("unexpected_error");
+    if (reason.errors.length && reason.errors[0].detail && reason.errors[0].detail.status == 422) {
+      return reason.errors[0].detail.message;
+    } else {
+      return this.get("i18n").t("unexpected_error");
+    } 
   },
 
   showErrorPopup(reason) {
