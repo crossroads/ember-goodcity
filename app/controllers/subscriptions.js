@@ -139,7 +139,7 @@ export default Ember.Controller.extend(Ember.Evented, {
 
     var type = Object.keys(data.item)[0];
 
-    var pkg, fromCurrentUser;
+    var pkg;
     if (type === "Package") {
       pkg = data.item.Package;
     } else if (type === "package") {
@@ -184,9 +184,7 @@ export default Ember.Controller.extend(Ember.Evented, {
     var existingItem = this.store.peekRecord(type, item.id);
 
     // update_store message is sent before response to APP save so ignore
-    if (data.sender.user){
-      fromCurrentUser = parseInt(data.sender.user.id, 10) === parseInt(this.session.get("currentUser.id"), 10);
-    }
+    var fromCurrentUser = parseInt(data.sender.user.id, 10) === parseInt(this.session.get("currentUser.id"), 10);
     var hasNewItemSaving = this.store.peekAll(type).any(function(o) { return o.id === null && o.get("isSaving"); });
     var existingItemIsSaving = existingItem && existingItem.get("isSaving"); // isSaving is true during delete as well
     if (fromCurrentUser && (data.operation === "create" && hasNewItemSaving || existingItemIsSaving)) {
