@@ -6,6 +6,7 @@ const { getOwner } = Ember;
 
 export default addressDetails.extend({
   deliveryController: Ember.inject.controller('delivery'),
+  messageBox: Ember.inject.service(),
 
   selectedDate: null,
   selectedTime: null,
@@ -122,7 +123,9 @@ export default addressDetails.extend({
         order.set('removeNetFee', data.breakdown.remove_net && data.breakdown.remove_net.value);
         loadingView.destroy();
         controller.transitionToRoute('delivery.confirm_van', { queryParams: { placeOrder: true } });
-      });
+      }).catch((error)=>{
+        this.get("messageBox").alert(error.responseJSON.errors[0].message);
+      }).finally(()=> loadingView.destroy());
     }
   }
 });
