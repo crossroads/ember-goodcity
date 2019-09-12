@@ -5,12 +5,21 @@ export default Ember.Controller.extend({
 
   body: "",
   offerController: Ember.inject.controller("offer"),
+  messagesUtil: Ember.inject.service("messages"),
   isPrivate: false,
   inProgress: false,
   offer: Ember.computed.alias("offerController.model"),
   sortProperties: ["createdAt:asc"],
   sortedElements: Ember.computed.sort("messagesAndVersions", "sortProperties"),
   isItemThread: Ember.computed.notEmpty("item"),
+
+  autoMarkAsRead: Ember.on('init',
+    Ember.observer('isActive', 'messages.[]', 'messages.@each.state', function() {
+      if (this.get('isActive')) {
+        Ember.run.debounce(this, this.markConversationAsRead, 1500);
+      }
+    })
+  ),
 
   disabled: Ember.computed("offer.isCancelled", "item.isDraft", function() {
     return this.get("offer.isCancelled") || this.get("item.isDraft");
@@ -123,7 +132,11 @@ export default Ember.Controller.extend({
     return result.getEach("items");
   },
 
-  messagesUtil: Ember.inject.service("messages"),
+  markConversationAsRead() {
+    this.get("messages")
+      .filterBy("state", "unread")
+      .forEach(m => this.get("messagesUtil").markRead(m));
+  },
 
   actions: {
     sendMessage() {
@@ -153,12 +166,6 @@ export default Ember.Controller.extend({
         .finally(() => this.set("inProgress", false));
 
       Ember.$("body").animate({ scrollTop: Ember.$(document).height() }, 1000);
-    },
-
-    markRead() {
-      this.get("messages")
-        .filterBy("state", "unread")
-        .forEach(m => this.get("messagesUtil").markRead(m));
     }
   }
 });

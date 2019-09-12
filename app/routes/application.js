@@ -75,7 +75,6 @@ export default Ember.Route.extend(preloadDataMixin, {
     language = this.session.get("language") || "en";
     moment.locale(language);
     this.set("i18n.locale", language);
-
     Ember.onerror = window.onerror = error => this.handleError(error);
     return this._loadDataStore();
   },
@@ -135,11 +134,19 @@ export default Ember.Route.extend(preloadDataMixin, {
     this.get("messageBox").alert(this.get("i18n").t("QuotaExceededError"));
   },
 
-  somethingWentWrong(reason) {
+  getErrorMessage(reason) {
+    if (reason.errors.length && reason.errors[0].detail && reason.errors[0].detail.status == 422) {
+      return reason.errors[0].detail.message;
+    } else {
+      return this.get("i18n").t("unexpected_error");
+    } 
+  },
+
+  showErrorPopup(reason) {
     this.get("logger").error(reason);
     if (!this.get('isErrPopUpAlreadyShown')) {
       this.set('isErrPopUpAlreadyShown', true);
-      this.get("messageBox").alert(this.get("i18n").t("unexpected_error"), () => {
+      this.get("messageBox").alert(this.getErrorMessage(reason), () => {
         this.set('isErrPopUpAlreadyShown', false);
       });
     }
@@ -176,7 +183,7 @@ export default Ember.Route.extend(preloadDataMixin, {
       } else if (reason.name === "NotFoundError" && reason.code === 8) {
         return false;
       } else {
-        this.somethingWentWrong(reason);
+        this.showErrorPopup(reason);
       }
     } catch (err) {
       console.log(err);
@@ -189,9 +196,14 @@ export default Ember.Route.extend(preloadDataMixin, {
       window.location.reload();
     },
     loading() {
-      Ember.$(".loading-indicator").remove();
-      var view = getOwner(this).lookup('component:loading').append();
-      this.router.one('didTransition', view, 'destroy');
+      if (this._loadingView) {
+        return;
+      }
+      this._loadingView = getOwner(this).lookup('component:loading').append();
+      this.router.one('didTransition', () => {
+        this._loadingView.destroy();
+        this._loadingView = null;
+      });
     },
     // this is hopefully only triggered from promises from routes
     // so in this scenario redirect to home for 404
