@@ -72,6 +72,10 @@ export default DS.Model.extend({
 	userName: attr('string'),
 	userPhone: attr('string'),
 
+	companyName: Ember.computed('company', function () {
+		return this.get('company.name');
+	}),
+
 	crossroadsTruckCost: Ember.computed('crossroadsTransport', function() {
 		return this.get('crossroadsTransport.cost');
 	}),
