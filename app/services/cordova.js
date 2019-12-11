@@ -50,7 +50,7 @@ export default Ember.Service.extend({
 
       _this.set("iOSDevice", _this.isIOS());
 
-      if (_this.isIOS()) { return false; }
+      // if (verifyIOS && _this.isIOS()) { return false; }
 
       if (config.staging && typeof TestFairy !== 'undefined') {
         TestFairy.begin('a362fd4ae199930a7a1a1b6daa6f729ac923b506');
