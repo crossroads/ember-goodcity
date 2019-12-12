@@ -6,6 +6,7 @@ export default Ember.Controller.extend({
   subscriptions: Ember.inject.controller(),
   isMobileApp: config.cordova.enabled,
   config,
+  filterService: Ember.inject.service(),
 
   app_id: config.APP.ANDROID_APP_ID,
   ios_app_id: config.APP.IOS_APP_ID,
