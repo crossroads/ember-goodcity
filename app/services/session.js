@@ -15,14 +15,12 @@ export default Ember.Service.extend({
     return store.peekAll("user_profile").get("firstObject") || null;
   }).volatile(),
 
-  userDefaultPrinter: function() {
-    console.log("hit");
-    const store = this.get("store");
-    return store.peekRecord("user", this.get("currentUser.id")).get("printer");
-  },
-
   isAdminApp: Ember.computed(function() {
     return config.APP.NAME === "admin.goodcity";
+  }),
+
+  loggedInUser: Ember.computed(function () {
+    return this.get("store").peekRecord("user", this.get("currentUser.id"));
   }),
 
   isDonorApp: Ember.computed("isAdminApp", function() {
