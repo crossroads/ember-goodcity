@@ -1,14 +1,14 @@
-import Ember from 'ember';
 import config from '../config/environment';
 import ActiveModelAdapter from 'active-model-adapter';
-
+import { inject as service } from "@ember/service";
+import { computed } from "@ember/object";
 export default ActiveModelAdapter.extend({
 
   namespace: config.APP.NAMESPACE,
   host:      config.APP.API_HOST_URL,
-  session:   Ember.inject.service(),
+  session: service(),
 
-  headers: Ember.computed("session.authToken", function(){
+  headers: computed("session.authToken", function(){
     return {
       "Authorization":  `Bearer ${this.get('session.authToken')}`,
       "Accept-Language": this.get('session.language'),

@@ -2,12 +2,10 @@ import Ember from "ember";
 
 export default Ember.Service.extend({
   generateThumbnailUrl(id, opts) {
-    return this.generateUrl(id, {
-      ...opts,
-      width: 120,
+    const new_obj = Object.assign({}, {opts}, {width: 120,
       height: 120,
-      crop: true
-    });
+      crop: true});
+    return this.generateUrl(id, new_obj);
   },
 
   generateUrl(id, opts = {}) {
