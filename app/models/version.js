@@ -1,4 +1,5 @@
-import Ember from 'ember';
+import { inject as service } from '@ember/service';
+import { computed } from '@ember/object';
 import DS from 'ember-data';
 
 var attr = DS.attr;
@@ -12,13 +13,13 @@ export default DS.Model.extend({
   state:          attr('string'),
   createdAt:      attr('date'),
 
-  createdDate: Ember.computed(function(){
+  createdDate: computed(function(){
     return this.get("createdAt").toDateString();
   }),
 
-  i18n: Ember.inject.service(),
+  i18n: service(),
 
-  displayMessage: Ember.computed(function(){
+  displayMessage: computed(function(){
     switch (this.get("state")) {
       case 'draft': return this.get("i18n").t("item_log.added", {name: this.get("whodunnitName")});
       case 'submitted' : return this.get("i18n").t("item_log.submitted", {name: this.get("whodunnitName")});

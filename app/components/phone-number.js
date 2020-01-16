@@ -1,11 +1,13 @@
-import Ember from "ember";
+import { computed } from '@ember/object';
+import { empty } from '@ember/object/computed';
+import Component from '@ember/component';
 
-export default Ember.Component.extend({
+export default Component.extend({
   tagName: "span",
   number: null,
-  hidden: Ember.computed.empty("number"),
+  hidden: empty("number"),
 
-  displayNumber: Ember.computed('number', function(){
+  displayNumber: computed('number', function(){
     if (this.get("hidden")) {
       return "";
     }
@@ -13,7 +15,7 @@ export default Ember.Component.extend({
     return num.length > 4 ? num.substr(0, 4) + " " + num.substr(4) : num;
   }),
 
-  linkNumber: Ember.computed('number', function(){
+  linkNumber: computed('number', function(){
     if (this.get("hidden")) {
       return "";
     }

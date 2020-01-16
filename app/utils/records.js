@@ -1,4 +1,5 @@
-import Ember from "ember";
+import { get } from '@ember/object';
+import { next } from '@ember/runloop';
 // import config from "../config/environment";
 
 export default {
@@ -32,7 +33,7 @@ export default {
       };
 
       if (descriptor.options.async) {
-        Ember.run.next(() => record.get(name).then(r => unload(r)));
+        next(() => record.get(name).then(r => unload(r)));
       } else {
         try {
           unload(record.get(name));
@@ -40,7 +41,7 @@ export default {
       }
     });
 
-    Ember.run.next(() => record.unloadRecord());
+    next(() => record.unloadRecord());
   },
 
   isAsyncRelationshipLoaded: function(record, relationshipName) {
@@ -53,7 +54,7 @@ export default {
     }
 
     // this is the workaround I seem to need from unit test
-    var relationshipKind = Ember.get(record.constructor, "relationshipsByName").get(relationshipName).kind;
+    var relationshipKind = get(record.constructor, "relationshipsByName").get(relationshipName).kind;
     if (relationshipKind === "belongsTo") {
       return record.store.hasRecordForId(relatedRecord.constructor.modelName, relatedRecord.id);
     } else {

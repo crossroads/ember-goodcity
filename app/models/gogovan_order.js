@@ -1,4 +1,6 @@
-import Ember from 'ember';
+import { computed } from '@ember/object';
+import { equal, or } from '@ember/object/computed';
+import { inject as service } from '@ember/service';
 import DS from 'ember-data';
 
 var attr = DS.attr,
@@ -39,16 +41,16 @@ export default DS.Model.extend({
   isDiscountAvailable: false,
   couponDiscount: 0,
 
-  i18n: Ember.inject.service(),
+  i18n: service(),
 
-  isPending: Ember.computed.equal("status", "pending"),
-  isActive: Ember.computed.equal("status", "active"),
-  isCompleted: Ember.computed.equal("status", "completed"),
-  isCancelled: Ember.computed.equal("status", "cancelled"),
-  isPickedUp: Ember.computed.or("isActive", "isCompleted"),
-  nonCompleted: Ember.computed.or("isActive", "isPending"),
+  isPending: equal("status", "pending"),
+  isActive: equal("status", "active"),
+  isCompleted: equal("status", "completed"),
+  isCancelled: equal("status", "cancelled"),
+  isPickedUp: or("isActive", "isCompleted"),
+  nonCompleted: or("isActive", "isPending"),
 
-  ggvOrderStatus: Ember.computed("isActive", "isCompleted", function() {
+  ggvOrderStatus: computed("isActive", "isCompleted", function() {
     if (this.get("isActive")) {
       return this.get("i18n").t("offer.offer_details.is_gogovan_confirm").string;
     } else if (this.get("isCompleted")) {

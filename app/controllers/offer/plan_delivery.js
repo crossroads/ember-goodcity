@@ -1,22 +1,25 @@
-import Ember from 'ember';
+import { computed } from '@ember/object';
+import { alias, notEmpty } from '@ember/object/computed';
+import { inject as service } from '@ember/service';
+import Controller, { inject as controller } from '@ember/controller';
+import { getOwner } from '@ember/application';
 import AjaxPromise from '../../utils/ajax-promise';
-const { getOwner } = Ember;
 
-export default Ember.Controller.extend({
+export default Controller.extend({
 
-  offerController: Ember.inject.controller('offer'),
-  logger: Ember.inject.service(),
-  offerId: Ember.computed.alias('offerController.model.id'),
-  gogovanPriceCalculated: Ember.computed.notEmpty("gogovanPrice"),
+  offerController: controller('offer'),
+  logger: service(),
+  offerId: alias('offerController.model.id'),
+  gogovanPriceCalculated: notEmpty("gogovanPrice"),
   isDiscountAvailable: false,
   couponDiscount: 0,
   priceWithDiscount: 0,
 
-  offer: Ember.computed('offerId', function(){
+  offer: computed('offerId', function(){
     return this.store.peekRecord('offer', this.get('offerId'));
   }),
 
-  gogovanPrice: Ember.computed('offerId', {
+  gogovanPrice: computed('offerId', {
     get: function() {
       var params = {
         districtId: this.get('offer.createdBy.address.district.id'),

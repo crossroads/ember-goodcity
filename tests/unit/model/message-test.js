@@ -1,5 +1,5 @@
+import { get } from '@ember/object';
 import { test, moduleForModel } from 'ember-qunit';
-import Ember from 'ember';
 
 moduleForModel('message', 'Message Model', {
   needs: ['model:user', 'model:item', 'model:offer']
@@ -25,9 +25,9 @@ test('Relationships with other models', function(assert){
   assert.expect(6);
 
   var message = this.store().modelFor('message');
-  var relationshipsWithItem = Ember.get(message, 'relationshipsByName').get('item');
-  var relationshipsWithUser = Ember.get(message, 'relationshipsByName').get('sender');
-  var relationshipsWithOffer = Ember.get(message, 'relationshipsByName').get('offer');
+  var relationshipsWithItem = get(message, 'relationshipsByName').get('item');
+  var relationshipsWithUser = get(message, 'relationshipsByName').get('sender');
+  var relationshipsWithOffer = get(message, 'relationshipsByName').get('offer');
 
   assert.equal(relationshipsWithItem.key, 'item');
   assert.equal(relationshipsWithItem.kind, 'belongsTo');

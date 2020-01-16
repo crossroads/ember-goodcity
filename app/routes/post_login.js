@@ -1,11 +1,13 @@
-import Ember from 'ember';
+import { run } from '@ember/runloop';
+import { inject as service } from '@ember/service';
+import Route from '@ember/routing/route';
 import preloadDataMixin from '../mixins/preload_data';
 
-export default Ember.Route.extend(preloadDataMixin, {
-  cordova: Ember.inject.service(),
+export default Route.extend(preloadDataMixin, {
+  cordova: service(),
 
   beforeModel() {
-    Ember.run(() => this.controllerFor('application').send('logMeIn'));
+    run(() => this.controllerFor('application').send('logMeIn'));
     return this.preloadData().catch(error => {
       if (error.status === 0) {
         this.transitionTo("offline");

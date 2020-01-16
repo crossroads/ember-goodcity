@@ -1,5 +1,5 @@
+import { get } from '@ember/object';
 import { test, moduleForModel } from 'ember-qunit';
-import Ember from 'ember';
 
 moduleForModel('contact', 'Contact Model', {
   needs: ['model:delivery', 'model:address', 'model:addressable']
@@ -19,7 +19,7 @@ test('Relationships with other models', function(assert){
   assert.expect(2);
 
   var contact = this.store().modelFor('contact');
-  var relationshipsWithdelivery = Ember.get(contact, 'relationshipsByName').get('delivery');
+  var relationshipsWithdelivery = get(contact, 'relationshipsByName').get('delivery');
 
   assert.equal(relationshipsWithdelivery.key, 'delivery');
   assert.equal(relationshipsWithdelivery.kind, 'belongsTo');

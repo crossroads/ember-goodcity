@@ -1,10 +1,11 @@
-import Ember from 'ember';
+import $ from 'jquery';
+import { inject as controller } from '@ember/controller';
+import { getOwner } from '@ember/application';
 import addressDetails from './address_details';
 import AjaxPromise from './../../utils/ajax-promise';
-const { getOwner } = Ember;
 
 export default addressDetails.extend({
-  deliveryController: Ember.inject.controller('delivery'),
+  deliveryController: controller('delivery'),
 
   actions: {
     saveContactDetails() {
@@ -14,8 +15,8 @@ export default addressDetails.extend({
       addressProperties.addressType = 'collection';
 
       var contactProperties    = {};
-      contactProperties.name   = Ember.$('#userName').val();
-      contactProperties.mobile = "+852" + Ember.$('#mobile').val();
+      contactProperties.name   = $('#userName').val();
+      contactProperties.mobile = "+852" + $('#mobile').val();
 
       var deliveryId = this.get('deliveryController.model.id');
       var delivery   = this.store.peekRecord('delivery', deliveryId);

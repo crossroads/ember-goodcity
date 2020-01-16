@@ -1,6 +1,7 @@
-import Ember from "ember";
+import $ from 'jquery';
+import Service from '@ember/service';
 
-export default Ember.Service.extend({
+export default Service.extend({
   generateThumbnailUrl(id, opts) {
     const new_obj = Object.assign({}, {opts}, {width: 120,
       height: 120,
@@ -30,6 +31,6 @@ export default Ember.Service.extend({
     if (angle) {
       options["angle"] = angle;
     }
-    return Ember.$.cloudinary.url(filename, options);
+    return $.cloudinary.url(filename, options);
   }
 });

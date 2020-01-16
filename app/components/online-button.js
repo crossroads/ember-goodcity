@@ -1,3 +1,5 @@
+import { bind } from '@ember/runloop';
+import Component from '@ember/component';
 import Ember from "ember";
 
 /* {{#"online-button" classNames="btn" action="submit" actionArgs=true}}
@@ -8,7 +10,7 @@ import Ember from "ember";
  * Note actionArgs="['test']" causes json parse error, but this works actionArgs='["test"]'
  */
 
-export default Ember.Component.extend(Ember.TargetActionSupport, {
+export default Component.extend(Ember.TargetActionSupport, {
   attributeBindings: ["disabled"],
   disabled: false,
   offer: null,
@@ -17,7 +19,7 @@ export default Ember.Component.extend(Ember.TargetActionSupport, {
   disabledOverride: false,
 
   didInsertElement: function() {
-    this.updateDisabled = Ember.run.bind(this, () => {
+    this.updateDisabled = bind(this, () => {
       var online = navigator.connection ? navigator.connection.type !== "none" : navigator.onLine;
       this.set("disabled", !online || this.get("disabledOverride"));
     });

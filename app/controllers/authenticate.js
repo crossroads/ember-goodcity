@@ -1,22 +1,25 @@
-import Ember from 'ember';
+import $ from 'jquery';
+import { computed } from '@ember/object';
+import { inject as service } from '@ember/service';
+import Controller from '@ember/controller';
+import { getOwner } from '@ember/application';
 import AjaxPromise from '../utils/ajax-promise';
 import config from '../config/environment';
-const { getOwner } = Ember;
 
-export default Ember.Controller.extend({
+export default Controller.extend({
 
-  messageBox: Ember.inject.service(),
+  messageBox: service(),
   attemptedTransition: null,
   pin: "",
 
-  mobile: Ember.computed('mobilePhone', function(){
+  mobile: computed('mobilePhone', function(){
     return config.APP.HK_COUNTRY_CODE + this.get('mobilePhone');
   }),
 
   actions: {
 
     authenticateUser() {
-      Ember.$('.auth_error').hide();
+      $('.auth_error').hide();
       var pin = this.get('pin');
       var otp_auth_key = this.get('session.otpAuthKey');
       var _this = this;
@@ -32,7 +35,7 @@ export default Ember.Controller.extend({
           _this.transitionToRoute('post_login');
         })
         .catch(function(jqXHR) {
-          Ember.$('#pin').closest('div').addClass('error');
+          $('#pin').closest('div').addClass('error');
           _this.setProperties({pin: null});
           if (jqXHR.status === 422 && jqXHR.responseJSON.errors && jqXHR.responseJSON.errors.pin) {
             _this.get("messageBox").alert(jqXHR.responseJSON.errors.pin);
@@ -59,7 +62,7 @@ export default Ember.Controller.extend({
               _this.transitionToRoute("/");
              });
           } else if ([422, 403].includes(error.status)) {
-            Ember.$('#mobile').closest('.mobile').addClass('error');
+            $('#mobile').closest('.mobile').addClass('error');
             return;
           }
           throw error;

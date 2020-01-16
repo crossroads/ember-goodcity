@@ -1,5 +1,6 @@
+import { computed } from '@ember/object';
+import { equal, notEmpty, and } from '@ember/object/computed';
 import DS from 'ember-data';
-import Ember from 'ember';
 
 var attr = DS.attr,
     belongsTo = DS.belongsTo;
@@ -14,21 +15,21 @@ export default DS.Model.extend({
   schedule:      belongsTo('schedule', { async: false }),
   gogovanOrder:  belongsTo('gogovan_order', { async: false }),
 
-  isGogovan: Ember.computed.equal("deliveryType", "Gogovan"),
-  isDropOff: Ember.computed.equal("deliveryType", "Drop Off"),
-  isAlternate: Ember.computed.equal("deliveryType", "Alternate"),
-  wasDropOff: Ember.computed.notEmpty('schedule.slot'),
-  hasGGVorder: Ember.computed.and('isGogovan','gogovanOrder'),
+  isGogovan: equal("deliveryType", "Gogovan"),
+  isDropOff: equal("deliveryType", "Drop Off"),
+  isAlternate: equal("deliveryType", "Alternate"),
+  wasDropOff: notEmpty('schedule.slot'),
+  hasGGVorder: and('isGogovan','gogovanOrder'),
 
-  noDropOff: Ember.computed('deliveryType', function() {
+  noDropOff: computed('deliveryType', function() {
     return this.get('deliveryType') !== 'Drop Off';
   }),
 
-  noGogovan: Ember.computed('deliveryType', function() {
+  noGogovan: computed('deliveryType', function() {
     return this.get('deliveryType') !== 'Gogovan';
   }),
 
-  completedWithGogovan: Ember.computed('gogovanOrder', 'gogovanOrder.status', function() {
+  completedWithGogovan: computed('gogovanOrder', 'gogovanOrder.status', function() {
     return this.get("isGogovan") && this.get("gogovanOrder.isCompleted");
   })
 });

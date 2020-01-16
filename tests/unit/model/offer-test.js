@@ -1,5 +1,5 @@
+import { get } from '@ember/object';
 import { test, moduleForModel } from "ember-qunit";
-import Ember from "ember";
 
 moduleForModel("offer", "Offer Model", {
   needs: [
@@ -74,28 +74,28 @@ test("Relationships with other models", function(assert) {
   assert.expect(14);
 
   var offer = this.store().modelFor("offer");
-  var relationshipsWithGgvTransport = Ember.get(
+  var relationshipsWithGgvTransport = get(
     offer,
     "relationshipsByName"
   ).get("gogovanTransport");
-  var relationshipsWithCrossroadsTransport = Ember.get(
+  var relationshipsWithCrossroadsTransport = get(
     offer,
     "relationshipsByName"
   ).get("crossroadsTransport");
-  var relationshipsWithCancellationReason = Ember.get(
+  var relationshipsWithCancellationReason = get(
     offer,
     "relationshipsByName"
   ).get("cancellationReason");
-  var relationshipsWithDelivery = Ember.get(offer, "relationshipsByName").get(
+  var relationshipsWithDelivery = get(offer, "relationshipsByName").get(
     "delivery"
   );
-  var relationshipsWithUser = Ember.get(offer, "relationshipsByName").get(
+  var relationshipsWithUser = get(offer, "relationshipsByName").get(
     "createdBy"
   );
-  var relationshipsWithItem = Ember.get(offer, "relationshipsByName").get(
+  var relationshipsWithItem = get(offer, "relationshipsByName").get(
     "items"
   );
-  var relationshipsWithMessage = Ember.get(offer, "relationshipsByName").get(
+  var relationshipsWithMessage = get(offer, "relationshipsByName").get(
     "messages"
   );
 

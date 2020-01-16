@@ -1,7 +1,9 @@
-import Ember from "ember";
+import { bind } from '@ember/runloop';
+import $ from 'jquery';
+import Component from '@ember/component';
 import ValidatableInput from 'ember-cli-html5-validation/mixins/validatable-input';
 
-export default Ember.Component.extend(ValidatableInput, {
+export default Component.extend(ValidatableInput, {
   content: null,
   selectedValue: null,
 
@@ -12,13 +14,13 @@ export default Ember.Component.extend(ValidatableInput, {
 
   // overriden from ember-cli-html5-validation addon
   validate: function() {
-    var input = Ember.$(this.element).find("select")[0],
-      jQueryElement = Ember.$(input);
+    var input = $(this.element).find("select")[0],
+      jQueryElement = $(input);
 
     if (input.hasAttribute('formnovalidate')) { return; }
 
     if(input.hasAttribute('required')) {
-      var content = Ember.$.trim(jQueryElement.val());
+      var content = $.trim(jQueryElement.val());
 
       if(content.length === 0) {
         jQueryElement.val('');
@@ -34,7 +36,7 @@ export default Ember.Component.extend(ValidatableInput, {
     input.setCustomValidity('');
 
     if (!this.get('wasValidated')) {
-      jQueryElement.off('focusout').on('keyup', Ember.run.bind(this, this.validate));
+      jQueryElement.off('focusout').on('keyup', bind(this, this.validate));
       this.set('wasValidated', true);
     }
   },

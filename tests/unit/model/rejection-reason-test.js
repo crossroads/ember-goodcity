@@ -1,5 +1,5 @@
+import { get } from '@ember/object';
 import { test, moduleForModel } from 'ember-qunit';
-import Ember from 'ember';
 
 moduleForModel('rejection_reason', 'RejectionReason Model', {
   needs: ['model:item']
@@ -17,7 +17,7 @@ test('Relationships with other models', function(assert){
   assert.expect(2);
 
   var rejectionReason = this.store().modelFor('rejection_reason');
-  var relationshipsWithDistrict = Ember.get(rejectionReason, 'relationshipsByName').get('items');
+  var relationshipsWithDistrict = get(rejectionReason, 'relationshipsByName').get('items');
 
   assert.equal(relationshipsWithDistrict.key, 'items');
   assert.equal(relationshipsWithDistrict.kind, 'hasMany');

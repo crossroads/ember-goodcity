@@ -1,8 +1,9 @@
-import Ember from 'ember';
+import { inject as service } from '@ember/service';
+import Route from '@ember/routing/route';
 
-export default Ember.Route.extend({
-  messageBox: Ember.inject.service(),
-  i18n: Ember.inject.service(),
+export default Route.extend({
+  messageBox: service(),
+  i18n: service(),
 
   beforeModel(transition) {
     if (!this.session.get('isLoggedIn')) {

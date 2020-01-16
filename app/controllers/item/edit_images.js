@@ -1,23 +1,31 @@
+import { debounce } from '@ember/runloop';
+import $ from 'jquery';
+import { on } from '@ember/object/evented';
+import { A } from '@ember/array';
+import { computed, observer } from '@ember/object';
+import { inject as service } from '@ember/service';
+import { alias, empty } from '@ember/object/computed';
+import Controller, { inject as controller } from '@ember/controller';
+import { getOwner } from '@ember/application';
 import Ember from "ember";
 import { translationMacro as t } from "ember-i18n";
 import config from '../../config/environment';
-const { getOwner } = Ember;
 
-export default Ember.Controller.extend({
+export default Controller.extend({
   queryParams: ["isUnplannedPackage"],
   isUnplannedPackage: false,
-  offerController: Ember.inject.controller('offer'),
-  offer: Ember.computed.alias("offerController.model"),
-  item: Ember.computed.alias("model"),
-  session: Ember.inject.service(),
-  store: Ember.inject.service(),
-  messageBox: Ember.inject.service(),
-  i18n: Ember.inject.service(),
-  cordova: Ember.inject.service(),
+  offerController: controller('offer'),
+  offer: alias("offerController.model"),
+  item: alias("model"),
+  session: service(),
+  store: service(),
+  messageBox: service(),
+  i18n: service(),
+  cordova: service(),
   offerId: null,
   itemId: null,
   packageId: null,
-  noImage: Ember.computed.empty("item.images"),
+  noImage: empty("item.images"),
   previewImage: null,
   addPhotoLabel: t("edit_images.add_photo"),
   isReady: false,
@@ -52,21 +60,21 @@ export default Ember.Controller.extend({
     });
   },
 
-  package: Ember.computed('packageId', function() {
+  package: computed('packageId', function() {
     return this.get("store").peekRecord("package", this.get("packageId"));
   }),
 
-  previewMatchesFavourite: Ember.computed("previewImage", "favouriteImage", function() {
+  previewMatchesFavourite: computed("previewImage", "favouriteImage", function() {
     return this.get("previewImage") === this.get("favouriteImage");
   }),
 
-  images: Ember.computed("item.images.[]", function() {
+  images: computed("item.images.[]", function() {
     //The reason for sorting is because by default it's ordered by favourite
     //then id order. If another image is made favourite then deleted the first image
     //by id order is made favourite which can be second image in list which seems random.
 
     //Sort by id ascending except place new images id = 0 at end
-    return (this.get("item.images") || Ember.A()).filterBy('itemId').toArray().sort(function(a, b) {
+    return (this.get("item.images") || A()).filterBy('itemId').toArray().sort(function(a, b) {
       a = parseInt(a.get("id"), 10);
       b = parseInt(b.get("id"), 10);
       if (a === 0) { return 1; }
@@ -75,13 +83,13 @@ export default Ember.Controller.extend({
     });
   }),
 
-  favouriteImage: Ember.computed("item.images.@each.favourite", "package.favouriteImage", function() {
+  favouriteImage: computed("item.images.@each.favourite", "package.favouriteImage", function() {
     return this.get("package") ?
       this.get("package.favouriteImage") :
       this.get("images").filterBy("favourite").get("firstObject");
   }),
 
-  initPreviewImage: Ember.on('init', Ember.observer("package", "item", "item.images.[]", function() {
+  initPreviewImage: on('init', observer("package", "item", "item.images.[]", function() {
     var path = history.state ? history.state.path : "";
     this.set("previousRoute", path);
     var image = this.get("package.image") || this.get("item.displayImage");
@@ -91,7 +99,7 @@ export default Ember.Controller.extend({
   })),
 
   //css related
-  previewImageBgCss: Ember.computed("previewImage", "isExpanded", "previewImage.angle", {
+  previewImageBgCss: computed("previewImage", "isExpanded", "previewImage.angle", {
 
     get() {
       var css = this.get("instructionBoxCss");
@@ -121,17 +129,17 @@ export default Ember.Controller.extend({
     }
   }),
 
-  instructionBoxCss: Ember.computed("previewImage", "isExpanded", function() {
-    var height = Ember.$(window).height() * 0.6;
+  instructionBoxCss: computed("previewImage", "isExpanded", function() {
+    var height = $(window).height() * 0.6;
     return new Ember.Handlebars.SafeString("min-height:" + height + "px;");
   }),
 
-  thumbImageCss: Ember.computed(function() {
-    var imgWidth = Math.min(120, Ember.$(window).width() / 4 - 14);
+  thumbImageCss: computed(function() {
+    var imgWidth = Math.min(120, $(window).width() / 4 - 14);
     return new Ember.Handlebars.SafeString("width:" + imgWidth + "px; height:" + imgWidth + "px;");
   }),
 
-  noImageLink: Ember.computed("noImage", function() {
+  noImageLink: computed("noImage", function() {
     return this.get("noImage") && this.get("session.isAdminApp");
   }),
 
@@ -389,9 +397,9 @@ export default Ember.Controller.extend({
         if (navigator.userAgent.match(/iemobile/i)) {
           //don't know why but on windows phone need to click twice in quick succession
           //for dialog to appear
-          Ember.$("#photo-list input[type='file']").click().click();
+          $("#photo-list input[type='file']").click().click();
         } else {
-          Ember.$("#photo-list input[type='file']").trigger("click");
+          $("#photo-list input[type='file']").trigger("click");
         }
       }
     },
@@ -402,7 +410,7 @@ export default Ember.Controller.extend({
 
     uploadStart(e, data) {
       this.set("uploadedFileDate", data);
-      Ember.$(".loading-image-indicator").show();
+      $(".loading-image-indicator").show();
     },
 
     cancelUpload() {
@@ -419,7 +427,7 @@ export default Ember.Controller.extend({
     uploadComplete(e) {
       e.target.disabled = false; // enable image-selection
       this.set("uploadedFileDate", null);
-      Ember.$(".loading-image-indicator.hide_image_loading").hide();
+      $(".loading-image-indicator.hide_image_loading").hide();
       this.set("addPhotoLabel", this.get("i18n").t("edit_images.add_photo"));
       this.set("loadingPercentage", this.get("i18n").t("edit_images.image_uploading"));
     },
@@ -452,7 +460,7 @@ export default Ember.Controller.extend({
     rotateImage(angle) {
       var image = this.get("previewImage");
       image.set("angle", angle);
-      Ember.run.debounce(this, this.saveImageRotation, image, 400);
+      debounce(this, this.saveImageRotation, image, 400);
     }
   },
 

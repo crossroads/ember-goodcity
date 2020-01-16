@@ -1,4 +1,5 @@
-import Ember from 'ember';
+import { computed } from '@ember/object';
+import { inject as service } from '@ember/service';
 import DS from 'ember-data';
 
 var attr = DS.attr,
@@ -13,9 +14,9 @@ export default DS.Model.extend({
 
   deliveries: hasMany('delivery', { async: false }),
 
-  i18n: Ember.inject.service(),
+  i18n: service(),
 
-  dayTime: Ember.computed('slotName', function() {
+  dayTime: computed('slotName', function() {
     var slot = (this.get('slotName') || '').match(/\d+/);
     var day_time = '';
     if (slot) {

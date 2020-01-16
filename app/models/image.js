@@ -1,11 +1,12 @@
-import Ember from "ember";
+import { computed } from '@ember/object';
+import { inject as service } from '@ember/service';
 import DS from "ember-data";
 
 var attr = DS.attr,
   belongsTo = DS.belongsTo;
 
 export default DS.Model.extend({
-  cloudinaryUtils: Ember.inject.service(),
+  cloudinaryUtils: service(),
 
   favourite: attr("boolean"),
   cloudinaryId: attr("string"),
@@ -14,13 +15,13 @@ export default DS.Model.extend({
   itemId: attr("number"),
   packageId: attr("number"),
 
-  imageUrl: Ember.computed("cloudinaryId", "angle", function() {
+  imageUrl: computed("cloudinaryId", "angle", function() {
     return this.get("cloudinaryUtils").generateUrl(this.get("cloudinaryId"), {
       angle: this.get("angle") || 0
     });
   }),
 
-  thumbImageUrl: Ember.computed("cloudinaryId", "angle", function() {
+  thumbImageUrl: computed("cloudinaryId", "angle", function() {
     return this.get("cloudinaryUtils").generateThumbnailUrl(
       this.get("cloudinaryId"),
       {

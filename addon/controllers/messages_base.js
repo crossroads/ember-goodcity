@@ -1,39 +1,45 @@
-import Ember from "ember";
+import $ from 'jquery';
+import { debounce } from '@ember/runloop';
+import { observer, computed } from '@ember/object';
+import { on } from '@ember/object/evented';
+import { alias, sort, notEmpty } from '@ember/object/computed';
+import { inject as service } from '@ember/service';
+import Controller, { inject as controller } from '@ember/controller';
 
-export default Ember.Controller.extend({
-  messageLinkConvertor: Ember.inject.service(),
+export default Controller.extend({
+  messageLinkConvertor: service(),
 
   body: "",
-  offerController: Ember.inject.controller("offer"),
-  messagesUtil: Ember.inject.service("messages"),
+  offerController: controller("offer"),
+  messagesUtil: service("messages"),
   isPrivate: false,
   inProgress: false,
-  offer: Ember.computed.alias("offerController.model"),
+  offer: alias("offerController.model"),
   sortProperties: ["createdAt:asc"],
-  sortedElements: Ember.computed.sort("messagesAndVersions", "sortProperties"),
-  isItemThread: Ember.computed.notEmpty("item"),
+  sortedElements: sort("messagesAndVersions", "sortProperties"),
+  isItemThread: notEmpty("item"),
 
-  autoMarkAsRead: Ember.on('init',
-    Ember.observer('isActive', 'messages.[]', 'messages.@each.state', function() {
+  autoMarkAsRead: on('init',
+    observer('isActive', 'messages.[]', 'messages.@each.state', function() {
       if (this.get('isActive')) {
-        Ember.run.debounce(this, this.markConversationAsRead, 1500);
+        debounce(this, this.markConversationAsRead, 1500);
       }
     })
   ),
 
-  disabled: Ember.computed("offer.isCancelled", "item.isDraft", function() {
+  disabled: computed("offer.isCancelled", "item.isDraft", function() {
     return this.get("offer.isCancelled") || this.get("item.isDraft");
   }),
 
-  groupedElements: Ember.computed("sortedElements.[]", function() {
+  groupedElements: computed("sortedElements.[]", function() {
     return this.groupBy(this.get("sortedElements"), "createdDate");
   }),
 
-  allMessages: Ember.computed(function() {
+  allMessages: computed(function() {
     return this.store.peekAll("message");
   }),
 
-  messages: Ember.computed("allMessages.[]", "offer", "item", function() {
+  messages: computed("allMessages.[]", "offer", "item", function() {
     var messages = this.get("allMessages");
     messages = this.get("isItemThread") ?
       messages.filterBy("itemId", this.get("item.id")) :
@@ -45,7 +51,7 @@ export default Ember.Controller.extend({
     });
   }),
 
-  messagesAndVersions: Ember.computed(
+  messagesAndVersions: computed(
     "messages.[]",
     "itemVersions",
     "packageVersions",
@@ -59,7 +65,7 @@ export default Ember.Controller.extend({
     }
   ),
 
-  itemVersions: Ember.computed(
+  itemVersions: computed(
     "item.id",
     "allVersions.[]",
     "isItemThread",
@@ -74,7 +80,7 @@ export default Ember.Controller.extend({
     }
   ),
 
-  packageVersions: Ember.computed(
+  packageVersions: computed(
     "item.packages",
     "allVersions.[]",
     "isItemThread",
@@ -94,11 +100,11 @@ export default Ember.Controller.extend({
     }
   ),
 
-  allVersions: Ember.computed(function() {
+  allVersions: computed(function() {
     return this.get("store").peekAll("version");
   }),
 
-  offerVersions: Ember.computed(
+  offerVersions: computed(
     "allVersions.[]",
     "offer.id",
     "isItemThread",
@@ -141,7 +147,7 @@ export default Ember.Controller.extend({
   actions: {
     sendMessage() {
       // To hide soft keyboard
-      Ember.$("textarea").trigger("blur");
+      $("textarea").trigger("blur");
 
       this.set("inProgress", true);
       var values = this.getProperties("body", "offer", "item", "isPrivate");
@@ -165,7 +171,7 @@ export default Ember.Controller.extend({
         })
         .finally(() => this.set("inProgress", false));
 
-      Ember.$("body").animate({ scrollTop: Ember.$(document).height() }, 1000);
+      $("body").animate({ scrollTop: $(document).height() }, 1000);
     }
   }
 });

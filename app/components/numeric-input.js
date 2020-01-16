@@ -1,6 +1,7 @@
-import Ember from 'ember';
+import { computed } from '@ember/object';
+import TextField from '@ember/component/text-field';
 
-export default Ember.TextField.extend({
+export default TextField.extend({
   tagName: "input",
   type: "tel",
   attributeBindings: [ "name", "type", "value", "maxlength", "id", "autoFocus" , "placeholder", "required", "pattern"],
@@ -9,7 +10,7 @@ export default Ember.TextField.extend({
     if(this.attrs.autoFocus) { this.$().focus(); }
   },
 
-  currentKey: Ember.computed({
+  currentKey: computed({
     get: function() {
       return 0;
     },
@@ -18,7 +19,7 @@ export default Ember.TextField.extend({
     }
   }),
 
-  isAllowed: Ember.computed('currentKey', function(){
+  isAllowed: computed('currentKey', function(){
     var key = this.get('currentKey');
     var allowed = (key === 13 ||
       key === 8 ||

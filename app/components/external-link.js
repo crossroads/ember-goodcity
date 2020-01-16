@@ -1,10 +1,11 @@
-import Ember from 'ember';
+import { inject as service } from '@ember/service';
+import Component from '@ember/component';
 import config from '../config/environment';
 
-export default Ember.Component.extend({
+export default Component.extend({
   tagName: "a",
   href: "#",
-  cordova: Ember.inject.service(),
+  cordova: service(),
 
   click() {
     if (config.cordova.enabled) {

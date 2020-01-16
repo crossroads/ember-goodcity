@@ -1,11 +1,12 @@
-import Ember from 'ember';
+import { computed } from '@ember/object';
+import Controller, { inject as controller } from '@ember/controller';
 
-export default Ember.Controller.extend({
+export default Controller.extend({
 
-  delivery: Ember.inject.controller(),
-  offer: Ember.inject.controller(),
+  delivery: controller(),
+  offer: controller(),
 
-  contact: Ember.computed('model', {
+  contact: computed('model', {
     get: function() {
       var deliveryId = this.get('delivery.model.id');
       return this.store.peekRecord('delivery', deliveryId).get("contact");

@@ -1,8 +1,11 @@
-import Ember from "ember";
+import $ from 'jquery';
+import { run } from '@ember/runloop';
+import { inject as service } from '@ember/service';
+import Component from '@ember/component';
 import AjaxPromise from '../utils/ajax-promise';
 import config from '../config/environment';
 
-export default Ember.Component.extend({
+export default Component.extend({
   tagName: "input",
   type:    "file",
   accept:  "image/*",
@@ -16,8 +19,8 @@ export default Ember.Component.extend({
   disabled: true,
   offerId: null,
 
-  messageBox: Ember.inject.service(),
-  i18n: Ember.inject.service(),
+  messageBox: service(),
+  i18n: service(),
 
   didInsertElement() {
     var _this = this;
@@ -40,7 +43,7 @@ export default Ember.Component.extend({
     // forward cloudinary events
     ["submit","progress","always","fail","done"].forEach(ev => {
       if (this[ev]) {
-        options[ev] = (e, data) => Ember.run(() => this.sendAction(ev, e, data));
+        options[ev] = (e, data) => run(() => this.sendAction(ev, e, data));
       }
     });
 
@@ -48,7 +51,7 @@ export default Ember.Component.extend({
     new AjaxPromise("/images/generate_signature", "GET", this.get('session.authToken'), reqData)
       .then(function(data) {
         if ( !(_this.get('isDestroyed') || _this.get('isDestroying')) ) {
-          Ember.$(_this.element)
+          $(_this.element)
             .attr("data-form-data", JSON.stringify(data))
             .cloudinary_fileupload(options);
           _this.set("disabled", false);

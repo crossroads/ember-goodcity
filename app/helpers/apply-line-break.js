@@ -1,6 +1,7 @@
+import { helper as buildHelper } from '@ember/component/helper';
 import Ember from "ember";
 
-export default Ember.Helper.helper(function(value) {
+export default buildHelper(function(value) {
   var text;
   if(/<[a-z][\s\S]*>/i.test(value)) {
     text = value;

@@ -1,6 +1,7 @@
-import Ember from 'ember';
+import { bind } from '@ember/runloop';
+import Component from '@ember/component';
 
-export default Ember.Component.extend({
+export default Component.extend({
   loading: true,
 
   changedSrc: function() {
@@ -20,7 +21,7 @@ export default Ember.Component.extend({
   },
 
   didInsertElement() {
-    var updateScreen = Ember.run.bind(this, this.onLoad);
+    var updateScreen = bind(this, this.onLoad);
     this.$(".cl-item-image").on("load", updateScreen);
   },
 

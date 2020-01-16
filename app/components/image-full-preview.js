@@ -1,6 +1,8 @@
-import Ember from 'ember';
+import $ from 'jquery';
+import { scheduleOnce } from '@ember/runloop';
+import Component from '@ember/component';
 
-export default Ember.Component.extend({
+export default Component.extend({
 
   lightGallery: null,
 
@@ -9,8 +11,8 @@ export default Ember.Component.extend({
 
     this._super();
 
-    Ember.run.scheduleOnce('afterRender', this, function(){
-      var lightGallery = Ember.$("#imageGallery").lightGallery({
+    scheduleOnce('afterRender', this, function(){
+      var lightGallery = $("#imageGallery").lightGallery({
         thumbnail: false,
         hideControlOnEnd: true,
         closable: false,

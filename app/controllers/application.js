@@ -1,9 +1,13 @@
+import { computed } from '@ember/object';
+import { on } from '@ember/object/evented';
+import { inject as service } from '@ember/service';
+import Controller, { inject as controller } from '@ember/controller';
 import config from '../config/environment';
 
-export default Ember.Controller.extend({
+export default Controller.extend({
 
-  cordova: Ember.inject.service(),
-  subscriptions: Ember.inject.controller(),
+  cordova: service(),
+  subscriptions: controller(),
   isMobileApp: config.cordova.enabled,
   config,
 
@@ -12,17 +16,17 @@ export default Ember.Controller.extend({
   appTitle: config.APP.TITLE,
   bannerImage: config.APP.BANNER_IMAGE,
 
-  initSubscriptions: Ember.on('init', function() {
+  initSubscriptions: on('init', function() {
     if (this.session.get("isLoggedIn")) {
       this.send('setSubscriptions');
     }
   }),
 
-  supportGCLink: Ember.computed('session.language', function() {
+  supportGCLink: computed('session.language', function() {
     return this.get('session.language') === 'zh-tw' ? "https://www.crossroads.org.hk/zh-hant/home/donate-funds/" : "https://www.crossroads.org.hk/home/donate-funds/";
   }),
 
-  appVersion: Ember.computed(function() {
+  appVersion: computed(function() {
     return config.cordova.enabled ? config.APP.VERSION : null;
   }),
 

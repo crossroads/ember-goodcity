@@ -1,10 +1,12 @@
-import Ember from 'ember';
+import $ from 'jquery';
+import { scheduleOnce } from '@ember/runloop';
+import Component from '@ember/component';
 
-export default Ember.Component.extend({
+export default Component.extend({
 
   didInsertElement() {
-    Ember.run.scheduleOnce('afterRender', this, function(){
-      Ember.$('html, body').scrollTop(0);
+    scheduleOnce('afterRender', this, function(){
+      $('html, body').scrollTop(0);
     });
   }
 

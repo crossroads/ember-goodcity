@@ -1,8 +1,8 @@
-import Ember from 'ember';
-const { getOwner } = Ember;
+import Service, { inject as service } from '@ember/service';
+import { getOwner } from '@ember/application';
 
-export default Ember.Service.extend({
-  i18n: Ember.inject.service(),
+export default Service.extend({
+  i18n: service(),
 
   convert: function(values) {
     var offerId = values.offer.id;

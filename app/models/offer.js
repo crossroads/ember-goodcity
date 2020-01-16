@@ -1,4 +1,7 @@
-import Ember from 'ember';
+import { compare } from '@ember/utils';
+import { alias, filterBy, equal, or } from '@ember/object/computed';
+import { inject as service } from '@ember/service';
+import { computed } from '@ember/object';
 import DS from 'ember-data';
 
 var attr = DS.attr,
@@ -22,13 +25,13 @@ function createCounterOf(collection, opts = {}) {
 	};
 
 	if (fallbackProp) {
-		return Ember.computed(fallbackProp, `${collection}.@each.state`, computer);
+		return computed(fallbackProp, `${collection}.@each.state`, computer);
 	}
-	return Ember.computed(`${collection}.@each.state`, computer);
+	return computed(`${collection}.@each.state`, computer);
 }
 
 export default DS.Model.extend({
-	cloudinaryUtils: Ember.inject.service(),
+	cloudinaryUtils: service(),
 
 	language: attr('string'),
 	state: attr('string', { defaultValue: 'draft' }),
@@ -72,25 +75,25 @@ export default DS.Model.extend({
 	userName: attr('string'),
 	userPhone: attr('string'),
 
-	companyName: Ember.computed('company', function () {
+	companyName: computed('company', function () {
 		return this.get('company.name');
 	}),
 
-	crossroadsTruckCost: Ember.computed('crossroadsTransport', function() {
+	crossroadsTruckCost: computed('crossroadsTransport', function() {
 		return this.get('crossroadsTransport.cost');
 	}),
 
-	itemCount: Ember.computed('items.@each.state', function() {
+	itemCount: computed('items.@each.state', function() {
 		return this.get('items').rejectBy('state', 'draft').length;
 	}),
 
-	packages: Ember.computed('items.@each.packages', function() {
+	packages: computed('items.@each.packages', function() {
 		var res = [];
 		this.get('items').filterBy('state', 'accepted').forEach((i) => (res = res.concat(i.get('packages').toArray())));
 		return res;
 	}),
 
-	itemPackages: Ember.computed.alias('packages'),
+	itemPackages: alias('packages'),
 
 	// Package types
 	expectingPackagesCount: attr('number'),
@@ -110,9 +113,9 @@ export default DS.Model.extend({
 	}),
 
 	// Item types
-	approvedItems: Ember.computed.filterBy('items', 'state', 'accepted'),
-	rejectedItems: Ember.computed.filterBy('items', 'state', 'rejected'),
-	submittedItems: Ember.computed.filterBy('items', 'state', 'submitted'),
+	approvedItems: filterBy('items', 'state', 'accepted'),
+	rejectedItems: filterBy('items', 'state', 'rejected'),
+	submittedItems: filterBy('items', 'state', 'submitted'),
 	acceptedItemsCount: attr('number'),
 	rejectedItemsCount: attr('number'),
 	submittedItemsCount: attr('number'),
@@ -126,64 +129,64 @@ export default DS.Model.extend({
 		fallbackProp: 'rejectedItemsCount'
 	}),
 
-	isDraft: Ember.computed.equal('state', 'draft'),
-	isInactive: Ember.computed.equal('state', 'inactive'),
-	isSubmitted: Ember.computed.equal('state', 'submitted'),
-	isScheduled: Ember.computed.equal('state', 'scheduled'),
-	isUnderReview: Ember.computed.equal('state', 'under_review'),
-	isReviewed: Ember.computed.equal('state', 'reviewed'),
-	isClosed: Ember.computed.equal('state', 'closed'),
-	isReceived: Ember.computed.equal('state', 'received'),
-	isReceiving: Ember.computed.equal('state', 'receiving'),
-	isCancelled: Ember.computed.equal('state', 'cancelled'),
-	preventNewItem: Ember.computed.alias('isFinished'),
+	isDraft: equal('state', 'draft'),
+	isInactive: equal('state', 'inactive'),
+	isSubmitted: equal('state', 'submitted'),
+	isScheduled: equal('state', 'scheduled'),
+	isUnderReview: equal('state', 'under_review'),
+	isReviewed: equal('state', 'reviewed'),
+	isClosed: equal('state', 'closed'),
+	isReceived: equal('state', 'received'),
+	isReceiving: equal('state', 'receiving'),
+	isCancelled: equal('state', 'cancelled'),
+	preventNewItem: alias('isFinished'),
 
-	hasReceived: Ember.computed.or('isReceived', 'isReceiving'),
-	isReviewing: Ember.computed.or('isUnderReview', 'isReviewed'),
-	adminCurrentOffer: Ember.computed.or('isReviewing', 'isScheduled'),
-	nonSubmittedOffer: Ember.computed.or('isDraft', 'isInactive'),
-	closedOrCancelled: Ember.computed.or('isClosed', 'isCancelled'),
+	hasReceived: or('isReceived', 'isReceiving'),
+	isReviewing: or('isUnderReview', 'isReviewed'),
+	adminCurrentOffer: or('isReviewing', 'isScheduled'),
+	nonSubmittedOffer: or('isDraft', 'isInactive'),
+	closedOrCancelled: or('isClosed', 'isCancelled'),
 
-	needReview: Ember.computed('isUnderReview', 'isSubmitted', 'isClosed', function() {
+	needReview: computed('isUnderReview', 'isSubmitted', 'isClosed', function() {
 		return this.get('isUnderReview') || this.get('isSubmitted') || this.get('isClosed');
 	}),
 
-	isFinished: Ember.computed('isClosed', 'isReceived', 'isCancelled', 'isInactive', function() {
+	isFinished: computed('isClosed', 'isReceived', 'isCancelled', 'isInactive', function() {
 		return this.get('isClosed') || this.get('isReceived') || this.get('isCancelled') || this.get('isInactive');
 	}),
 
-	canMerged: Ember.computed('isSubmitted', 'isUnderReview', 'isReviewed', function() {
+	canMerged: computed('isSubmitted', 'isUnderReview', 'isReviewed', function() {
 		return this.get('isSubmitted') || this.get('isUnderReview') || this.get('isReviewed');
 	}),
 
-	baseForMerge: Ember.computed('isSubmitted', 'isUnderReview', 'isReviewed', 'isScheduled', function() {
+	baseForMerge: computed('isSubmitted', 'isUnderReview', 'isReviewed', 'isScheduled', function() {
 		return (
 			this.get('isSubmitted') || this.get('isUnderReview') || this.get('isReviewed') || this.get('isScheduled')
 		);
 	}),
 
-	activeItems: Ember.computed('items.@each.state', function() {
+	activeItems: computed('items.@each.state', function() {
 		return this.get('items').rejectBy('state', 'draft');
 	}),
 
-	nonEmptyOffer: Ember.computed('items.[]', function() {
+	nonEmptyOffer: computed('items.[]', function() {
 		return this.get('itemCount') > 0;
 	}),
 
-	allItemsReviewed: Ember.computed('items.@each.state', function() {
+	allItemsReviewed: computed('items.@each.state', function() {
 		var reviewedItems = this.get('activeItems').filterBy('state', 'submitted');
 		return reviewedItems.get('length') === 0;
 	}),
 
-	readyForSchedule: Ember.computed('state', 'allItemsReviewed', function() {
+	readyForSchedule: computed('state', 'allItemsReviewed', function() {
 		return (this.get('isUnderReview') || this.get('isSubmitted')) && this.get('allItemsReviewed');
 	}),
 
-	allItemsRejected: Ember.computed('items.@each.state', 'needReview', function() {
+	allItemsRejected: computed('items.@each.state', 'needReview', function() {
 		return this.get('needReview') && this.get('computedRejectedItemsCount') === this.get('itemCount');
 	}),
 
-	displayImageUrl: Ember.computed('displayImageCloudinaryId', 'items.@each.displayImageUrl', function() {
+	displayImageUrl: computed('displayImageCloudinaryId', 'items.@each.displayImageUrl', function() {
 		let dImageId = this.get('displayImageCloudinaryId');
 		if (dImageId) {
 			return this.get('cloudinaryUtils').generateThumbnailUrl(dImageId);
@@ -191,15 +194,15 @@ export default DS.Model.extend({
 		return this.get('activeItems.firstObject.displayImageUrl') || 'assets/images/default_item.jpg';
 	}),
 
-	isCharitableSale: Ember.computed('saleable', function() {
+	isCharitableSale: computed('saleable', function() {
 		return this.get('saleable') ? this.locale('yes') : this.locale('no');
 	}),
 
-	isAccepted: Ember.computed('isReviewed', 'computedApprovedItemsCount', function() {
+	isAccepted: computed('isReviewed', 'computedApprovedItemsCount', function() {
 		return this.get('computedApprovedItemsCount') > 0 && this.get('isReviewed');
 	}),
 
-	donor: Ember.computed('createdById', function(){
+	donor: computed('createdById', function(){
 	  return this.get("createdById") && this.get("createdBy");
 	}),
 
@@ -226,19 +229,19 @@ export default DS.Model.extend({
 		}
 	},
 
-	status: Ember.computed('state', function() {
+	status: computed('state', function() {
 		var state = this.get('state');
 		var status = this.getOfferStatus(state);
 		return status;
 	}),
 
-	i18n: Ember.inject.service(),
+	i18n: service(),
 
 	locale: function(text) {
 		return this.get('i18n').t(text);
 	},
 
-	statusText: Ember.computed('status', 'itemCount', function() {
+	statusText: computed('status', 'itemCount', function() {
 		return this.get('nonSubmittedOffer')
 			? this.get('status')
 			: this.get('status') + ' (' + this.get('itemCount') + ' ' + this.locale('items_text') + ')';
@@ -256,7 +259,7 @@ export default DS.Model.extend({
 		}
 	},
 
-	gogovan_status: Ember.computed('delivery.gogovanOrder.status', function() {
+	gogovan_status: computed('delivery.gogovanOrder.status', function() {
 		var ggvStatus = this.get('delivery.gogovanOrder.status');
 		switch (ggvStatus) {
 			case 'pending':
@@ -268,62 +271,62 @@ export default DS.Model.extend({
 		}
 	}),
 
-	isOffer: Ember.computed('this', function() {
+	isOffer: computed('this', function() {
 		return this.get('constructor.modelName') === 'offer';
 	}),
 
 	// unread offer-items messages
-	unreadMessagesCount: Ember.computed('messages.@each.state', function() {
+	unreadMessagesCount: computed('messages.@each.state', function() {
 		return this.get('messages').filterBy('state', 'unread').length;
 	}),
 
-	hasUnreadMessages: Ember.computed('unreadMessagesCount', function() {
+	hasUnreadMessages: computed('unreadMessagesCount', function() {
 		return this.get('unreadMessagesCount') > 0;
 	}),
 
 	// unread offer-messages
-	unreadOfferMessages: Ember.computed('messages.@each.state', function() {
+	unreadOfferMessages: computed('messages.@each.state', function() {
 		return this.get('messages').filterBy('state', 'unread').filterBy('item', null).sortBy('createdAt');
 	}),
 
-	unreadOfferMessagesCount: Ember.computed('unreadOfferMessages', function() {
+	unreadOfferMessagesCount: computed('unreadOfferMessages', function() {
 		var count = this.get('unreadOfferMessages.length');
 		return count > 0 ? count : '';
 	}),
 
 	// unread offer-messages by donor
-	hasUnreadDonorMessages: Ember.computed('unreadOfferMessages', function() {
+	hasUnreadDonorMessages: computed('unreadOfferMessages', function() {
 		return this.get('unreadOfferMessages').filterBy('isPrivate', false).length > 0;
 	}),
 
 	// unread offer-messages by supervisor-reviewer
-	hasUnreadPrivateMessages: Ember.computed('unreadOfferMessages', function() {
+	hasUnreadPrivateMessages: computed('unreadOfferMessages', function() {
 		return this.get('unreadOfferMessages').filterBy('isPrivate', true).length > 0;
 	}),
 
 	// recent offer message
-	lastMessage: Ember.computed('messages.[]', function() {
+	lastMessage: computed('messages.[]', function() {
 		var messages = this.get('messages').filterBy('item', null).sortBy('createdAt');
 		return messages.get('length') > 0 ? messages.get('lastObject') : null;
 	}),
 
-	hasCrossroadsTransport: Ember.computed('crossroadsTransport', function() {
+	hasCrossroadsTransport: computed('crossroadsTransport', function() {
 		return this.get('crossroadsTransport') && this.get('crossroadsTransport.isVanAllowed');
 	}),
 
-	hasGogovanTransport: Ember.computed('gogovanTransport', function() {
+	hasGogovanTransport: computed('gogovanTransport', function() {
 		return this.get('gogovanTransport') && !this.get('gogovanTransport.disabled');
 	}),
 
 	// display "General Messages Thread"
-	displayGeneralMessages: Ember.computed('isDraft', 'lastMessage', function() {
+	displayGeneralMessages: computed('isDraft', 'lastMessage', function() {
 		return !(this.get('isDraft') && this.get('lastMessage') === null);
 	}),
 
 	// to sort on offer-details page for updated-offer and latest-message
-	latestUpdatedTime: Ember.computed('lastMessage', function() {
+	latestUpdatedTime: computed('lastMessage', function() {
 		var value;
-		switch (Ember.compare(this.get('lastMessage.createdAt'), this.get('updatedAt'))) {
+		switch (compare(this.get('lastMessage.createdAt'), this.get('updatedAt'))) {
 			case 0:
 			case 1:
 				value = this.get('lastMessage.createdAt');
@@ -335,11 +338,11 @@ export default DS.Model.extend({
 		return value;
 	}),
 
-	hasCompleteGGVOrder: Ember.computed('delivery.gogovanOrder.status', function() {
+	hasCompleteGGVOrder: computed('delivery.gogovanOrder.status', function() {
 		return (this.get('delivery.gogovanOrder.status') || '') === 'completed';
 	}),
 
-	showOfferIcons: Ember.computed('hasCompleteGGVOrder', 'itemCount', 'isClosed', 'hasReceived', function() {
+	showOfferIcons: computed('hasCompleteGGVOrder', 'itemCount', 'isClosed', 'hasReceived', function() {
 		return (
 			this.get('itemCount') > 0 &&
 			!(this.get('isClosed') || this.get('hasReceived')) &&
@@ -347,7 +350,7 @@ export default DS.Model.extend({
 		);
 	}),
 
-	statusBarClass: Ember.computed('state', function() {
+	statusBarClass: computed('state', function() {
 		var retState = '';
 		if (this.get('isSubmitted')) {
 			retState = 'is-submitted';
@@ -365,13 +368,13 @@ export default DS.Model.extend({
 		return retState;
 	}),
 
-	showDeliveryDetails: Ember.computed('state', function() {
+	showDeliveryDetails: computed('state', function() {
 		return this.get('isScheduled') || this.get('isReceived') || this.get('isReceiving');
 	}),
 
-	hideBookingModification: Ember.computed.alias('delivery.gogovanOrder.isCompleted'),
+	hideBookingModification: alias('delivery.gogovanOrder.isCompleted'),
 
-	allPackagesMissing: Ember.computed('state', 'items.@each.state', 'packages.@each.state', function() {
+	allPackagesMissing: computed('state', 'items.@each.state', 'packages.@each.state', function() {
 		return (
 			!this.get('allItemsRejected') &&
 			this.get('allItemsReviewed') &&
@@ -383,7 +386,7 @@ export default DS.Model.extend({
 		);
 	}),
 
-	readyForClosure: Ember.computed('state', 'packages.@each.state', function() {
+	readyForClosure: computed('state', 'packages.@each.state', function() {
 		return (
 			!this.get('allItemsRejected') &&
 			this.get('allItemsReviewed') &&
@@ -395,7 +398,7 @@ export default DS.Model.extend({
 		);
 	}),
 
-	timeDetail: Ember.computed('state', 'delivery', function() {
+	timeDetail: computed('state', 'delivery', function() {
 		var prefix = '',
 			suffix = '',
 			date;
@@ -464,7 +467,7 @@ export default DS.Model.extend({
 		return { prefix: prefix, date: date, suffix: suffix };
 	}),
 
-	hideCancelOfferOption: Ember.computed('state', 'hasCompleteGGVOrder', function() {
+	hideCancelOfferOption: computed('state', 'hasCompleteGGVOrder', function() {
 		return (
 			this.get('closedOrCancelled') ||
 			this.get('isReceived') ||
@@ -473,11 +476,11 @@ export default DS.Model.extend({
 		);
 	}),
 
-	hideInactiveOfferOption: Ember.computed('state', 'hasCompleteGGVOrder', function() {
+	hideInactiveOfferOption: computed('state', 'hasCompleteGGVOrder', function() {
 		return this.get('isFinished') || this.get('hasCompleteGGVOrder') || this.get('isReceiving');
 	}),
 
-	allowResubmit: Ember.computed('isCancelled', 'allItemsReviewed', function() {
+	allowResubmit: computed('isCancelled', 'allItemsReviewed', function() {
 		return (this.get('isCancelled') && !this.get('allItemsReviewed')) || this.get('isInactive');
 	})
 });

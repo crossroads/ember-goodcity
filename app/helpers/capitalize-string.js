@@ -1,5 +1,5 @@
-import Ember from "ember";
+import { helper as buildHelper } from '@ember/component/helper';
 
-export default Ember.Helper.helper(function([string]) {
+export default buildHelper(function([string]) {
   return string.capitalize();
 });

@@ -1,6 +1,7 @@
-import Ember from "ember";
+import { alias, equal } from '@ember/object/computed';
+import { computed } from '@ember/object';
+import { getOwner } from '@ember/application';
 import DS from "ember-data";
-const { getOwner } = Ember;
 
 var attr = DS.attr,
   belongsTo = DS.belongsTo;
@@ -17,20 +18,20 @@ export default DS.Model.extend({
   item: belongsTo("item", { async: false }),
   offer: belongsTo("offer", { async: false }),
 
-  myMessage: Ember.computed(function() {
+  myMessage: computed(function() {
     var session = getOwner(this).lookup("service:session");
     return this.get("sender.id") === session.get("currentUser.id");
   }),
 
-  isMessage: Ember.computed("this", function() {
+  isMessage: computed("this", function() {
     return true;
   }),
 
-  createdDate: Ember.computed(function() {
+  createdDate: computed(function() {
     return new Date(this.get("createdAt")).toDateString();
   }),
 
-  itemImageUrl: Ember.computed.alias("item.displayImageUrl"),
-  isRead: Ember.computed.equal("state", "read"),
-  isUnread: Ember.computed.equal("state", "unread")
+  itemImageUrl: alias("item.displayImageUrl"),
+  isRead: equal("state", "read"),
+  isUnread: equal("state", "unread")
 });

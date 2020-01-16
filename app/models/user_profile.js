@@ -1,4 +1,5 @@
-import Ember from 'ember';
+import { empty } from '@ember/object/computed';
+import { computed } from '@ember/object';
 import DS from 'ember-data';
 import Addressable from './addressable';
 
@@ -13,7 +14,7 @@ export default Addressable.extend({
 
   userRoles: DS.hasMany('userRoles', { async: false }),
 
-  roles: Ember.computed('userRoles.[]', function(){
+  roles: computed('userRoles.[]', function(){
     var roles = []
     if(this.get('userRoles.length')){
       this.get('userRoles').forEach(userRole => {
@@ -23,13 +24,13 @@ export default Addressable.extend({
     }
   }),
 
-  roleNames: Ember.computed('roles', function(){
+  roleNames: computed('roles', function(){
     if(this.get('roles.length')){
       return this.get('roles').getEach('name');
     }
   }),
 
-  permissionNames: Ember.computed('roles', function(){
+  permissionNames: computed('roles', function(){
     var permissionNames = []
     if(this.get('roles.length')){
       this.get('roles').forEach(role => {
@@ -41,41 +42,41 @@ export default Addressable.extend({
     }
   }),
 
-  isReviewer: Ember.computed('roleNames', function(){
+  isReviewer: computed('roleNames', function(){
     if(this.get('roleNames.length')){
       return this.get('roleNames').indexOf('Reviewer') >= 0;
     }
   }),
 
-  isSupervisor: Ember.computed('roleNames', function(){
+  isSupervisor: computed('roleNames', function(){
     if(this.get('roleNames.length')){
       return this.get('roleNames').indexOf('Supervisor') >= 0;
     }
   }),
 
-  canManageUsers: Ember.computed('permissionNames', function(){
+  canManageUsers: computed('permissionNames', function(){
     if(this.get('permissionNames.length')){
       return this.get('permissionNames').indexOf('can_manage_users') >= 0;
     }
   }),
 
-  canManageHolidays: Ember.computed('permissionNames', function(){
+  canManageHolidays: computed('permissionNames', function(){
     if(this.get('permissionNames.length')){
       return this.get('permissionNames').indexOf('can_manage_holidays') >= 0;
     }
   }),
 
-  isDonor: Ember.computed.empty('roleNames'),
+  isDonor: empty('roleNames'),
   // isDonor: Ember.computed.empty("permission.name"),
   // isStaff: Ember.computed.notEmpty("permission.name"),
   // isReviewer: Ember.computed.equal("permission.name", "Reviewer"),
   // isSupervisor: Ember.computed.equal("permission.name", "Supervisor"),
 
-  mobileWithCountryCode: Ember.computed('mobile', function(){
+  mobileWithCountryCode: computed('mobile', function(){
     return this.get('mobile') ? ("+852" + this.get('mobile')) : "";
   }),
 
-  fullName: Ember.computed('firstName', 'lastName', function(){
+  fullName: computed('firstName', 'lastName', function(){
     return (this.get('firstName') + " " + this.get('lastName'));
   })
 });

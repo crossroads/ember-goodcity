@@ -1,14 +1,18 @@
+import $ from 'jquery';
+import { next } from '@ember/runloop';
+import { inject as service } from '@ember/service';
+import Route from '@ember/routing/route';
+import { getOwner } from '@ember/application';
 import Ember from 'ember';
 import preloadDataMixin from '../mixins/preload_data';
-const { getOwner } = Ember;
 
-export default Ember.Route.extend(preloadDataMixin, {
-  cordova: Ember.inject.service(),
-  i18n: Ember.inject.service(),
+export default Route.extend(preloadDataMixin, {
+  cordova: service(),
+  i18n: service(),
   isErrPopUpAlreadyShown: false,
   isOfflineErrAlreadyShown: false,
-  logger: Ember.inject.service(),
-  messageBox: Ember.inject.service(),
+  logger: service(),
+  messageBox: service(),
   isalreadyLoggedinShown: false,
 
   _loadDataStore: function() {
@@ -221,13 +225,13 @@ export default Ember.Route.extend(preloadDataMixin, {
     },
 
     willTransition() {
-      Ember.run.next(function() {
+      next(function() {
         // before transitioning close all foundation-dialog box
-        Ember.$(".reveal-modal").foundation("reveal", "close");
+        $(".reveal-modal").foundation("reveal", "close");
 
         // remove joyride-popup if not assigned for page
         if ($(".joyride-list").length === 0) {
-          Ember.$('.joyride-tip-guide').remove();
+          $('.joyride-tip-guide').remove();
         }
       });
     }

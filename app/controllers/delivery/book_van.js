@@ -1,11 +1,13 @@
-import Ember from "ember";
+import { computed } from '@ember/object';
+import { inject as service } from '@ember/service';
+import { inject as controller } from '@ember/controller';
+import { getOwner } from '@ember/application';
 import AjaxPromise from './../../utils/ajax-promise';
 import addressDetails from './address_details';
 import { translationMacro as t } from "ember-i18n";
-const { getOwner } = Ember;
 
 export default addressDetails.extend({
-  deliveryController: Ember.inject.controller('delivery'),
+  deliveryController: controller('delivery'),
 
   selectedDate: null,
   selectedTime: null,
@@ -17,13 +19,13 @@ export default addressDetails.extend({
 
   datePrompt: t("gogovan.book_van.date"),
   timePrompt: t("gogovan.book_van.time"),
-  i18n: Ember.inject.service(),
+  i18n: service(),
 
-  isSelectedVan: Ember.computed("selectedGogovanOption", function() {
+  isSelectedVan: computed("selectedGogovanOption", function() {
     return this.get("selectedGogovanOption") === "1";
   }),
 
-  offer: Ember.computed("deliveryController", {
+  offer: computed("deliveryController", {
     get() {
       return this.get("deliveryController.model.offer");
     },
@@ -32,7 +34,7 @@ export default addressDetails.extend({
     }
   }),
 
-  available_dates: Ember.computed('available_dates.[]', {
+  available_dates: computed('available_dates.[]', {
     get: function() {
       new AjaxPromise("/available_dates", "GET", this.get('session.authToken'), { schedule_days: 120 })
         .then(data => this.set("available_dates", data));
@@ -42,16 +44,16 @@ export default addressDetails.extend({
     }
   }),
 
-  gogovanOptions: Ember.computed(function() {
+  gogovanOptions: computed(function() {
     var allOptions = this.store.peekAll('gogovan_transport');
     return allOptions.rejectBy('disabled', true).sortBy('id');
   }),
 
-  selectedGogovanOption: Ember.computed('gogovanOptions', 'offer', function() {
+  selectedGogovanOption: computed('gogovanOptions', 'offer', function() {
     return this.get("offer.gogovanTransport.id") || this.get('gogovanOptions.firstObject.id');
   }),
 
-  timeSlots: Ember.computed(function() {
+  timeSlots: computed(function() {
     var options = [];
     var slots = {
       "600": "10:00",

@@ -1,5 +1,5 @@
+import { get } from '@ember/object';
 import { test, moduleForModel } from "ember-qunit";
-import Ember from "ember";
 
 moduleForModel("image", "Image Model", {
   needs: ["model:item", "service:cloudinaryUtils"]
@@ -21,7 +21,7 @@ test("Relationships with other models", function(assert) {
   assert.expect(2);
 
   var image = this.store().modelFor("image");
-  var relationshipsWithItem = Ember.get(image, "relationshipsByName").get(
+  var relationshipsWithItem = get(image, "relationshipsByName").get(
     "item"
   );
 

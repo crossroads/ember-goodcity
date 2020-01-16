@@ -1,16 +1,19 @@
-import Ember from 'ember';
+import $ from 'jquery';
+import { later, debounce, scheduleOnce } from '@ember/runloop';
+import { computed } from '@ember/object';
+import Component from '@ember/component';
 import config from '../config/environment';
 
-export default Ember.Component.extend({
+export default Component.extend({
 
   foundation: null,
 
-  currentClassName: Ember.computed("className", function(){
+  currentClassName: computed("className", function(){
     return this.get("className") ? `.${this.get('className')}` : document;
   }),
 
   click() {
-    Ember.run.later(function() {
+    later(function() {
       if($('.off-canvas-wrap.move-right')[0]) {
         config.cordova.enabled ? $('body').css({'position': 'fixed', 'width': '100%'}) : $('body').css('overflow', 'hidden');
       } else {
@@ -25,13 +28,13 @@ export default Ember.Component.extend({
 
     this._super();
 
-    Ember.run.debounce(this, function(){
+    debounce(this, function(){
       var clientHeight = $( window ).height();
       $('.inner-wrap').css('min-height', clientHeight);
     }, 1000);
 
-    Ember.run.scheduleOnce('afterRender', this, function(){
-      var initFoundation = Ember.$(className).foundation({
+    scheduleOnce('afterRender', this, function(){
+      var initFoundation = $(className).foundation({
         offcanvas: { close_on_click: true }
       });
       _this.set("foundation", initFoundation);

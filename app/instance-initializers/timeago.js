@@ -1,4 +1,5 @@
-import Ember from "ember";
+import $ from 'jquery';
+import { later } from '@ember/runloop';
 import config from '../config/environment';
 
 export default {
@@ -27,13 +28,13 @@ export default {
     });
 
     if (config.environment !== "test") {
-      Ember.run.later(this, this.updateTime, 60000);
+      later(this, this.updateTime, 60000);
     }
   },
 
   updateTime: function() {
-    Ember.$(".timeago").each((idx, elm) =>
+    $(".timeago").each((idx, elm) =>
       elm.innerText = moment(elm.getAttribute("datetime")).fromNow(true));
-    Ember.run.later(this, this.updateTime, 60000);
+    later(this, this.updateTime, 60000);
   }
 };

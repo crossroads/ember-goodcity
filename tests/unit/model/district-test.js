@@ -1,5 +1,5 @@
+import { get } from '@ember/object';
 import { test, moduleForModel } from 'ember-qunit';
-import Ember from 'ember';
 
 moduleForModel('district', 'District Model', {
   needs: ['model:territory']
@@ -17,7 +17,7 @@ test('Relationships with other models', function(assert){
   assert.expect(2);
 
   var district = this.store().modelFor('district');
-  var relationshipsWithTerritory = Ember.get(district, 'relationshipsByName').get('territory');
+  var relationshipsWithTerritory = get(district, 'relationshipsByName').get('territory');
 
   assert.equal(relationshipsWithTerritory.key, 'territory');
   assert.equal(relationshipsWithTerritory.kind, 'belongsTo');
