@@ -2,6 +2,7 @@ import config from '../config/environment';
 import ActiveModelAdapter from 'active-model-adapter';
 import { inject as service } from "@ember/service";
 import { computed } from "@ember/object";
+
 export default ActiveModelAdapter.extend({
 
   namespace: config.APP.NAMESPACE,

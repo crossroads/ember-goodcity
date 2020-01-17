@@ -14,7 +14,7 @@ import config from '../../config/environment';
 export default Controller.extend({
   queryParams: ["isUnplannedPackage"],
   isUnplannedPackage: false,
-  offerController: controller('offer'),
+  offerController: controller('offers'),
   offer: alias("offerController.model"),
   item: alias("model"),
   session: service(),
@@ -61,7 +61,10 @@ export default Controller.extend({
   },
 
   package: computed('packageId', function() {
-    return this.get("store").peekRecord("package", this.get("packageId"));
+    const packageId = this.get("packageId");
+    if (packageId) {
+      return this.get("store").peekRecord("package", packageId);
+    }
   }),
 
   previewMatchesFavourite: computed("previewImage", "favouriteImage", function() {

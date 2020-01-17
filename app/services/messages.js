@@ -7,17 +7,20 @@ export default Service.extend({
   logger: service(),
   session: service(),
   store: service(),
-  subscriptions: controller(),
+  //subscriptions: controller(),
 
   unreadMessageCount: 0,
 
   init() {
-    this.get('subscriptions').on('create:message', ({ id })=> {
-      const msg = this.get('store').peekRecord("message", id);
-      if (msg.get('isUnread')) {
-        this._incrementCount();
-      }
-    });
+    const subscriptionsController =
+      this.container && this.container.lookup("controller:subscriptions");
+    subscriptionsController &&
+      subscriptionsController.on("create:message", ({ id }) => {
+        const msg = this.get("store").peekRecord("message", id);
+        if (msg.get("isUnread")) {
+          this._incrementCount();
+        }
+      });
   },
 
   fetchUnreadMessages(page, perPage) {

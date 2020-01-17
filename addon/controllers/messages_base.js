@@ -8,9 +8,8 @@ import Controller, { inject as controller } from '@ember/controller';
 
 export default Controller.extend({
   messageLinkConvertor: service(),
-
   body: "",
-  offerController: controller("offer"),
+  offerController: controller("offers"),
   messagesUtil: service("messages"),
   isPrivate: false,
   inProgress: false,

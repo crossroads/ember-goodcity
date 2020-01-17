@@ -7,7 +7,7 @@ import AjaxPromise from '../../utils/ajax-promise';
 
 export default Controller.extend({
 
-  offerController: controller('offer'),
+  offerController: controller('offers'),
   logger: service(),
   offerId: alias('offerController.model.id'),
   gogovanPriceCalculated: notEmpty("gogovanPrice"),

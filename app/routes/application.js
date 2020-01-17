@@ -16,44 +16,70 @@ export default Route.extend(preloadDataMixin, {
   isalreadyLoggedinShown: false,
 
   _loadDataStore: function() {
-    return this.preloadData(true).catch(error => {
-      if (error.status === 0 || (error.errors && error.errors[0].status === "0")) {
-        this.transitionTo("offline");
-      } else {
-        this.handleError(error);
-      }
-    }).finally(() => {
-      // don't know why but placing this before preloadData on iPhone 6 causes register_device request to fail with status 0
-      if (this.session.get('isLoggedIn')) {
-        this.get("cordova").appLoad();
-      }
-    });
+    return this.preloadData(true)
+      .catch(error => {
+        if (
+          error.status === 0 ||
+          (error.errors && error.errors[0].status === "0")
+        ) {
+          this.transitionTo("offline");
+        } else {
+          this.handleError(error);
+        }
+      })
+      .finally(() => {
+        // don't know why but placing this before preloadData on iPhone 6 causes register_device request to fail with status 0
+        if (this.session.get("isLoggedIn")) {
+          this.get("cordova").appLoad();
+        }
+      });
   },
 
   isUnAuthenticatedPath(currentPath) {
-    return (currentPath.indexOf("login") >= 0 || currentPath.indexOf("authenticate") >= 0 || currentPath.indexOf("pics") >= 0 || currentPath.indexOf("terms_and_conditions") >= 0);
+    return (
+      currentPath.indexOf("login") >= 0 ||
+      currentPath.indexOf("authenticate") >= 0 ||
+      currentPath.indexOf("pics") >= 0 ||
+      currentPath.indexOf("terms_and_conditions") >= 0
+    );
   },
 
   init() {
     var _this = this;
     var storageHandler = function(object) {
       var currentPath = window.location.href;
-      var authToken = window.localStorage.getItem('authToken');
-      if (!authToken && window.location.pathname !== "/" && window.location.pathname !== "/register" && !object.isUnAuthenticatedPath(currentPath)) {
-        object.store.unloadAll('user_profile');
+      var authToken = window.localStorage.getItem("authToken");
+      if (
+        !authToken &&
+        window.location.pathname !== "/" &&
+        window.location.pathname !== "/register" &&
+        !object.isUnAuthenticatedPath(currentPath)
+      ) {
+        object.store.unloadAll("user_profile");
         object.session.clear();
         object.store.unloadAll();
         window.location.reload();
-      } else if (object.get("isalreadyLoggedinShown") && authToken && !(currentPath.indexOf("offer") >= 0) && object.isUnAuthenticatedPath(currentPath)) {
+      } else if (
+        object.get("isalreadyLoggedinShown") &&
+        authToken &&
+        !(currentPath.indexOf("offer") >= 0) &&
+        object.isUnAuthenticatedPath(currentPath)
+      ) {
         object.set("isalreadyLoggedinShown", true);
-        object.get('messageBox').alert("Logged in from another window, press ok to refresh.", () => {
-          window.location.reload();
-        });
+        object
+          .get("messageBox")
+          .alert("Logged in from another window, press ok to refresh.", () => {
+            window.location.reload();
+          });
       }
     };
-    window.addEventListener("storage", function() {
-      storageHandler(_this);
-    }, false);
+    window.addEventListener(
+      "storage",
+      function() {
+        storageHandler(_this);
+      },
+      false
+    );
   },
 
   checkSafariPrivateBrowser() {
@@ -64,7 +90,7 @@ export default Route.extend(preloadDataMixin, {
       this.get("messageBox").alert(this.get("i18n").t("QuotaExceededError"));
     }
     if (localStrg) {
-      localStrg.removeItem('test');
+      localStrg.removeItem("test");
     }
   },
 
@@ -73,7 +99,7 @@ export default Route.extend(preloadDataMixin, {
     this.checkSafariPrivateBrowser();
     if (transition.queryParams.ln) {
       language = transition.queryParams.ln === "zh-tw" ? "zh-tw" : "en";
-      this.set('session.language', language);
+      this.set("session.language", language);
     }
 
     language = this.session.get("language") || "en";
@@ -86,7 +112,10 @@ export default Route.extend(preloadDataMixin, {
   afterModel() {
     if (this.get("session.isAdminApp")) {
       this.loadStaticData(true).catch(error => {
-        if (error.status === 0 || (error.errors && error.errors[0].status === "0")) {
+        if (
+          error.status === 0 ||
+          (error.errors && error.errors[0].status === "0")
+        ) {
           this.transitionTo("offline");
         } else {
           this.handleError(error);
@@ -98,34 +127,33 @@ export default Route.extend(preloadDataMixin, {
   renderTemplate() {
     this.render(); // default template
 
-    this.render('notifications', { // the template to render
-      into: 'application', // the template to render into
-      outlet: 'notifications', // the name of the outlet in that template
-      controller: 'notifications' // the controller to use for the template
+    this.render("notifications", {
+      // the template to render
+      into: "application", // the template to render into
+      outlet: "notifications", // the name of the outlet in that template
+      controller: "notifications" // the controller to use for the template
     });
 
     if (this.get("session.isAdminApp")) {
-      this.render('notification_link', {
-        into: 'application',
-        outlet: 'notification_link',
-        controller: 'notification_link'
+      this.render("notification_link", {
+        into: "application",
+        outlet: "notification_link",
+        controller: "notification_link"
       });
 
-      this.render('internet_call_status', {
-        into: 'application',
-        outlet: 'internet_call_status',
-        controller: 'internet_call_status'
+      this.render("internet_call_status", {
+        into: "application",
+        outlet: "internet_call_status",
+        controller: "internet_call_status"
       });
     }
   },
 
-
-
   offlineError(reason) {
-    if (!this.get('isOfflineErrAlreadyShown')) {
-      this.set('isOfflineErrAlreadyShown', true);
+    if (!this.get("isOfflineErrAlreadyShown")) {
+      this.set("isOfflineErrAlreadyShown", true);
       this.get("messageBox").alert(this.get("i18n").t("offline_error"), () => {
-        this.set('isOfflineErrAlreadyShown', false);
+        this.set("isOfflineErrAlreadyShown", false);
       });
       if (!reason.isAdapterError) {
         this.get("logger").error(reason);
@@ -139,19 +167,23 @@ export default Route.extend(preloadDataMixin, {
   },
 
   getErrorMessage(reason) {
-    if (reason.errors.length && reason.errors[0].detail && reason.errors[0].detail.status == 422) {
+    if (
+      reason.errors.length &&
+      reason.errors[0].detail &&
+      reason.errors[0].detail.status == 422
+    ) {
       return reason.errors[0].detail.message;
     } else {
       return this.get("i18n").t("unexpected_error");
-    } 
+    }
   },
 
   showErrorPopup(reason) {
     this.get("logger").error(reason);
-    if (!this.get('isErrPopUpAlreadyShown')) {
-      this.set('isErrPopUpAlreadyShown', true);
+    if (!this.get("isErrPopUpAlreadyShown")) {
+      this.set("isErrPopUpAlreadyShown", true);
       this.get("messageBox").alert(this.getErrorMessage(reason), () => {
-        this.set('isErrPopUpAlreadyShown', false);
+        this.set("isErrPopUpAlreadyShown", false);
       });
     }
   },
@@ -162,15 +194,19 @@ export default Route.extend(preloadDataMixin, {
   },
 
   unauthorizedError() {
-    if (this.session.get('isLoggedIn')) {
-      this.controllerFor("application").send('logMeOut');
+    if (this.session.get("isLoggedIn")) {
+      this.controllerFor("application").send("logMeOut");
     }
   },
 
   handleError: function(reason) {
     try {
       var status;
-      try { status = parseInt(reason.errors[0].status, 10); } catch (err) { status = reason.status; }
+      try {
+        status = parseInt(reason.errors[0].status, 10);
+      } catch (err) {
+        status = reason.status;
+      }
 
       if (!window.navigator.onLine) {
         this.offlineError(reason);
@@ -200,28 +236,43 @@ export default Route.extend(preloadDataMixin, {
       window.location.reload();
     },
     loading() {
-      if (this._loadingView) {
-        return;
+      if (!this._loadingView) {
+        this._loadingView = getOwner(this)
+          .lookup("component:loading")
+          .append();
       }
-      this._loadingView = getOwner(this).lookup('component:loading').append();
-      this.router.one('didTransition', () => {
-        this._loadingView.destroy();
-        this._loadingView = null;
-      });
     },
     // this is hopefully only triggered from promises from routes
     // so in this scenario redirect to home for 404
     error(reason) {
       try {
-        var errorStatus = parseInt(reason.status || reason.errors && reason.errors[0].status, 10);
+        var errorStatus = parseInt(
+          reason.status || (reason.errors && reason.errors[0].status),
+          10
+        );
         if ([403, 404].indexOf(errorStatus) >= 0) {
-          this.get("messageBox").alert(this.get("i18n").t(errorStatus + "_error"), () => this.transitionTo("/"));
+          this.get("messageBox").alert(
+            this.get("i18n").t(errorStatus + "_error"),
+            () => this.transitionTo("/")
+          );
         } else {
           this.handleError(reason);
         }
       } catch (err) {
         console.log(err);
       }
+    },
+
+    didTransition() {
+      // Without later() it causes double render error
+      // as we're trying to render a page and remove loading
+      // indicator at a same time
+      Ember.run.later(() => {
+        if (this._loadingView) {
+          this._loadingView.destroy();
+          this._loadingView = null;
+        }
+      }, 100);
     },
 
     willTransition() {
@@ -231,7 +282,7 @@ export default Route.extend(preloadDataMixin, {
 
         // remove joyride-popup if not assigned for page
         if ($(".joyride-list").length === 0) {
-          $('.joyride-tip-guide').remove();
+          $(".joyride-tip-guide").remove();
         }
       });
     }
