@@ -59,7 +59,7 @@ I18nTranslationsEn =
     "rate_button_label": "Sure"
     "yes_button_label": "Yes!"
     "no_button_label": "Not really"
-    "app_rate_prompt_title": "Thank you, We appreciate your kindness. Give GoodCity a rating?"
+    "app_rate_prompt_title": "Rate GoodCity! Thank you for your kind donation."
     "feedback_prompt_title": "Mind giving us some feedback?"
 
   "menu":
