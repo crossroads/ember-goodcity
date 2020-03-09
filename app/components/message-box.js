@@ -15,11 +15,7 @@ export default Ember.Component.extend({
   isVisible: false,
 
   close() {
-    if (this.get("isVisible")) {
-      this.set("isVisible", false);
-    } else {
-      this.destroy();
-    }
+    this.set("isVisible", false);
   },
 
   init() {
