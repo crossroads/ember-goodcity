@@ -1,22 +1,24 @@
-import Ember from 'ember';
+import { computed } from '@ember/object';
+import { inject as service } from '@ember/service';
+import Controller, { inject as controller } from '@ember/controller';
+import { getOwner } from '@ember/application';
 import AjaxPromise from './../../utils/ajax-promise';
 import { translationMacro as t } from "ember-i18n";
-const { getOwner } = Ember;
 
-export default Ember.Controller.extend({
+export default Controller.extend({
 
-  delivery: Ember.inject.controller(),
+  delivery: controller(),
   selectedId: null,
   selectedDate: null,
   datePrompt: t("gogovan.book_van.date"),
   timePrompt: t("gogovan.book_van.time"),
-  i18n: Ember.inject.service(),
+  i18n: service(),
 
-  slots: Ember.computed('timeslot.[]', function(){
+  slots: computed('timeslot.[]', function(){
     return this.store.peekAll('timeslot').sortBy('name');
   }),
 
-  available_dates: Ember.computed('available_dates.[]', {
+  available_dates: computed('available_dates.[]', {
     get: function() {
       new AjaxPromise("/available_dates", "GET", this.get('session.authToken'), {schedule_days: 40})
         .then(data => this.set("available_dates", data));

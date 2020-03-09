@@ -1,15 +1,16 @@
-import Ember from "ember";
+import { computed } from '@ember/object';
+import Service, { inject as service } from '@ember/service';
+import { getOwner } from '@ember/application';
 import config from '../config/environment';
 import AjaxPromise from '../utils/ajax-promise';
-const { getOwner } = Ember;
 
-export default Ember.Service.extend({
-  session: Ember.inject.service(),
-  logger: Ember.inject.service(),
-  store: Ember.inject.service(),
-  messagesUtil: Ember.inject.service("messages"),
+export default Service.extend({
+  session: service(),
+  logger: service(),
+  store: service(),
+  messagesUtil: service("messages"),
 
-  iOSDevice: Ember.computed({
+  iOSDevice: computed({
     get() {
       return false;
     },

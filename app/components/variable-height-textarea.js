@@ -1,31 +1,35 @@
-import Ember from 'ember';
+import $ from 'jquery';
+import { once, scheduleOnce } from '@ember/runloop';
+import { observer } from '@ember/object';
+import { inject as service } from '@ember/service';
+import TextArea from '@ember/component/text-area';
 import config from './../config/environment';
 
-export default Ember.TextArea.extend({
+export default TextArea.extend({
   tagName: "textarea",
   attributeBindings: ["disabled"],
   disabled: false,
-  cordova: Ember.inject.service(),
+  cordova: service(),
 
-  valueChanged: Ember.observer('value', function () {
+  valueChanged: observer('value', function () {
     var _this = this;
     var textarea = _this.element;
 
     if(textarea) {
-      Ember.run.once(function(){
+      once(function(){
         // auto-resize height of textarea $('textarea')[0].
         if (textarea.scrollHeight < 120) {
-          Ember.$(textarea)
+          $(textarea)
             .css({'height':'auto','overflow-y':'hidden'})
             .height(textarea.scrollHeight - 15);
 
           var parent = _this.get('parentDiv');
-          var grandParentDiv = Ember.$(`.${parent}`).closest(".review_item ");
+          var grandParentDiv = $(`.${parent}`).closest(".review_item ");
           if(grandParentDiv.length === 0) {
 
             // auto-move textarea by chaning margin of parentDiv
             var paddingSize = config.cordova.enabled ? 5 : (textarea.scrollHeight - 40);
-            Ember.$(`.${parent}`)
+            $(`.${parent}`)
               .css({'padding-bottom': (paddingSize > 0 ? paddingSize : 0) });
 
             // scrolling down to bottom of page
@@ -35,7 +39,7 @@ export default Ember.TextArea.extend({
           }
 
         } else {
-          Ember.$(textarea)
+          $(textarea)
             .css({'height':'auto','overflow-y':'auto'})
             .height(105);
         }
@@ -46,37 +50,37 @@ export default Ember.TextArea.extend({
   didInsertElement() {
     var _this = this;
     var parent = _this.get('parentDiv');
-    var grandParentDiv = Ember.$(`.${parent}`).closest(".review_item ");
+    var grandParentDiv = $(`.${parent}`).closest(".review_item ");
 
     // Apply only in Donor Cordova App.
     if(grandParentDiv.length === 0 && config.cordova.enabled) {
 
-      var msgTextbox = Ember.$(Ember.$(_this.element).closest(".message-textbar"));
+      var msgTextbox = $($(_this.element).closest(".message-textbar"));
 
-      Ember.run.scheduleOnce('afterRender', this, function(){
+      scheduleOnce('afterRender', this, function(){
 
         var isIOS = _this.get("cordova").isIOS();
 
         var height = isIOS ? 55 : 30;
-        Ember.$(".message-footer").height(height);
+        $(".message-footer").height(height);
 
-        Ember.$(_this.element).focus(function(){
+        $(_this.element).focus(function(){
 
           if(isIOS) {
-            if(document.body.scrollHeight === Ember.$(window).height()) {
-              Ember.$(".message-footer").addClass("message_footer_small_page");
+            if(document.body.scrollHeight === $(window).height()) {
+              $(".message-footer").addClass("message_footer_small_page");
             } else {
-              Ember.$(".message-footer").removeClass("message_footer_small_page");
+              $(".message-footer").removeClass("message_footer_small_page");
             }
             msgTextbox.css({'position': 'relative'});
           } else {
-            var positionVal = document.body.scrollHeight === Ember.$(window).height() ? 'fixed' : 'relative';
+            var positionVal = document.body.scrollHeight === $(window).height() ? 'fixed' : 'relative';
           }
 
           window.scrollTo(0, document.body.scrollHeight);
         });
 
-        Ember.$(_this.element).blur(function(){
+        $(_this.element).blur(function(){
           msgTextbox.css({'position':'fixed'});
         });
       });

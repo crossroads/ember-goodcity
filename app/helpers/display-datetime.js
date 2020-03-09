@@ -1,4 +1,4 @@
-import Ember from "ember";
+import { helper as buildHelper } from '@ember/component/helper';
 
 // Date Format used in App:
 // "2015-04-29" => 'YYYY-MM-DD'
@@ -9,7 +9,7 @@ import Ember from "ember";
 // "Monday, 4th January" => 'dddd, Do MMMM'
 // "Mon 4th Jan" => 'ddd Do MMM'
 
-export default Ember.Helper.helper(function(value, params) {
+export default buildHelper(function(value, params) {
   var parseDate = Date.parse(value);
 
   if(parseDate) {

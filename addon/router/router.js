@@ -1,6 +1,6 @@
-import Ember from 'ember';
+import EmberRouter from '@ember/routing/router';
 
-var Router = Ember.Router.extend();
+var Router = EmberRouter.extend();
 
 Router.map(function() {
   this.route('i18n', { path: '/i18n' });

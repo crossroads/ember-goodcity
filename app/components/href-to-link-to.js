@@ -2,10 +2,14 @@
 // This component will treat anchor tag as link-to links.
 // Ex: <a href="/offers/1/plan_delivery"></a> will be trated as route "offers.plan_delivery"
 
-import Ember from 'ember';
-const { getOwner } = Ember;
+import { isNone } from '@ember/utils';
 
-export default Ember.Component.extend({
+import $ from 'jquery';
+import { scheduleOnce } from '@ember/runloop';
+import Component from '@ember/component';
+import { getOwner } from '@ember/application';
+
+export default Component.extend({
 
   _getNormalisedRootUrl: function(router) {
     var rootURL = router.rootURL;
@@ -21,12 +25,12 @@ export default Ember.Component.extend({
 
     this._super();
 
-    Ember.run.scheduleOnce('afterRender', this, function(){
-      Ember.$(".received_message, .my_message").on('click', 'a', function(e) {
-        var $target = Ember.$(e.currentTarget);
+    scheduleOnce('afterRender', this, function(){
+      $(".received_message, .my_message").on('click', 'a', function(e) {
+        var $target = $(e.currentTarget);
         var handleClick = (e.which === 1 && !e.ctrlKey && !e.metaKey);
 
-        if(handleClick && !$target.hasClass('ember-view') && Ember.isNone($target.attr('data-ember-action'))) {
+        if(handleClick && !$target.hasClass('ember-view') && isNone($target.attr('data-ember-action'))) {
 
           var rootURL = _this._getNormalisedRootUrl(router);
           var url = $target.attr('href');

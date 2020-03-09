@@ -1,7 +1,8 @@
-import Ember from 'ember';
+import { inject as service } from '@ember/service';
+import Component from '@ember/component';
 import messageBox from '../templates/components/message-box';
 
-export default Ember.Component.extend({
+export default Component.extend({
 
   layout: messageBox,
   message: "",
@@ -10,7 +11,7 @@ export default Ember.Component.extend({
   btn2Text: "",
   btn2Callback: () => {},
   displayCloseLink: false,
-  router: Ember.inject.service('-routing'),
+  router: service('-routing'),
 
   isVisible: false,
 

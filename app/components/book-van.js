@@ -1,35 +1,37 @@
-import Ember from 'ember';
+import $ from 'jquery';
+import { scheduleOnce } from '@ember/runloop';
+import Component from '@ember/component';
 
-export default Ember.Component.extend({
+export default Component.extend({
   didInsertElement() {
     this._super();
 
-    Ember.run.scheduleOnce('afterRender', this, function(){
+    scheduleOnce('afterRender', this, function(){
       validateInputs();
       validateForm();
     });
 
     function validateForm(){
-      Ember.$('.book_van').click(function(){
-        Ember.$.each(['.pickadate', '.timepicker'], function(i, input){
-          checkInput(Ember.$(input));
+      $('.book_van').click(function(){
+        $.each(['.pickadate', '.timepicker'], function(i, input){
+          checkInput($(input));
         });
-        if(Ember.$('.has-error').length > 0) { return false; }
+        if($('.has-error').length > 0) { return false; }
       });
     }
 
     function validateInputs(){
-      Ember.$('.pickadate, .timepicker').focusout(function(){
+      $('.pickadate, .timepicker').focusout(function(){
         return checkInput(this);
       });
-      Ember.$('.pickadate, .timepicker').focus(function(){
+      $('.pickadate, .timepicker').focus(function(){
         return removeHighlight(this);
       });
     }
 
     function checkInput(element){
-      var parent = Ember.$(element).parent();
-      var value = Ember.$(element).val();
+      var parent = $(element).parent();
+      var value = $(element).val();
 
       if(value === undefined || value.length === 0) {
         parent.addClass('has-error');
@@ -39,7 +41,7 @@ export default Ember.Component.extend({
     }
 
     function removeHighlight(element){
-      var parent = Ember.$(element).parent();
+      var parent = $(element).parent();
       parent.removeClass('has-error');
     }
   }

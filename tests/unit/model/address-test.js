@@ -1,5 +1,6 @@
+import { run } from '@ember/runloop';
+import { get } from '@ember/object';
 import { test, moduleForModel } from 'ember-qunit';
-import Ember from 'ember';
 
 moduleForModel('address', 'Address Model', {
   needs: ['model:district', 'model:addressable']
@@ -25,8 +26,8 @@ test('Relationships with other models', function(assert){
   assert.expect(4);
 
   var address = this.store().modelFor('address');
-  var relationshipsWithDistrict = Ember.get(address, 'relationshipsByName').get('district');
-  var relationshipsWithAddressable = Ember.get(address, 'relationshipsByName').get('addressable');
+  var relationshipsWithDistrict = get(address, 'relationshipsByName').get('district');
+  var relationshipsWithAddressable = get(address, 'relationshipsByName').get('addressable');
 
   assert.equal(relationshipsWithDistrict.key, 'district');
   assert.equal(relationshipsWithDistrict.kind, 'belongsTo');
@@ -41,7 +42,7 @@ test('Address is a valid ember-data Model', function(assert){
   var store = this.store();
   var record = null;
 
-  Ember.run(function(){
+  run(function(){
     store.createRecord('address', { id: 1, flat: "Suite 888", building: "4976", street: "Jacobson Fields" });
     record = store.peekRecord('address', 1);
   });

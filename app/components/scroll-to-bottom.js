@@ -1,52 +1,55 @@
-import Ember from 'ember';
-export default Ember.Component.extend({
+import $ from 'jquery';
+import { scheduleOnce } from '@ember/runloop';
+import { inject as service } from '@ember/service';
+import Component from '@ember/component';
+export default Component.extend({
 
-  cordova: Ember.inject.service(),
+  cordova: service(),
 
   didInsertElement() {
     var _this = this;
     this._super();
 
-    Ember.run.scheduleOnce('afterRender', this, function(){
+    scheduleOnce('afterRender', this, function(){
 
       // Scroll back to page-top on back-click
-      Ember.$('.sticky_title_bar').on('click', '.back', function(){
+      $('.sticky_title_bar').on('click', '.back', function(){
         window.scrollTo(0, 0);
       });
 
       // Stick Notification bell icon in header
-      if(Ember.$('.sticky_title_bar').length > 0) {
-        Ember.$('.all_unread_messages_count').addClass("fixed_to_header");
+      if($('.sticky_title_bar').length > 0) {
+        $('.all_unread_messages_count').addClass("fixed_to_header");
       }
 
       // Fixed header in iOS
       if(_this.get("cordova").isIOS()) {
-        Ember.$("textarea").on("touchstart", function(){
-          Ember.$(".sticky_title_bar").css({"position": "absolute"});
+        $("textarea").on("touchstart", function(){
+          $(".sticky_title_bar").css({"position": "absolute"});
         });
 
-        Ember.$("textarea").on("blur", function(){
-          Ember.$(".sticky_title_bar").css({"position": "fixed"});
+        $("textarea").on("blur", function(){
+          $(".sticky_title_bar").css({"position": "fixed"});
         });
       }
 
     });
 
-    Ember.run.scheduleOnce("afterRender", this, function() {
+    scheduleOnce("afterRender", this, function() {
 
       var messageBox, id, scrollOffset;
-      var hadUnread = Ember.$(".hidden.unread_id") && Ember.$(".hidden.unread_id").attr("data-name");
+      var hadUnread = $(".hidden.unread_id") && $(".hidden.unread_id").attr("data-name");
 
       // Scroll to first unread message in thread
-      if(Ember.$(".unread.received_message:first").length > 0) {
-        id = Ember.$(".unread.received_message:first").attr("id");
-        messageBox = Ember.$(`#${id}`);
+      if($(".unread.received_message:first").length > 0) {
+        id = $(".unread.received_message:first").attr("id");
+        messageBox = $(`#${id}`);
         scrollOffset = messageBox.offset().top - 100;
       } else {
 
         // scroll to bottom
-        if(Ember.$(".message-textbar").length > 0) {
-          scrollOffset = Ember.$(document).height();
+        if($(".message-textbar").length > 0) {
+          scrollOffset = $(document).height();
         }
       }
 
@@ -57,12 +60,12 @@ export default Ember.Component.extend({
         window.scrollTo(0, scrollOffset);
       }
 
-      Ember.$(".hidden.unread_id").attr("data-name", (id || 0));
+      $(".hidden.unread_id").attr("data-name", (id || 0));
       return true;
     });
   },
 
   willDestroyElement(){
-    Ember.$('.all_unread_messages_count').removeClass("fixed_to_header");
+    $('.all_unread_messages_count').removeClass("fixed_to_header");
   }
 });

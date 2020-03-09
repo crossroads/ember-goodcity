@@ -1,12 +1,15 @@
-import Ember from "ember";
+import { notEmpty } from '@ember/object/computed';
+import { computed } from '@ember/object';
+import { inject as service } from '@ember/service';
+import Controller from '@ember/controller';
 import AjaxPromise from './../utils/ajax-promise';
 
-export default Ember.Controller.extend({
+export default Controller.extend({
   sortProperties: ["date"],
   sortAscending: true,
-  messagesUtil: Ember.inject.service("messages"),
+  messagesUtil: service("messages"),
 
-  model: Ember.computed({
+  model: computed({
     get() {
       return [];
     },
@@ -15,7 +18,7 @@ export default Ember.Controller.extend({
     }
   }),
 
-  nextNotification: Ember.computed('model.[]', function() {
+  nextNotification: computed('model.[]', function() {
     //retrieveNotification is not implemented here because it needs to call itself
     return this.retrieveNotification();
   }),
@@ -44,7 +47,7 @@ export default Ember.Controller.extend({
     return notification;
   },
 
-  itemImageUrl: Ember.computed('nextNotification', function() {
+  itemImageUrl: computed('nextNotification', function() {
     var itemId = this.get("nextNotification.item_id");
     if (itemId) {
       var item = this.store.peekRecord("item", itemId);
@@ -54,9 +57,9 @@ export default Ember.Controller.extend({
     }
   }),
 
-  showItemImage: Ember.computed.notEmpty("itemImageUrl"),
+  showItemImage: notEmpty("itemImageUrl"),
 
-  senderImageUrl: Ember.computed('nextNotification', function() {
+  senderImageUrl: computed('nextNotification', function() {
     var notification = this.get("nextNotification");
     if (!notification) { return null; }
     var sender = this.store.peekRecord("user", notification.author_id);

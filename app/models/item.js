@@ -1,4 +1,6 @@
-import Ember from 'ember';
+import { compare } from '@ember/utils';
+import { equal, alias } from '@ember/object/computed';
+import { computed, observer } from '@ember/object';
 import DS from 'ember-data';
 import '../computed/foreign-key';
 import config from '../config/environment';
@@ -6,7 +8,7 @@ import config from '../config/environment';
 var attr = DS.attr,
     belongsTo = DS.belongsTo,
     hasMany   = DS.hasMany,
-    foreignKey = Ember.computed.foreignKey;
+    foreignKey = computed.foreignKey;
 
 export default DS.Model.extend({
   donorDescription:     attr('string'),
@@ -25,12 +27,12 @@ export default DS.Model.extend({
   rejectionReason:      belongsTo('rejection_reason', { async: false }),
   state_event:          attr('string'),
 
-  isAccepted: Ember.computed.equal("state", "accepted"),
-  isRejected: Ember.computed.equal("state", "rejected"),
-  isDrafted:  Ember.computed.equal("state", "draft"),
+  isAccepted: equal("state", "accepted"),
+  isRejected: equal("state", "rejected"),
+  isDrafted:  equal("state", "draft"),
   appName:    config.APP.NAME,
 
-  removePrivateMessage: Ember.observer('messages.[]', 'messages.@each.isPrivate', function() {
+  removePrivateMessage: observer('messages.[]', 'messages.@each.isPrivate', function() {
     if(this.get('appName') === "app.goodcity") {
       this.get("messages").forEach(msg => {
         if(msg && msg.get('isPrivate') === undefined) {
@@ -40,70 +42,70 @@ export default DS.Model.extend({
     }
   }),
 
-  canUpdated: Ember.computed("hasReceivedPackages", "offer.state", function(){
+  canUpdated: computed("hasReceivedPackages", "offer.state", function(){
     return !(this.get("hasReceivedPackages") || this.get("offer.isFinished") || this.get('offer.state') === 'receiving');
   }),
 
-  isDraft: Ember.computed('offer.state', function(){
+  isDraft: computed('offer.state', function(){
     return this.get('offer.state') === 'draft';
   }),
 
-  isSubmitted: Ember.computed('state', 'offer.state', function(){
+  isSubmitted: computed('state', 'offer.state', function(){
     return this.get('state') === 'submitted' && this.get('offer.state') === 'submitted';
   }),
 
-  isUnderReview: Ember.computed('state', 'offer.state', function(){
+  isUnderReview: computed('state', 'offer.state', function(){
     return this.get('state') === 'submitted' && this.get('offer.state') === 'under_review';
   }),
 
-  hasReceivedPackages: Ember.computed('packages.@each.state', function(){
+  hasReceivedPackages: computed('packages.@each.state', function(){
     return this.get('packages').filterBy('isReceived', true).length > 0;
   }),
 
-  displayImage: Ember.computed('images.@each.favourite', function(){
+  displayImage: computed('images.@each.favourite', function(){
     return this.get("images").filterBy("favourite").get("firstObject") ||
       this.get("images").sortBy("id").get("firstObject") || null;
   }),
 
-  nonFavouriteImages: Ember.computed('images.@each.favourite', function(){
+  nonFavouriteImages: computed('images.@each.favourite', function(){
     return this.get("images").rejectBy("favourite", true);
   }),
 
-  displayImageUrl: Ember.computed('displayImage', 'displayImage.thumbImageUrl', function(){
+  displayImageUrl: computed('displayImage', 'displayImage.thumbImageUrl', function(){
     return this.get('displayImage.thumbImageUrl') || "assets/images/default_item.jpg";
   }),
 
-  imageCount: Ember.computed.alias("images.length"),
+  imageCount: alias("images.length"),
 
   // unread messages
-  unreadMessages: Ember.computed('messages.@each.state', function(){
+  unreadMessages: computed('messages.@each.state', function(){
     return this.get('messages').filterBy('state', 'unread').sortBy('createdAt');
   }),
 
   // unread offer-messages by donor
-  hasUnreadDonorMessages: Ember.computed('unreadMessages', function(){
+  hasUnreadDonorMessages: computed('unreadMessages', function(){
     return this.get('unreadMessages').filterBy('isPrivate', false).length > 0;
   }),
 
   // unread offer-messages by supervisor-reviewer
-  hasUnreadPrivateMessages: Ember.computed('unreadMessages', function(){
+  hasUnreadPrivateMessages: computed('unreadMessages', function(){
     return this.get('unreadMessages').filterBy('isPrivate', true).length > 0;
   }),
 
-  unreadMessagesCount: Ember.computed('unreadMessages', function(){
+  unreadMessagesCount: computed('unreadMessages', function(){
     var count = this.get('unreadMessages').length;
     return count > 0 ? count : null ;
   }),
 
   // last message
-  lastMessage: Ember.computed('messages.[]', 'messages.@each.body', function(){
+  lastMessage: computed('messages.[]', 'messages.@each.body', function(){
     return this.get('messages').sortBy('createdAt').get('lastObject');
   }),
 
   // to sort on offer-details page for updated-item and latest-message
-  latestUpdatedTime: Ember.computed('lastMessage', function(){
+  latestUpdatedTime: computed('lastMessage', function(){
     var value;
-    switch(Ember.compare(this.get('lastMessage.createdAt'), this.get('updatedAt'))) {
+    switch(compare(this.get('lastMessage.createdAt'), this.get('updatedAt'))) {
       case 0 :
       case 1 : value = this.get('lastMessage.createdAt'); break;
       case -1 : value = this.get('updatedAt'); break;
@@ -111,7 +113,7 @@ export default DS.Model.extend({
     return value;
   }),
 
-  statusBarClass: Ember.computed("state", function(){
+  statusBarClass: computed("state", function(){
     if(this.get("offer.isCancelled")) { return "is-closed"; }
     else if(this.get("isSubmitted")) { return "is-submitted"; }
     else if(this.get("isUnderReview")) { return "is-under-review"; }
@@ -119,7 +121,7 @@ export default DS.Model.extend({
     else if(this.get("isRejected")) { return "is-rejected"; }
   }),
 
-  pageLink: Ember.computed("state", function(){
+  pageLink: computed("state", function(){
      return this.get("isRejected") ? 'review_item.reject' : 'review_item.accept';
   })
 });

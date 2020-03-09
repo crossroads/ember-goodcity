@@ -1,5 +1,5 @@
+import { get } from '@ember/object';
 import { test, moduleForModel } from 'ember-qunit';
-import Ember from 'ember';
 
 moduleForModel('schedule', 'Schedule Model', {
   needs: ['model:delivery', 'service:i18n']
@@ -25,7 +25,7 @@ test('Relationships with other models', function(assert){
   assert.expect(2);
 
   var schedule = this.store().modelFor('schedule');
-  var relationshipsWithDelivery = Ember.get(schedule, 'relationshipsByName').get('deliveries');
+  var relationshipsWithDelivery = get(schedule, 'relationshipsByName').get('deliveries');
 
   assert.equal(relationshipsWithDelivery.key, 'deliveries');
   assert.equal(relationshipsWithDelivery.kind, 'hasMany');

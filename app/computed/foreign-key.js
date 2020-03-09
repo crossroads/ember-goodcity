@@ -1,4 +1,4 @@
-import Ember from 'ember';
+import { computed } from '@ember/object';
 
 // Example usage:
 //
@@ -12,9 +12,9 @@ import Ember from 'ember';
 // it'll update the `id` property on donorCondition instead of the donorCondition
 // on the model.
 
-export default Ember.computed.foreignKey = function(path) {
+export default computed.foreignKey = function(path) {
   var relationshipName = path.split('.')[0];
-  return Ember.computed(relationshipName, {
+  return computed(relationshipName, {
     get() {
       return this.get(path);
     },

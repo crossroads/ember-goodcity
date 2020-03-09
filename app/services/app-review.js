@@ -1,10 +1,10 @@
-import Ember from "ember";
+import Service, { inject as service } from '@ember/service';
 import config from '../config/environment';
 
-export default Ember.Service.extend({
+export default Service.extend({
   isMobileApp: config.cordova.enabled,
-  cordova: Ember.inject.service(),
-  i18n: Ember.inject.service(),
+  cordova: service(),
+  i18n: service(),
 
   promptReviewModal() {
     var _this = this;

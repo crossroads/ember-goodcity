@@ -1,4 +1,6 @@
-import Ember from 'ember';
+import { scheduleOnce, next } from '@ember/runloop';
+import $ from 'jquery';
+import TextField from '@ember/component/text-field';
 
 // Handle time selection based on current time
 // <select id="ember1325" required="">
@@ -7,7 +9,7 @@ import Ember from 'ember';
 //   <option value="2">2PM-4PM</option>  => (840mins - 960mins)
 // </select>
 
-export default Ember.TextField.extend({
+export default TextField.extend({
   tagName: 'input',
   classNames: 'pickadate',
   attributeBindings: ["name", "type", "value", "id", 'required', 'pattern', 'available', 'placeholder'],
@@ -46,9 +48,9 @@ export default Ember.TextField.extend({
       var option;
 
       if (total_mins >= 780 && total_mins < 960) {
-        option = Ember.$(".time_selector select option:eq(1)");
+        option = $(".time_selector select option:eq(1)");
       } else if (total_mins >= 960) {
-        option = Ember.$(".time_selector select option:eq(2)");
+        option = $(".time_selector select option:eq(2)");
       }
 
       if (option && option.length > 0) {
@@ -57,15 +59,15 @@ export default Ember.TextField.extend({
         if (option.is(':selected')) { option.prop("selected", false); }
 
         option.prevAll().each(function() {
-          Ember.$(this).addClass("hidden");
+          $(this).addClass("hidden");
           this.disabled = true;
         });
       }
 
     } else {
       // Enable all select options
-      Ember.$(".time_selector select option").each(function() {
-        Ember.$(this).removeClass("hidden");
+      $(".time_selector select option").each(function() {
+        $(this).removeClass("hidden");
         this.disabled = false;
       });
     }
@@ -95,8 +97,8 @@ export default Ember.TextField.extend({
       if (_this.currentMinutes() === 961 && isTodayListed) { available_array.pop(); }
     }
 
-    Ember.run.scheduleOnce('afterRender', this, function() {
-      Ember.$('.pickadate').pickadate({
+    scheduleOnce('afterRender', this, function() {
+      $('.pickadate').pickadate({
         format: 'ddd mmm d',
         monthsFull: moment.months(),
         monthsShort: moment.monthsShort(),
@@ -109,16 +111,16 @@ export default Ember.TextField.extend({
         max: available_array[1],
 
         onClose: function() {
-          Ember.$(document.activeElement).blur();
+          $(document.activeElement).blur();
           if (setting) { return; }
           var date = this.get('select') && this.get('select').obj;
 
           if (date) {
             _this.set("selection", date);
-            Ember.$('.time_selector select').val('');
+            $('.time_selector select').val('');
 
             setting = true;
-            Ember.run.next(() => {
+            next(() => {
               this.set('select', new Date(date), { format: 'ddd mmm d' });
               setting = false;
             });
@@ -142,32 +144,32 @@ export default Ember.TextField.extend({
     });
 
     function closeOnClick() {
-      Ember.$(".picker__holder").click(function(e) {
+      $(".picker__holder").click(function(e) {
         if (e.target !== this) { return; }
-        Ember.$('#selectedDate').trigger("blur");
+        $('#selectedDate').trigger("blur");
       });
     }
 
     function validateForm() {
-      Ember.$('.button.drop_off').click(function() {
-        var date = checkInput(Ember.$('#selectedDate'));
-        var time = checkInput(Ember.$('.time_selector select'));
+      $('.button.drop_off').click(function() {
+        var date = checkInput($('#selectedDate'));
+        var time = checkInput($('.time_selector select'));
         return date && time;
       });
     }
 
     function validateInputs() {
-      Ember.$('#selectedDate').focus(function() {
+      $('#selectedDate').focus(function() {
         return removeHighlight(this);
       });
-      Ember.$('.time_selector select').focus(function() {
+      $('.time_selector select').focus(function() {
         return removeHighlight(this);
       });
     }
 
     function checkInput(element) {
-      var parent = Ember.$(element).parent();
-      var value = Ember.$(element).val();
+      var parent = $(element).parent();
+      var value = $(element).val();
 
       if (value === undefined || value.length === 0) {
         parent.addClass('has-error');
@@ -179,7 +181,7 @@ export default Ember.TextField.extend({
     }
 
     function removeHighlight(element) {
-      var parent = Ember.$(element).parent();
+      var parent = $(element).parent();
       parent.removeClass('has-error');
     }
 

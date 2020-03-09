@@ -1,22 +1,26 @@
-import Ember from "ember";
-const { getOwner } = Ember;
+import { inject as controller } from '@ember/controller';
+import Service, { inject as service } from '@ember/service';
+import { getOwner } from '@ember/application';
 import { AjaxBuilder } from '../utils/ajax-promise';
 
-export default Ember.Service.extend({
-  logger: Ember.inject.service(),
-  session: Ember.inject.service(),
-  store: Ember.inject.service(),
-  subscriptions: Ember.inject.controller(),
+export default Service.extend({
+  logger: service(),
+  session: service(),
+  store: service(),
+  //subscriptions: controller(),
 
   unreadMessageCount: 0,
 
   init() {
-    this.get('subscriptions').on('create:message', ({ id })=> {
-      const msg = this.get('store').peekRecord("message", id);
-      if (msg.get('isUnread')) {
-        this._incrementCount();
-      }
-    });
+    const subscriptionsController =
+      this.container && this.container.lookup("controller:subscriptions");
+    subscriptionsController &&
+      subscriptionsController.on("create:message", ({ id }) => {
+        const msg = this.get("store").peekRecord("message", id);
+        if (msg.get("isUnread")) {
+          this._incrementCount();
+        }
+      });
   },
 
   fetchUnreadMessages(page, perPage) {

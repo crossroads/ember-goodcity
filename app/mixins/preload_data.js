@@ -1,9 +1,11 @@
-import Ember from "ember";
+import { all } from 'rsvp';
+import { inject as service } from '@ember/service';
+import Mixin from '@ember/object/mixin';
 import AjaxPromise from "../utils/ajax-promise";
 import config from "../config/environment";
 
-export default Ember.Mixin.create({
-  messages: Ember.inject.service(),
+export default Mixin.create({
+  messages: service(),
 
   preloadData(includePublicTypes) {
     var promises = [];
@@ -45,7 +47,7 @@ export default Ember.Mixin.create({
       }
     }
 
-    return Ember.RSVP.all(promises);
+    return all(promises);
   },
 
   loadStaticData(includePublicTypes) {
@@ -58,6 +60,6 @@ export default Ember.Mixin.create({
     if (this.get("session.authToken")) {
       promises = promises.concat(retrieve(config.APP.PRELOAD_AUTHORIZED_TYPES));
     }
-    return Ember.RSVP.all(promises);
+    return all(promises);
   }
 });

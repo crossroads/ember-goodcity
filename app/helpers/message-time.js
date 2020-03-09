@@ -1,6 +1,6 @@
-import Ember from "ember";
+import { helper as buildHelper } from '@ember/component/helper';
 
-export default Ember.Helper.helper(function(value) {
+export default buildHelper(function(value) {
   var _MS_PER_DAY = 86400000;
   var message_time = Date.parse(value);
   var current_time = Date.now();

@@ -1,10 +1,14 @@
-import Ember from 'ember';
+import { assert } from '@ember/debug';
+import { equal } from '@ember/object/computed';
+import { computed, observer } from '@ember/object';
+import { inject as service } from '@ember/service';
+import Component from '@ember/component';
 
-export default Ember.Component.extend({
+export default Component.extend({
 
-  i18n: Ember.inject.service(),
+  i18n: service(),
 
-  isTextArea: Ember.computed('type', function(){
+  isTextArea: computed('type', function(){
     return this.get('type') === 'textarea';
   }),
 
@@ -38,7 +42,7 @@ export default Ember.Component.extend({
 
   currentCountBinding: 'inputControl.value.length',
 
-  charactersKeyedIn: Ember.computed('currentCount', function(){
+  charactersKeyedIn: computed('currentCount', function(){
     var control_val = this.get('value') || "";
     var total_count = 0, special_chars, special_chars_length;
 
@@ -57,9 +61,9 @@ export default Ember.Component.extend({
     return total_count;
   }).volatile(),
 
-  isMaxCharLengthReached: Ember.computed.equal('charactersKeyedIn', 'maxlength'),
+  isMaxCharLengthReached: equal('charactersKeyedIn', 'maxlength'),
 
-  valueChanged: Ember.observer('value', function() {
+  valueChanged: observer('value', function() {
     this.send("displayCharCount");
   }),
 
@@ -71,7 +75,7 @@ export default Ember.Component.extend({
     this.send("displayCharCount");
 
     if (!this.get('maxlength')) {
-      Ember.assert("InputWithCounter doesn't work without a maxlength attribute");
+      assert("InputWithCounter doesn't work without a maxlength attribute");
     }
   },
 

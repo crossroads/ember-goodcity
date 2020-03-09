@@ -1,17 +1,20 @@
-import Ember from 'ember';
+import $ from 'jquery';
+import { later, cancel } from '@ember/runloop';
+import { inject as service } from '@ember/service';
+import Component from '@ember/component';
 import loading from '../templates/loading';
 
-export default Ember.Component.extend({
+export default Component.extend({
   layout: loading,
   classNames: ["loading-indicator"],
-  messageBox: Ember.inject.service(),
-  logger: Ember.inject.service(),
-  i18n: Ember.inject.service(),
+  messageBox: service(),
+  logger: service(),
+  i18n: service(),
   timer: null,
   prompt: null,
 
   didInsertElement() {
-    var timer = Ember.run.later(() => {
+    var timer = later(() => {
       this.get("logger").error(new Error(this.get("i18n").t("loading_timeout_error")));
 
       var cancelCallback = () => {
@@ -21,7 +24,7 @@ export default Ember.Component.extend({
 
       var continueCallback = () => {
         if (!this.get("isDestroyed")) {
-          Ember.$(document).off("cancel-loading-timer");
+          $(document).off("cancel-loading-timer");
           this.didInsertElement.call(this);
         }
       };
@@ -49,7 +52,7 @@ export default Ember.Component.extend({
   },
 
   willDestroyElement() {
-    Ember.run.cancel(this.get("timer"));
+    cancel(this.get("timer"));
     var view = this.get("prompt");
     if (view) {
       this.get("prompt").destroy();

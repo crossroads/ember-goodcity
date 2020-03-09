@@ -1,5 +1,6 @@
+import { run } from '@ember/runloop';
+import { get } from '@ember/object';
 import { test, moduleForModel } from 'ember-qunit';
-import Ember from 'ember';
 
 moduleForModel('delivery', 'Delivery Model', {
   needs: ['model:offer', 'model:contact', 'model:schedule', 'model:gogovan_order']
@@ -21,10 +22,10 @@ test('Relationships with other models', function(assert){
   assert.expect(8);
 
   var delivery = this.store().modelFor('delivery');
-  var relationshipWithOffer = Ember.get(delivery, 'relationshipsByName').get('offer');
-  var relationshipWithContact = Ember.get(delivery, 'relationshipsByName').get('contact');
-  var relationshipWithSchedule = Ember.get(delivery, 'relationshipsByName').get('schedule');
-  var relationshipWithGogovanOrder = Ember.get(delivery, 'relationshipsByName').get('gogovanOrder');
+  var relationshipWithOffer = get(delivery, 'relationshipsByName').get('offer');
+  var relationshipWithContact = get(delivery, 'relationshipsByName').get('contact');
+  var relationshipWithSchedule = get(delivery, 'relationshipsByName').get('schedule');
+  var relationshipWithGogovanOrder = get(delivery, 'relationshipsByName').get('gogovanOrder');
 
 
   assert.equal(relationshipWithOffer.key, 'offer');
@@ -77,7 +78,7 @@ test('Delivery is a valid ember-data Model', function(assert){
   var record = null;
   var date = new Date("2015/03/25");
 
-  Ember.run(function(){
+  run(function(){
     store.createRecord('delivery', { id: 1, start: date, finish: date, deliveryType: 'Gogovan' });
     record = store.peekRecord('delivery', 1);
   });

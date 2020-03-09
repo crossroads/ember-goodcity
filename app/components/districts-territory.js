@@ -1,20 +1,24 @@
-import Ember from 'ember';
+import $ from 'jquery';
+import { scheduleOnce } from '@ember/runloop';
+import { observer, computed } from '@ember/object';
+import { inject as service } from '@ember/service';
+import Component from '@ember/component';
 import { translationMacro as t } from "ember-i18n";
 
-export default Ember.Component.extend({
+export default Component.extend({
   attributeBindings: ['selected_id'],
   classNames: ['district-selection'],
   currentSelected: {id: null},
   selected_id: null,
-  i18n: Ember.inject.service(),
-  store: Ember.inject.service(),
+  i18n: service(),
+  store: service(),
 
-  currentSelectedObserver: Ember.observer('currentSelected', function () {
+  currentSelectedObserver: observer('currentSelected', function () {
     var selectedDistrictId = this.getWithDefault('currentSelected.id');
     if(selectedDistrictId) { this.set('selected_id', selectedDistrictId); }
   }),
 
-  districtsByTerritory: Ember.computed({
+  districtsByTerritory: computed({
     get: function() {
       return this.get('store').peekAll('district').sortBy('name');
     },
@@ -23,7 +27,7 @@ export default Ember.Component.extend({
     }
   }),
 
-  allTerritory: Ember.computed(function(){
+  allTerritory: computed(function(){
     return this.get('store').peekAll('territory').sortBy('name');
   }),
 
@@ -39,10 +43,10 @@ export default Ember.Component.extend({
   didInsertElement(){
     this._super();
 
-    Ember.run.scheduleOnce('afterRender', this, function(){
-      Ember.$(".radio").click(function(){
-        Ember.$(".radio").removeClass('active');
-        Ember.$(this).addClass('active');
+    scheduleOnce('afterRender', this, function(){
+      $(".radio").click(function(){
+        $(".radio").removeClass('active');
+        $(this).addClass('active');
       });
     });
   }

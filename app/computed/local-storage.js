@@ -1,4 +1,6 @@
-import Ember from 'ember';
+import { computed } from '@ember/object';
+import { isNone } from '@ember/utils';
+import $ from 'jquery';
 import config from '../config/environment';
 
 var storageSupported = false;
@@ -8,7 +10,7 @@ catch(err) {
 }
 
 var cookiesSupported = false;
-try { Ember.$.cookie('test', 2); Ember.$.removeCookie('test'); cookiesSupported = true; }
+try { $.cookie('test', 2); $.removeCookie('test'); cookiesSupported = true; }
 catch(err) {
   console.log(err);
 }
@@ -22,7 +24,7 @@ var localStorageProvider = {
     }
   },
   set(key, value) {
-    if (Ember.isNone(value)) {
+    if (isNone(value)) {
       delete localStorage[key];
     } else {
       localStorage[key] = JSON.stringify(value);
@@ -33,14 +35,14 @@ var localStorageProvider = {
 
 var cookieStorageProvider = {
   get(key) {
-    return Ember.$.cookie(key);
+    return $.cookie(key);
   },
   set(key, value) {
-    Ember.$.cookie.json = true;
-    if (Ember.isNone(value)) {
-      Ember.$.removeCookie(key);
+    $.cookie.json = true;
+    if (isNone(value)) {
+      $.removeCookie(key);
     } else {
-      Ember.$.cookie(key, value, {expires:365, path:'/', secure:config.environment==='production'});
+      $.cookie(key, value, {expires:365, path:'/', secure:config.environment==='production'});
     }
     return value;
   }
@@ -57,7 +59,7 @@ var memoryStorageProvider = {
     if (!window.goodcityStorage) {
       window.goodcityStorage = {};
     }
-    if (Ember.isNone(value)) {
+    if (isNone(value)) {
       delete window.goodcityStorage[key];
     } else {
       window.goodcityStorage[key] = value;
@@ -66,14 +68,14 @@ var memoryStorageProvider = {
   }
 };
 
-export default Ember.computed.localStorage = function() {
+export default computed.localStorage = function() {
   if (storageSupported) {
-    return Ember.computed(localStorageProvider);
+    return computed(localStorageProvider);
   }
 
   if (cookiesSupported) {
-    return Ember.computed(cookieStorageProvider);
+    return computed(cookieStorageProvider);
   }
 
-  return Ember.computed(memoryStorageProvider);
+  return computed(memoryStorageProvider);
 };

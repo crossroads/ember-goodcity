@@ -1,5 +1,6 @@
+import { run } from '@ember/runloop';
+import { get } from '@ember/object';
 import { test, moduleForModel } from 'ember-qunit';
-import Ember from 'ember';
 
 moduleForModel('item', 'Item Model', {
   needs: ['model:package', 'model:message', 'model:image', 'model:offer', 'model:package_type', 'model:donor_condition',
@@ -28,13 +29,13 @@ test('Relationships with other models', function(assert){
   assert.expect(14);
 
   var item = this.store().modelFor('item');
-  var relationshipsWithPackages = Ember.get(item, 'relationshipsByName').get('packages');
-  var relationshipsWithMessages = Ember.get(item, 'relationshipsByName').get('messages');
-  var relationshipsWithImages   = Ember.get(item, 'relationshipsByName').get('images');
-  var relationshipsWithOffer = Ember.get(item, 'relationshipsByName').get('offer');
-  var relationshipsWithPackageType = Ember.get(item, 'relationshipsByName').get('packageType');
-  var relationshipsWithDonorCondition = Ember.get(item, 'relationshipsByName').get('donorCondition');
-  var relationshipsWithRejectionReason = Ember.get(item, 'relationshipsByName').get('rejectionReason');
+  var relationshipsWithPackages = get(item, 'relationshipsByName').get('packages');
+  var relationshipsWithMessages = get(item, 'relationshipsByName').get('messages');
+  var relationshipsWithImages   = get(item, 'relationshipsByName').get('images');
+  var relationshipsWithOffer = get(item, 'relationshipsByName').get('offer');
+  var relationshipsWithPackageType = get(item, 'relationshipsByName').get('packageType');
+  var relationshipsWithDonorCondition = get(item, 'relationshipsByName').get('donorCondition');
+  var relationshipsWithRejectionReason = get(item, 'relationshipsByName').get('rejectionReason');
 
 
   assert.equal(relationshipsWithPackages.key, 'packages');
@@ -83,7 +84,7 @@ test('Item is a valid ember-data Model', function(assert){
   var store = this.store();
   var record = null;
 
-  Ember.run(function(){
+  run(function(){
     store.createRecord('item', { id: 1, state: "accepted" });
     record = store.peekRecord('item', 1);
   });

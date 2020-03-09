@@ -1,9 +1,10 @@
-import Ember from 'ember';
+import { filterBy } from '@ember/object/computed';
+import Controller, { inject as controller } from '@ember/controller';
 
-export default Ember.Controller.extend({
+export default Controller.extend({
 
-  delivery: Ember.inject.controller(),
-  availableSlots: Ember.computed.filterBy('model', 'deliveries.length', 0),
+  delivery: controller(),
+  availableSlots: filterBy('model', 'deliveries.length', 0),
   isSelected: 1,
 
   actions: {

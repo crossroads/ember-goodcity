@@ -1,4 +1,6 @@
-import Ember from "ember";
+import { equal } from '@ember/object/computed';
+import { inject as service } from '@ember/service';
+import { computed } from '@ember/object';
 import DS from "ember-data";
 import Addressable from "./addressable";
 
@@ -29,7 +31,7 @@ export default Addressable.extend({
 
   userRoles: hasMany("userRoles", { async: false }),
 
-  roles: Ember.computed("userRoles.[]", function() {
+  roles: computed("userRoles.[]", function() {
     var roles = [];
     this.get("userRoles").forEach(userRole => {
       roles.push(userRole.get("role"));
@@ -37,32 +39,32 @@ export default Addressable.extend({
     return roles;
   }),
 
-  roleIds: Ember.computed("userRoles.[]", function() {
+  roleIds: computed("userRoles.[]", function() {
     return this.get("userRoles").getEach("roleId");
   }),
 
-  i18n: Ember.inject.service(),
+  i18n: service(),
 
-  isSupervisor: Ember.computed.equal("permission.name", "Supervisor"),
+  isSupervisor: equal("permission.name", "Supervisor"),
 
-  nameInitial: Ember.computed("firstName", function() {
+  nameInitial: computed("firstName", function() {
     return this.get("firstName")
       .charAt(0)
       .capitalize();
   }),
 
-  roleInitials: Ember.computed("permission", function() {
+  roleInitials: computed("permission", function() {
     var permission = this.get("permission.name") || "Donor";
     return "(" + permission.capitalize().charAt(0) + ")";
   }),
 
-  displayImageUrl: Ember.computed("image", function() {
+  displayImageUrl: computed("image", function() {
     return (
       this.get("image.thumbImageUrl") || "assets/images/default_user_image.jpg"
     );
   }),
 
-  hasImage: Ember.computed("image", {
+  hasImage: computed("image", {
     get: function() {
       return this.get("image.thumbImageUrl");
     },
@@ -71,11 +73,11 @@ export default Addressable.extend({
     }
   }),
 
-  fullName: Ember.computed("firstName", "lastName", function() {
+  fullName: computed("firstName", "lastName", function() {
     return this.get("firstName") + " " + this.get("lastName");
   }),
 
-  onlineStatus: Ember.computed("lastConnected", "lastDisconnected", function() {
+  onlineStatus: computed("lastConnected", "lastDisconnected", function() {
     if (!this.get("lastConnected") && !this.get("lastDisconnected")) {
       return this.get("i18n").t("not_connected");
     } else if (this.get("lastDisconnected") > this.get("lastConnected")) {

@@ -1,7 +1,7 @@
-import Ember from 'ember';
-const { getOwner } = Ember;
+import Route from '@ember/routing/route';
+import { getOwner } from '@ember/application';
 
-export default Ember.Route.extend({
+export default Route.extend({
   actions: {
     try_again() {
       var currentUrl = getOwner(this).lookup("router:main").get("url");

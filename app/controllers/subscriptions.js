@@ -1,6 +1,11 @@
+import $ from 'jquery';
+import { bind } from '@ember/runloop';
+import { observer } from '@ember/object';
+import { inject as service } from '@ember/service';
+import Evented, { on } from '@ember/object/evented';
+import Controller, { inject as controller } from '@ember/controller';
+import { getOwner } from '@ember/application';
 import config from "../config/environment";
-
-const { getOwner } = Ember;
 
 function run(func) {
   if (func) {
@@ -8,15 +13,15 @@ function run(func) {
   }
 }
 
-export default Ember.Controller.extend(Ember.Evented, {
+export default Controller.extend(Evented, {
 
-  notifications: Ember.inject.controller(),
+  notifications: controller(),
   socket: null,
   lastOnline: Date.now(),
   deviceTtl: 0,
   deviceId: Math.random().toString().substring(2),
-  logger: Ember.inject.service(),
-  i18n: Ember.inject.service(),
+  logger: service(),
+  i18n: service(),
   appName: config.APP.NAME,
   status: {
     online: false,
@@ -24,7 +29,7 @@ export default Ember.Controller.extend(Ember.Evented, {
     text: ""
   },
 
-  updateStatus: Ember.observer('socket', function() {
+  updateStatus: observer('socket', function() {
     var socket = this.get("socket");
     var online = navigator.connection ? navigator.connection.type !== "none" : navigator.onLine;
     online = socket && socket.connected && online;
@@ -44,7 +49,7 @@ export default Ember.Controller.extend(Ember.Evented, {
   }),
 
   // resync if offline longer than deviceTtl
-  checkdeviceTtl: Ember.observer('status.online', function() {
+  checkdeviceTtl: observer('status.online', function() {
     var online = this.get("status.online");
     var deviceTtl = this.get("deviceTtl");
     if (online && deviceTtl !== 0 && (Date.now() - this.get("lastOnline")) > deviceTtl * 1000) {
@@ -54,16 +59,16 @@ export default Ember.Controller.extend(Ember.Evented, {
     }
   }),
 
-  initController: Ember.on('init', function() {
+  initController: on('init', function() {
     this.set("status.text", this.get("i18n").t("offline_error"));
-    var updateStatus = Ember.run.bind(this, this.updateStatus);
+    var updateStatus = bind(this, this.updateStatus);
     window.addEventListener("online", updateStatus);
     window.addEventListener("offline", updateStatus);
   }),
 
   actions: {
     wire() {
-      var updateStatus = Ember.run.bind(this, this.updateStatus);
+      var updateStatus = bind(this, this.updateStatus);
       var connectUrl = config.APP.SOCKETIO_WEBSERVICE_URL +
         "?token=" + encodeURIComponent(this.session.get("authToken")) +
         "&deviceId=" + this.get("deviceId") +
@@ -78,7 +83,7 @@ export default Ember.Controller.extend(Ember.Evented, {
         socket.io.engine.on("upgrade", updateStatus);
       });
       socket.on("disconnect", updateStatus);
-      socket.on("error", Ember.run.bind(this, function(reason) {
+      socket.on("error", bind(this, function(reason) {
         // ignore xhr post error related to no internet connection
         if (typeof reason !== "object" || reason.type !== "TransportError" && reason.message !== "xhr post error") {
           if (reason.indexOf("Auth") === 0) {
@@ -88,11 +93,11 @@ export default Ember.Controller.extend(Ember.Evented, {
           }
         }
       }));
-      socket.on("notification", Ember.run.bind(this, this.notification));
-      socket.on("update_store", Ember.run.bind(this, this.update_store));
-      socket.on("_batch", Ember.run.bind(this, this.batch));
-      socket.on("_resync", Ember.run.bind(this, this.resync));
-      socket.on("_settings", Ember.run.bind(this, function(settings) {
+      socket.on("notification", bind(this, this.notification));
+      socket.on("update_store", bind(this, this.update_store));
+      socket.on("_batch", bind(this, this.batch));
+      socket.on("_resync", bind(this, this.resync));
+      socket.on("_settings", bind(this, function(settings) {
         this.set("deviceTtl", settings.device_ttl);
         this.set("lastOnline", Date.now());
       }));
@@ -173,7 +178,7 @@ export default Ember.Controller.extend(Ember.Evented, {
     }
     // use extend to make a copy of data.item[type] so object is not normalized for use by
     // messagesUtil in mark message read code below
-    var item = Ember.$.extend({}, data.item[type]);
+    var item = $.extend({}, data.item[type]);
     this.store.normalize(type, item);
 
     if(type.toLowerCase() === "designation") {

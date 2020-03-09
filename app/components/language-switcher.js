@@ -1,12 +1,13 @@
-import Ember from 'ember';
+import { computed } from '@ember/object';
+import Component from '@ember/component';
 
-export default Ember.Component.extend({
+export default Component.extend({
 
-  isEnglish: Ember.computed('session.language', function(){
+  isEnglish: computed('session.language', function(){
     return this.get('session.language') === 'en';
   }),
 
-  isChinese: Ember.computed('session.language', function(){
+  isChinese: computed('session.language', function(){
     return this.get('session.language') === 'zh-tw';
   }),
 

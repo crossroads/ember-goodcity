@@ -1,19 +1,22 @@
-import Ember from 'ember';
+import $ from 'jquery';
+import { computed } from '@ember/object';
+import { alias } from '@ember/object/computed';
+import Controller, { inject as controller } from '@ember/controller';
+import { getOwner } from '@ember/application';
 import config from './../../config/environment';
 import AjaxPromise from './../../utils/ajax-promise';
-const { getOwner } = Ember;
 
-export default Ember.Controller.extend({
-  deliveryController: Ember.inject.controller('delivery'),
-  delivery: Ember.computed.alias("deliveryController.model"),
-  user: Ember.computed.alias('delivery.offer.createdBy'),
-  orderDetails: Ember.computed.alias('model'),
+export default Controller.extend({
+  deliveryController: controller('delivery'),
+  delivery: alias("deliveryController.model"),
+  user: alias('delivery.offer.createdBy'),
+  orderDetails: alias('model'),
 
-  mobileNumber: Ember.computed('user.mobile', function() {
+  mobileNumber: computed('user.mobile', function() {
     return this.get("user.mobile").replace(/\+852/, "");
   }),
 
-  districtName: Ember.computed('model.districtId', function() {
+  districtName: computed('model.districtId', function() {
     var district = this.store.peekRecord("district", this.get('model.districtId'));
     return district.get('name');
   }),
@@ -26,8 +29,8 @@ export default Ember.Controller.extend({
       var orderDetails = controller.get("orderDetails");
 
       // contact details
-      var name = Ember.$("#userName").val();
-      var mobile = config.APP.HK_COUNTRY_CODE + Ember.$("#mobile").val();
+      var name = $("#userName").val();
+      var mobile = config.APP.HK_COUNTRY_CODE + $("#mobile").val();
       var contactProperties = { name: name, mobile: mobile };
 
       // schedule details
