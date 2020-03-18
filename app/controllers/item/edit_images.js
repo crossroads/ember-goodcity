@@ -229,7 +229,10 @@ export default Ember.Controller.extend({
           controller.transitionToRoute("item.edit_images", item);
         }
       })
-      .finally(() => loadingView.destroy());
+      .finally(() => {
+        loadingView.destroy();
+        this.set("isExpanded", false);
+      });
   },
 
   confirmRemoveLastImage: function() {
@@ -358,8 +361,7 @@ export default Ember.Controller.extend({
     },
 
     expandImage() {
-      var value = this.get("isExpanded");
-      this.set("isExpanded", !value);
+      this.toggleProperty("isExpanded");
     },
 
     //file upload
