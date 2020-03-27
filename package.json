@@ -13,6 +13,11 @@
     "testall": "ember try:testall",
     "test:ci": "EMBER_CLI_CORDOVA=0 ember-pretty-test"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
   "lint-staged": {
     "*.{js,json,css,md}": [
       "prettier --write",
