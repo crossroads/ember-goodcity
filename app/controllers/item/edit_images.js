@@ -260,7 +260,7 @@ export default Ember.Controller.extend({
                 isUnplannedPackage: true
               }
             });
-        }else {
+        } else {
           this.transitionToRoute("review_item.accept", offer, model);
         }
       } else {
