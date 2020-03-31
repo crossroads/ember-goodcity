@@ -260,9 +260,6 @@ export default Ember.Controller.extend({
                 isUnplannedPackage: true
               }
             });
-        }
-        else if (history.state && this.get("previousRoute") !== history.state.path) {
-          window.history.back();
         } else {
           this.transitionToRoute("review_item.accept", offer, model);
         }
