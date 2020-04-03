@@ -7,6 +7,8 @@ var attr = DS.attr,
 export default DS.Model.extend({
   cloudinaryUtils: Ember.inject.service(),
 
+  imageableType: attr("number"),
+  imageableId: attr("number"),
   favourite: attr("boolean"),
   cloudinaryId: attr("string"),
   item: belongsTo("item", { async: false }),
