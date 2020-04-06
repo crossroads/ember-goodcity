@@ -58,7 +58,7 @@ I18nTranslationsZhTw =
     "later_button_label": "稍後再提醒我"
     "rate_button_label": "好的"
     "yes_button_label": "是!"
-    "no_button_label": "不是"
+    "no_button_label": "Not now"
     "app_rate_prompt_title":"Rate GoodCity! Thank you for your kind donation."
     "feedback_prompt_title":"請分享閣下的意見。"
 
