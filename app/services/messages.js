@@ -65,6 +65,9 @@ export default Ember.Service.extend({
   markAllRead() {
     return AjaxBuilder('/messages/mark_all_read')
       .withAuth(this.get('session.authToken'))
+      .withQuery({
+        scope: "offer"
+      })
       .put()
       .then(() => {
         this.get("store")
