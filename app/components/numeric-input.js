@@ -18,6 +18,13 @@ export default Ember.TextField.extend({
     }
   }),
 
+  focusOut() {
+    const value = this.get("value");
+    if (isNaN(value) || value < 0) {
+      this.set("value", null);
+    }
+  },
+
   isAllowed: Ember.computed('currentKey', function(){
     var key = this.get('currentKey');
     var allowed = (key === 13 ||
