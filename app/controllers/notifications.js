@@ -1,5 +1,5 @@
 import Ember from "ember";
-import AjaxPromise from './../utils/ajax-promise';
+import AjaxPromise from "./../utils/ajax-promise";
 
 export default Ember.Controller.extend({
   sortProperties: ["date"],
@@ -15,15 +15,20 @@ export default Ember.Controller.extend({
     }
   }),
 
-  nextNotification: Ember.computed('model.[]', function() {
+  nextNotification: Ember.computed("model.[]", function() {
     //retrieveNotification is not implemented here because it needs to call itself
     return this.retrieveNotification();
   }),
 
   retrieveNotification: function(index) {
     // not sure why but model.firstObject is undefined when there's one notification
+    debugger;
     var notification = this.get("model") && this.get("model")[index || 0];
-    if (!notification || notification.category === "new_order" || notification.order_id) {
+    if (
+      !notification ||
+      notification.category === "new_order" ||
+      notification.order_id
+    ) {
       return null;
     }
 
@@ -44,7 +49,7 @@ export default Ember.Controller.extend({
     return notification;
   },
 
-  itemImageUrl: Ember.computed('nextNotification', function() {
+  itemImageUrl: Ember.computed("nextNotification", function() {
     var itemId = this.get("nextNotification.item_id");
     if (itemId) {
       var item = this.store.peekRecord("item", itemId);
@@ -56,11 +61,15 @@ export default Ember.Controller.extend({
 
   showItemImage: Ember.computed.notEmpty("itemImageUrl"),
 
-  senderImageUrl: Ember.computed('nextNotification', function() {
+  senderImageUrl: Ember.computed("nextNotification", function() {
     var notification = this.get("nextNotification");
-    if (!notification) { return null; }
+    if (!notification) {
+      return null;
+    }
     var sender = this.store.peekRecord("user", notification.author_id);
-    return sender ? sender.get("displayImageUrl") : "assets/images/default_user_image.jpg";
+    return sender
+      ? sender.get("displayImageUrl")
+      : "assets/images/default_user_image.jpg";
   }),
 
   setRoute: function(notification) {
@@ -71,7 +80,9 @@ export default Ember.Controller.extend({
 
       case "new_offer":
       case "incoming_call":
-        var routeName = this.get("session.isDonorApp") ? "offer" : "review_offer";
+        var routeName = this.get("session.isDonorApp")
+          ? "offer"
+          : "review_offer";
         notification.route = [routeName, notification.offer_id];
         break;
 
@@ -86,7 +97,12 @@ export default Ember.Controller.extend({
   },
 
   acceptCall: function(notification) {
-    new AjaxPromise("/twilio_inbound/accept_call", "GET", this.get('session.authToken'), { donor_id: notification.author_id });
+    new AjaxPromise(
+      "/twilio_inbound/accept_call",
+      "GET",
+      this.get("session.authToken"),
+      { donor_id: notification.author_id }
+    );
   },
 
   actions: {
@@ -100,7 +116,7 @@ export default Ember.Controller.extend({
     },
 
     unloadNotifications() {
-      this.set('model', []);
+      this.set("model", []);
     }
   }
 });

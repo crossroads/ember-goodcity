@@ -13,12 +13,18 @@ export default Ember.Controller.extend({
   sortedElements: Ember.computed.sort("messagesAndVersions", "sortProperties"),
   isItemThread: Ember.computed.notEmpty("item"),
 
-  autoMarkAsRead: Ember.on('init',
-    Ember.observer('isActive', 'messages.[]', 'messages.@each.state', function() {
-      if (this.get('isActive')) {
-        Ember.run.debounce(this, this.markConversationAsRead, 1500);
+  autoMarkAsRead: Ember.on(
+    "init",
+    Ember.observer(
+      "isActive",
+      "messages.[]",
+      "messages.@each.state",
+      function() {
+        if (this.get("isActive")) {
+          Ember.run.debounce(this, this.markConversationAsRead, 1500);
+        }
       }
-    })
+    )
   ),
 
   disabled: Ember.computed("offer.isCancelled", "item.isDraft", function() {
@@ -35,10 +41,11 @@ export default Ember.Controller.extend({
 
   messages: Ember.computed("allMessages.[]", "offer", "item", function() {
     var messages = this.get("allMessages");
-    messages = this.get("isItemThread") ?
-      messages.filterBy("itemId", this.get("item.id")) :
-      messages
-          .filterBy("offerId", this.get("offer.id"))
+    debugger;
+    messages = this.get("isItemThread")
+      ? messages.filterBy("itemId", this.get("item.id"))
+      : messages
+          .filterBy("messageable.id", this.get("offer.id"))
           .filterBy("item", null);
     return messages.filter(m => {
       return Boolean(m.get("isPrivate")) === this.get("isPrivate");
@@ -146,12 +153,13 @@ export default Ember.Controller.extend({
       this.set("inProgress", true);
       var values = this.getProperties("body", "offer", "item", "isPrivate");
       values.itemId = this.get("item.id");
-      values.offerId = this.get("offer.id");
+
       values.createdAt = new Date();
       values.sender = this.store.peekRecord(
         "user",
         this.get("session.currentUser.id")
       );
+      values.messageable = this.get("offer");
       this.get("messageLinkConvertor").convert(values);
       var message = this.store.createRecord("message", values);
       message

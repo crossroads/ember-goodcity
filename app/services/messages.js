@@ -1,6 +1,6 @@
 import Ember from "ember";
 const { getOwner } = Ember;
-import { AjaxBuilder } from '../utils/ajax-promise';
+import { AjaxBuilder } from "../utils/ajax-promise";
 
 export default Ember.Service.extend({
   logger: Ember.inject.service(),
@@ -11,9 +11,10 @@ export default Ember.Service.extend({
   unreadMessageCount: 0,
 
   init() {
-    this.get('subscriptions').on('create:message', ({ id })=> {
-      const msg = this.get('store').peekRecord("message", id);
-      if (msg.get('isUnread')) {
+    debugger;
+    this.get("subscriptions").on("create:message", ({ id }) => {
+      const msg = this.get("store").peekRecord("message", id);
+      if (msg.get("isUnread")) {
         this._incrementCount();
       }
     });
@@ -28,21 +29,20 @@ export default Ember.Service.extend({
   },
 
   fetchMessages(page = 1, perPage = 25, opts = {}) {
-    const store = this.get('store');
-    return this._queryMessages(page, perPage, opts)
-      .then(data => {
-        store.pushPayload(data);
-        return data.messages.map(m => {
-          return store.peekRecord('message', m.id);
-        });
-      })
+    const store = this.get("store");
+    return this._queryMessages(page, perPage, opts).then(data => {
+      store.pushPayload(data);
+      return data.messages.map(m => {
+        return store.peekRecord("message", m.id);
+      });
+    });
   },
 
   fetchUnreadMessageCount() {
-    return this._queryMessages(1,1, { state: "unread" })
+    return this._queryMessages(1, 1, { state: "unread" })
       .then(data => {
-        const count = (data.meta && data.meta.total_count);
-        this.set('unreadMessageCount', count || 0);
+        const count = data.meta && data.meta.total_count;
+        this.set("unreadMessageCount", count || 0);
       })
       .catch(e => this._onError(e));
   },
@@ -63,17 +63,17 @@ export default Ember.Service.extend({
   },
 
   markAllRead() {
-    return AjaxBuilder('/messages/mark_all_read')
-      .withAuth(this.get('session.authToken'))
+    return AjaxBuilder("/messages/mark_all_read")
+      .withAuth(this.get("session.authToken"))
       .put()
       .then(() => {
         this.get("store")
-          .peekAll('message')
+          .peekAll("message")
           .filterBy("state", "unread")
           .forEach(message => {
-            message.set('state', 'read');
+            message.set("state", "read");
           });
-        this.set('unreadMessageCount', 0);
+        this.set("unreadMessageCount", 0);
       });
   },
 
@@ -120,8 +120,8 @@ export default Ember.Service.extend({
 
   _queryMessages(page = 1, perPage = 25, opts = {}) {
     const { scope = "offer", state } = opts;
-    return AjaxBuilder('/messages')
-      .withAuth(this.get('session.authToken'))
+    return AjaxBuilder("/messages")
+      .withAuth(this.get("session.authToken"))
       .withQuery({ state, scope })
       .getPage(page, perPage);
   },
@@ -131,11 +131,11 @@ export default Ember.Service.extend({
   },
 
   _incrementCount(step = 1) {
-    const count = this.get('unreadMessageCount') + step;
+    const count = this.get("unreadMessageCount") + step;
     if (count < 0) {
-      this.set('unreadMessageCount', 0);
+      this.set("unreadMessageCount", 0);
     } else {
-      this.set('unreadMessageCount', count);
+      this.set("unreadMessageCount", count);
     }
   },
 
