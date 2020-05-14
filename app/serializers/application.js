@@ -8,9 +8,6 @@ export default ActiveModelSerializer.extend({
     if (attr === "addressable") {
       return "addressable_id";
     }
-    if (attr === "messageable") {
-      return "messageable_id";
-    }
     return this._super(attr, method);
   }
 });

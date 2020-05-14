@@ -41,11 +41,10 @@ export default Ember.Controller.extend({
 
   messages: Ember.computed("allMessages.[]", "offer", "item", function() {
     var messages = this.get("allMessages");
-    debugger;
     messages = this.get("isItemThread")
       ? messages.filterBy("itemId", this.get("item.id"))
       : messages
-          .filterBy("messageable.id", this.get("offer.id"))
+          .filterBy("offerId", this.get("offer.id"))
           .filterBy("item", null);
     return messages.filter(m => {
       return Boolean(m.get("isPrivate")) === this.get("isPrivate");
@@ -153,13 +152,12 @@ export default Ember.Controller.extend({
       this.set("inProgress", true);
       var values = this.getProperties("body", "offer", "item", "isPrivate");
       values.itemId = this.get("item.id");
-
+      values.offerId = this.get("offer.id");
       values.createdAt = new Date();
       values.sender = this.store.peekRecord(
         "user",
         this.get("session.currentUser.id")
       );
-      values.messageable = this.get("offer");
       this.get("messageLinkConvertor").convert(values);
       var message = this.store.createRecord("message", values);
       message

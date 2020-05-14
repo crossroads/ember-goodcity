@@ -1,7 +1,6 @@
 import Ember from "ember";
 import DS from "ember-data";
-
-import Messageable from "./messageable";
+import Model from "ember-data/model";
 
 var attr = DS.attr,
   hasMany = DS.hasMany,
@@ -29,7 +28,7 @@ function createCounterOf(collection, opts = {}) {
   return Ember.computed(`${collection}.@each.state`, computer);
 }
 
-export default Messageable.extend({
+export default Model.extend({
   cloudinaryUtils: Ember.inject.service(),
 
   language: attr("string"),

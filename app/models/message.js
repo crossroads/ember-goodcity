@@ -15,10 +15,8 @@ export default DS.Model.extend({
   state: attr("string", { defaultValue: "read" }),
   sender: belongsTo("user", { async: false }),
   item: belongsTo("item", { async: false }),
-  // offer: belongsTo("offer", { async: false }),
-
-  messageableType: attr("string"),
-  messageable: belongsTo("messageable", { polymorphic: true, async: false }),
+  offerId: attr("string"),
+  offer: belongsTo("offer", { async: false }),
 
   myMessage: Ember.computed(function() {
     var session = getOwner(this).lookup("service:session");
