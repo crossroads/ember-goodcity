@@ -1,9 +1,10 @@
-import DS from 'ember-data';
+import DS from "ember-data";
 
 var attr = DS.attr,
-    hasMany = DS.hasMany;
+  hasMany = DS.hasMany;
 
 export default DS.Model.extend({
-  name: attr('string'),
-  items: hasMany('item', { async: false })
+  name: attr("string"),
+  visibleToDonor: attr("boolean"),
+  items: hasMany("item", { async: false })
 });
