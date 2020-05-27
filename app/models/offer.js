@@ -61,6 +61,7 @@ export default Model.extend({
   company: belongsTo("company", { async: false }),
 
   items: hasMany("item", { async: false }),
+  messageIds: attr(),
   messages: hasMany("message", { async: true }),
 
   delivery: belongsTo("delivery", { async: false }),

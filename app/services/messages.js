@@ -11,7 +11,6 @@ export default Ember.Service.extend({
   unreadMessageCount: 0,
 
   init() {
-    debugger;
     this.get("subscriptions").on("create:message", ({ id }) => {
       const msg = this.get("store").peekRecord("message", id);
       if (msg.get("isUnread")) {
@@ -101,8 +100,10 @@ export default Ember.Service.extend({
 
   getRoute: function(message) {
     var isDonorApp = this.get("session.isDonorApp");
-    var offerId = message.get ? message.get("offerId") : message.offer_id;
-    var itemId = message.get ? message.get("itemId") : message.item_id;
+    var offerId =
+      message.get("messageableType") == "Offer" && message.get("messageableId");
+    var itemId =
+      message.get("messageableType") == "Item" && message.get("messageableId");
     var isPrivate = message.get ? message.get("isPrivate") : message.is_private;
     isPrivate = isPrivate
       ? isPrivate.toString().toLowerCase() === "true"

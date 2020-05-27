@@ -22,7 +22,6 @@ export default Ember.Controller.extend({
 
   retrieveNotification: function(index) {
     // not sure why but model.firstObject is undefined when there's one notification
-    debugger;
     var notification = this.get("model") && this.get("model")[index || 0];
     if (
       !notification ||

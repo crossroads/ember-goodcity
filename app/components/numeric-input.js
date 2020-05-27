@@ -31,7 +31,6 @@ export default Ember.TextField.extend({
   }),
 
   isAllowed: Ember.computed("currentKey", function() {
-    debugger;
     var key = this.get("currentKey");
     var allowed =
       key === 13 ||
