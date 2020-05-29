@@ -21,6 +21,8 @@ export default DS.Model.extend({
     var session = getOwner(this).lookup("service:session");
     return this.get("sender.id") === session.get("currentUser.id");
   }),
+  messageableType: attr("string"),
+  messageableId: attr("string"),
 
   isMessage: Ember.computed("this", function() {
     return true;

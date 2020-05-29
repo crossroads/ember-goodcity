@@ -13,12 +13,18 @@ export default Ember.Controller.extend({
   sortedElements: Ember.computed.sort("messagesAndVersions", "sortProperties"),
   isItemThread: Ember.computed.notEmpty("item"),
 
-  autoMarkAsRead: Ember.on('init',
-    Ember.observer('isActive', 'messages.[]', 'messages.@each.state', function() {
-      if (this.get('isActive')) {
-        Ember.run.debounce(this, this.markConversationAsRead, 1500);
+  autoMarkAsRead: Ember.on(
+    "init",
+    Ember.observer(
+      "isActive",
+      "messages.[]",
+      "messages.@each.state",
+      function() {
+        if (this.get("isActive")) {
+          Ember.run.debounce(this, this.markConversationAsRead, 1500);
+        }
       }
-    })
+    )
   ),
 
   disabled: Ember.computed("offer.isCancelled", "item.isDraft", function() {
@@ -35,11 +41,13 @@ export default Ember.Controller.extend({
 
   messages: Ember.computed("allMessages.[]", "offer", "item", function() {
     var messages = this.get("allMessages");
-    messages = this.get("isItemThread") ?
-      messages.filterBy("itemId", this.get("item.id")) :
-      messages
-          .filterBy("offerId", this.get("offer.id"))
-          .filterBy("item", null);
+    messages = this.get("isItemThread")
+      ? messages
+          .filterBy("messageableType", "Item")
+          .filterBy("messageableId", this.get("item.id"))
+      : messages
+          .filterBy("messageableType", "Offer")
+          .filterBy("messageableId", this.get("offer.id"));
     return messages.filter(m => {
       return Boolean(m.get("isPrivate")) === this.get("isPrivate");
     });
@@ -145,8 +153,15 @@ export default Ember.Controller.extend({
 
       this.set("inProgress", true);
       var values = this.getProperties("body", "offer", "item", "isPrivate");
-      values.itemId = this.get("item.id");
-      values.offerId = this.get("offer.id");
+      const itemId = this.get("item.id");
+      const offerId = this.get("offer.id");
+      if (itemId) {
+        values.messageableType = "Item";
+        values.messageableId = itemId;
+      } else {
+        values.messageableType = "Offer";
+        values.messageableId = offerId;
+      }
       values.createdAt = new Date();
       values.sender = this.store.peekRecord(
         "user",
