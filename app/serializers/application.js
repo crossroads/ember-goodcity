@@ -1,4 +1,5 @@
 import { ActiveModelSerializer } from "active-model-adapter";
+import _ from "npm:lodash";
 
 // Polymorphic associations are not supported in ember-data beta version:
 // refer: https://github.com/emberjs/data/issues/1574
@@ -15,6 +16,18 @@ function normalize(payload) {
       m[`${m.messageable_type.toLowerCase()}`] = m.messageable_id;
     });
   }
+
+  const messages = _.flatten([payload.messages, payload.message]).filter(
+    _.identity
+  );
+
+  _.each(messages, m => {
+    m[`${m.messageable_type.toLowerCase()}`] = m.messageable_id;
+
+    if (typeof m.lookup === "object") {
+      m.lookup = JSON.stringify(m.lookup);
+    }
+  });
 }
 
 export default ActiveModelSerializer.extend({

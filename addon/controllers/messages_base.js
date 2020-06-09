@@ -147,12 +147,21 @@ export default Ember.Controller.extend({
   },
 
   actions: {
+    setMessageBody: function(text) {
+      this.set("body", text);
+    },
+
+    parseMessageBody: function(text) {
+      this.set("parsedBody", text);
+    },
+
     sendMessage() {
       // To hide soft keyboard
       Ember.$("textarea").trigger("blur");
 
       this.set("inProgress", true);
-      var values = this.getProperties("body", "offer", "item", "isPrivate");
+      var values = this.getProperties("offer", "item", "isPrivate");
+      values.body = this.get("parsedBody");
       const itemId = this.get("item.id");
       const offerId = this.get("offer.id");
       if (itemId) {

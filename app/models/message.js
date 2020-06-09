@@ -23,6 +23,23 @@ export default DS.Model.extend({
   }),
   messageableType: attr("string"),
   messageableId: attr("string"),
+  lookup: attr("string"),
+  parsedBody: Ember.computed("body", function() {
+    let body = this.get("body");
+    let lookup = this.get("lookup");
+    if (!lookup) {
+      return body;
+    } else {
+      lookup = JSON.parse(lookup);
+      Object.keys(lookup).forEach(key => {
+        body = body.replace(
+          new RegExp(`\\[:${key}\\]`, "g"),
+          `<span class='mentioned'>@${lookup[key].display_name}</span>`
+        );
+      });
+      return body;
+    }
+  }),
 
   isMessage: Ember.computed("this", function() {
     return true;
