@@ -35,7 +35,7 @@
   </div>
 </section>
 
-<div class="message-footer">
+<section class="message-footer">
   <div class="btm message-form">
     <div class="message-textbar-container" />
     <div class="row message-textbar">
@@ -64,7 +64,8 @@
 
             <div class="row ui">
               <div class="small-9 large-10 medium-10 columns">
-                {{variable-height-textarea value=body name="body" required="true" disabled=disabled isPrivate=isPrivateMessage orderId=model.id setMessageBody=(action 'setMessageBody') parseMessageBody= (action 'parseMessageBody')}}
+                {{variable-height-textarea value=body name="body" required="true" disabled=disabled isPrivate=isPrivate offerId=offer.id setMessageContext= (action 'setMessageContext')
+                menuContainer="message-textbar-container"}}
               </div>
               <div class="small-3 large-2 medium-2 columns">
                 {{#online-button disabledOverride=disabled tagName="button" disabled=inProgress}}{{t "send"}}{{/online-button}}
@@ -75,7 +76,7 @@
       </div>
     </div>
   </div>
-</div>
+</section>
 
 {{!-- This div holds the id of first unread message. As on page visit, it marked as read and lost the reference to first unread message --}}
 <div class="hidden unread_id"></div>

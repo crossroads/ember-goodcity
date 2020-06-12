@@ -147,12 +147,9 @@ export default Ember.Controller.extend({
   },
 
   actions: {
-    setMessageBody: function(text) {
-      this.set("body", text);
-    },
-
-    parseMessageBody: function(text) {
-      this.set("parsedBody", text);
+    setMessageContext: function(message) {
+      this.set("body", message.parsedText);
+      this.set("displayText", message.displayText);
     },
 
     sendMessage() {
@@ -161,7 +158,8 @@ export default Ember.Controller.extend({
 
       this.set("inProgress", true);
       var values = this.getProperties("offer", "item", "isPrivate");
-      values.body = this.get("parsedBody");
+      values.body = this.get("body");
+      values.parsedBody = this.get("displayText");
       const itemId = this.get("item.id");
       const offerId = this.get("offer.id");
       if (itemId) {
