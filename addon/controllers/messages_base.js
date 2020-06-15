@@ -159,6 +159,8 @@ export default Ember.Controller.extend({
       this.set("inProgress", true);
       var values = this.getProperties("offer", "item", "isPrivate");
       values.body = this.get("body");
+      values.body = Ember.Handlebars.Utils.escapeExpression(values.body || "");
+      values.body = values.body.replace(/(\r\n|\n|\r)/gm, "<br>");
       values.parsedBody = this.get("displayText");
       const itemId = this.get("item.id");
       const offerId = this.get("offer.id");
