@@ -42,12 +42,10 @@ export default Ember.Controller.extend({
   messages: Ember.computed("allMessages.[]", "offer", "item", function() {
     var messages = this.get("allMessages");
     messages = this.get("isItemThread")
-      ? messages
-          .filterBy("messageableType", "Item")
-          .filterBy("messageableId", this.get("item.id"))
+      ? messages.filterBy("itemId", this.get("item.id"))
       : messages
-          .filterBy("messageableType", "Offer")
-          .filterBy("messageableId", this.get("offer.id"));
+          .filterBy("offerId", this.get("offer.id"))
+          .filterBy("item", null);
     return messages.filter(m => {
       return Boolean(m.get("isPrivate")) === this.get("isPrivate");
     });
