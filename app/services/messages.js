@@ -39,7 +39,7 @@ export default Ember.Service.extend({
   },
 
   fetchUnreadMessageCount() {
-    return this._queryMessages(1,1, { state: "unread" })
+    return this._queryMessages(1,1, { state: "unread", scope: "offer,item" })
       .then(data => {
         const count = (data.meta && data.meta.total_count);
         this.set('unreadMessageCount', count || 0);
@@ -80,42 +80,46 @@ export default Ember.Service.extend({
       });
   },
 
-  getMessageRoute(isDonorApp, itemId, isPrivate, offerId) {
+  getMessageRoute(isDonorApp, isPrivate, offerId, messageableType, messageableId) {
     if (isDonorApp) {
-      if (itemId) {
-        return ["item.messages", offerId, itemId];
+      if (messageableType === 'Item') {
+        return ["item.messages", offerId, messageableId];
       } else {
-        return ["offer.messages", offerId];
+        return ["offer.messages", messageableId];
       }
     } else if (isPrivate) {
-      if (itemId) {
-        return ["review_item.supervisor_messages", offerId, itemId];
+      if (messageableType === 'Item') {
+        return ["review_item.supervisor_messages", offerId, messageableId];
       } else {
-        return ["offer.supervisor_messages", offerId];
+        return ["offer.supervisor_messages", messageableId];
       }
     } else {
-      if (itemId) {
-        return ["review_item.donor_messages", offerId, itemId];
+      if (messageableType === 'Item') {
+        return ["review_item.donor_messages", offerId, messageableId];
       } else {
-        return ["offer.donor_messages", offerId];
+        return ["offer.donor_messages", messageableId];
       }
     }
   },
 
   getRoute: function(message) {
     var isDonorApp = this.get("session.isDonorApp");
-    var offerId = message.get ? message.get("offerId") : message.offer_id;
-    var itemId = message.get ? message.get("itemId") : message.item_id;
+    var messageableType = message.get ? message.get("messageableType") : message.messageable_type;
+    var messageableId = message.get ? message.get("messageableId") : message.messageable_id;
     var isPrivate = message.get ? message.get("isPrivate") : message.is_private;
     isPrivate = isPrivate
       ? isPrivate.toString().toLowerCase() === "true"
       : false;
+    let offerId = messageableType === 'Item'
+      ? message.get('item.offer.id')
+      : null;
 
     var messageRoute = this.getMessageRoute(
       isDonorApp,
-      itemId,
       isPrivate,
-      offerId
+      offerId,
+      messageableType,
+      messageableId
     );
 
     return messageRoute;
