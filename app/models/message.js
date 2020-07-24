@@ -17,6 +17,10 @@ export default DS.Model.extend({
   item: belongsTo("item", { async: false }),
   offer: belongsTo("offer", { async: false }),
 
+  messageableType: attr("string"),
+  messageableId: attr("string"),
+  unreadCount: attr("string"),
+
   myMessage: Ember.computed(function() {
     var session = getOwner(this).lookup("service:session");
     return this.get("sender.id") === session.get("currentUser.id");
