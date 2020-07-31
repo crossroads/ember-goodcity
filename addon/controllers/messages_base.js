@@ -13,12 +13,18 @@ export default Ember.Controller.extend({
   sortedElements: Ember.computed.sort("messagesAndVersions", "sortProperties"),
   isItemThread: Ember.computed.notEmpty("item"),
 
-  autoMarkAsRead: Ember.on('init',
-    Ember.observer('isActive', 'messages.[]', 'messages.@each.state', function() {
-      if (this.get('isActive')) {
-        Ember.run.debounce(this, this.markConversationAsRead, 1500);
+  autoMarkAsRead: Ember.on(
+    "init",
+    Ember.observer(
+      "isActive",
+      "messages.[]",
+      "messages.@each.state",
+      function() {
+        if (this.get("isActive")) {
+          Ember.run.debounce(this, this.markConversationAsRead, 1500);
+        }
       }
-    })
+    )
   ),
 
   disabled: Ember.computed("offer.isCancelled", "item.isDraft", function() {
@@ -35,9 +41,9 @@ export default Ember.Controller.extend({
 
   messages: Ember.computed("allMessages.[]", "offer", "item", function() {
     var messages = this.get("allMessages");
-    messages = this.get("isItemThread") ?
-      messages.filterBy("itemId", this.get("item.id")) :
-      messages
+    messages = this.get("isItemThread")
+      ? messages.filterBy("itemId", this.get("item.id"))
+      : messages
           .filterBy("offerId", this.get("offer.id"))
           .filterBy("item", null);
     return messages.filter(m => {
@@ -139,14 +145,30 @@ export default Ember.Controller.extend({
   },
 
   actions: {
+    setMessageContext: function(message) {
+      this.set("body", message.parsedText);
+      this.set("displayText", message.displayText);
+    },
+
     sendMessage() {
       // To hide soft keyboard
       Ember.$("textarea").trigger("blur");
 
       this.set("inProgress", true);
-      var values = this.getProperties("body", "offer", "item", "isPrivate");
-      values.itemId = this.get("item.id");
-      values.offerId = this.get("offer.id");
+      var values = this.getProperties("offer", "item", "isPrivate");
+      values.body = this.get("body");
+      values.body = Ember.Handlebars.Utils.escapeExpression(values.body || "");
+      values.body = values.body.replace(/(\r\n|\n|\r)/gm, "<br>");
+      values.parsedBody = this.get("displayText");
+      const itemId = this.get("item.id");
+      const offerId = this.get("offer.id");
+      if (itemId) {
+        values.messageableType = "Item";
+        values.messageableId = itemId;
+      } else {
+        values.messageableType = "Offer";
+        values.messageableId = offerId;
+      }
       values.createdAt = new Date();
       values.sender = this.store.peekRecord(
         "user",

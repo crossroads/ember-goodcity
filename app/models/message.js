@@ -25,6 +25,34 @@ export default DS.Model.extend({
     var session = getOwner(this).lookup("service:session");
     return this.get("sender.id") === session.get("currentUser.id");
   }),
+  messageableType: attr("string"),
+  messageableId: attr("string"),
+  lookup: attr("string"),
+  parsedBody: Ember.computed("body", function() {
+    let body = this.get("body");
+    let lookup = this.get("lookup");
+    lookup = JSON.parse(lookup);
+    Object.keys(lookup).forEach(key => {
+      body = body.replace(
+        new RegExp(`\\[:${key}\\]`, "g"),
+        `<span class='mentioned'>@${lookup[key].display_name}</span>`
+      );
+    });
+    return body;
+  }),
+
+  plainBody: Ember.computed("body", function() {
+    let body = this.get("body");
+    let lookup = this.get("lookup");
+    lookup = JSON.parse(lookup);
+    Object.keys(lookup).forEach(key => {
+      body = body.replace(
+        new RegExp(`\\[:${key}\\]`, "g"),
+        lookup[key].display_name
+      );
+    });
+    return body;
+  }),
 
   isMessage: Ember.computed("this", function() {
     return true;
