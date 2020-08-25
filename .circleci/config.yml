@@ -4,7 +4,7 @@ aliases:
 
   - defaults: &defaults
       docker:
-        - image: circleci/node:carbon
+        - image: circleci/node:Dubnium
       working_directory: ~/code
   - &restore-repo-cache
       key: shared-goodcity-repo-{{ .Environment.CIRCLE_SHA1 }}
@@ -73,7 +73,7 @@ jobs:
           root: .
           paths:
             - coverage*/lcov.info
-      
+
   deployment:
     <<: *defaults
     steps:
