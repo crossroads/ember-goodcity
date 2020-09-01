@@ -24,8 +24,7 @@ export default Addressable.extend({
   permission: belongsTo("permission", { async: true }),
   reviewedOffers: hasMany("offers", { inverse: "reviewedBy", async: false }),
   donations: hasMany("offers", { inverse: "createdBy", async: false }),
-  printerId: attr("number"),
-  printer: belongsTo("printer", { async: false }),
+  printersUsers: hasMany("printersUsers", { async: false }),
 
   userRoles: hasMany("userRoles", { async: false }),
 
