@@ -11,7 +11,6 @@ moduleForModel("offer", "Offer Model", {
     "model:message",
     "model:delivery",
     "model:company",
-    "model:user",
     "service:i18n",
     "service:cloudinaryUtils"
   ]
@@ -71,7 +70,7 @@ test("check attributes", function(assert) {
 });
 
 test("Relationships with other models", function(assert) {
-  assert.expect(14);
+  assert.expect(12);
 
   var offer = this.store().modelFor("offer");
   var relationshipsWithGgvTransport = Ember.get(
@@ -89,9 +88,9 @@ test("Relationships with other models", function(assert) {
   var relationshipsWithDelivery = Ember.get(offer, "relationshipsByName").get(
     "delivery"
   );
-  var relationshipsWithUser = Ember.get(offer, "relationshipsByName").get(
-    "createdBy"
-  );
+  // var relationshipsWithUser = Ember.get(offer, "relationshipsByName").get(
+  //   "createdBy"
+  // );
   var relationshipsWithItem = Ember.get(offer, "relationshipsByName").get(
     "items"
   );
@@ -105,8 +104,8 @@ test("Relationships with other models", function(assert) {
   assert.equal(relationshipsWithItem.key, "items");
   assert.equal(relationshipsWithItem.kind, "hasMany");
 
-  assert.equal(relationshipsWithUser.key, "createdBy");
-  assert.equal(relationshipsWithUser.kind, "belongsTo");
+  // assert.equal(relationshipsWithUser.key, "createdBy");
+  // assert.equal(relationshipsWithUser.kind, "belongsTo");
 
   assert.equal(relationshipsWithDelivery.key, "delivery");
   assert.equal(relationshipsWithDelivery.kind, "belongsTo");

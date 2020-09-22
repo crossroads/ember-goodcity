@@ -2,7 +2,7 @@ import { test, moduleForModel } from "ember-qunit";
 import Ember from "ember";
 
 moduleForModel("message", "Message Model", {
-  needs: ["model:item", "model:offer", "model:user"]
+  needs: ["model:item", "model:offer"]
 });
 
 test("check attributes", function(assert) {
@@ -22,15 +22,15 @@ test("check attributes", function(assert) {
 });
 
 test("Relationships with other models", function(assert) {
-  assert.expect(6);
+  assert.expect(4);
 
   var message = this.store().modelFor("message");
   var relationshipsWithItem = Ember.get(message, "relationshipsByName").get(
     "item"
   );
-  var relationshipsWithUser = Ember.get(message, "relationshipsByName").get(
-    "sender"
-  );
+  // var relationshipsWithUser = Ember.get(message, "relationshipsByName").get(
+  //   "sender"
+  // );
   var relationshipsWithOffer = Ember.get(message, "relationshipsByName").get(
     "offer"
   );
@@ -38,8 +38,8 @@ test("Relationships with other models", function(assert) {
   assert.equal(relationshipsWithItem.key, "item");
   assert.equal(relationshipsWithItem.kind, "belongsTo");
 
-  assert.equal(relationshipsWithUser.key, "sender");
-  assert.equal(relationshipsWithUser.kind, "belongsTo");
+  // assert.equal(relationshipsWithUser.key, "sender");
+  // assert.equal(relationshipsWithUser.kind, "belongsTo");
 
   assert.equal(relationshipsWithOffer.key, "offer");
   assert.equal(relationshipsWithOffer.kind, "belongsTo");
