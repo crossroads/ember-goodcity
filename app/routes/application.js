@@ -197,6 +197,13 @@ export default Ember.Route.extend(preloadDataMixin, {
     this.get("messageBox").alert(this.get("i18n").t(status + "_error"));
   },
 
+  accessDeniedError(reason) {
+    this.get("logger").error(reason);
+    this.get("messageBox").alert(this.get("i18n").t("403_error"), () =>
+      this.controllerFor("application").send("logMeOut")
+    );
+  },
+
   unauthorizedError() {
     if (this.session.get("isLoggedIn")) {
       this.controllerFor("application").send("logMeOut");
@@ -218,8 +225,10 @@ export default Ember.Route.extend(preloadDataMixin, {
         this.quotaExceededError(reason);
       } else if (status === 401) {
         this.unauthorizedError();
-      } else if ([403, 404].indexOf(status) >= 0) {
+      } else if (status === 404) {
         this.notFoundError(reason, status);
+      } else if (status === 403) {
+        this.accessDeniedError(reason);
       } else if (status === 0) {
         // status 0 means request was aborted, this could be due to connection failure
         // but can also mean request was manually cancelled
