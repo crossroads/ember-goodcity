@@ -191,6 +191,10 @@ export default DS.Model.extend({
     return this.get("isClosed") || this.get("isCancelled");
   }),
 
+  canResumeReceiving: Ember.computed("isReceived", function() {
+    return this.get("isReceived");
+  }),
+
   baseForMerge: Ember.computed(
     "isSubmitted",
     "isUnderReview",
