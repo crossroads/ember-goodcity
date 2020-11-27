@@ -2,6 +2,7 @@ import { computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { alias } from '@ember/object/computed';
 import Controller from '@ember/controller';
+import { getOwner } from '@ember/application';
 
 export default Controller.extend({
   delivery: alias('model.delivery'),
@@ -54,17 +55,15 @@ export default Controller.extend({
     },
 
     removeDelivery(delivery) {
-      var _this = this;
-
       this.get("messageBox").custom(this.get("i18n").t("delete_confirm"), this.get("i18n").t("delivery.cancel.cancel_transport"), () => {
-        var loadingView = _this.container.lookup('component:loading').append();
+        var loadingView = getOwner(this).lookup('component:loading').append();
         var offer = delivery.get('offer');
 
         delivery.destroyRecord()
-          .then(function() {
+          .then(() => {
             offer.set("state", "reviewed");
-            var route = _this.get('session.isAdminApp') ? 'review_offer' : 'offer.offer_details';
-            _this.transitionToRoute(route, offer);
+            var route = this.get('session.isAdminApp') ? 'review_offer' : 'offer.offer_details';
+            this.transitionToRoute(route, offer);
           })
           .finally(() => loadingView.destroy());
       }, this.get("i18n").t("not_now"), null);

@@ -14,7 +14,7 @@ import config from '../../config/environment';
 export default Controller.extend({
   queryParams: ["isUnplannedPackage"],
   isUnplannedPackage: false,
-  offerController: controller('offers'),
+  offerController: controller('offer/offer_details'),
   offer: alias("offerController.model"),
   item: alias("model"),
   session: service(),

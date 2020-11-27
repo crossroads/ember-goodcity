@@ -7,7 +7,6 @@ import { translationMacro as t } from "ember-i18n";
 
 export default Controller.extend({
 
-  delivery: controller(),
   selectedId: null,
   selectedDate: null,
   datePrompt: t("gogovan.book_van.date"),
@@ -40,7 +39,7 @@ export default Controller.extend({
         scheduledAt: controller.get('selectedDate'),
         slotName:    slotName };
 
-      var deliveryId = this.get('delivery.model.id');
+      var deliveryId = this.get("model.id")
       var delivery   = this.get("store").peekRecord('delivery', deliveryId);
       var offer      = delivery.get("offer");
 

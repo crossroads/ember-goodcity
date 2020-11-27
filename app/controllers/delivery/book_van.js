@@ -7,7 +7,6 @@ import addressDetails from './address_details';
 import { translationMacro as t } from "ember-i18n";
 
 export default addressDetails.extend({
-  deliveryController: controller('delivery'),
 
   selectedDate: null,
   selectedTime: null,
@@ -25,9 +24,9 @@ export default addressDetails.extend({
     return this.get("selectedGogovanOption") === "1";
   }),
 
-  offer: computed("deliveryController", {
+  offer: computed("model", {
     get() {
-      return this.get("deliveryController.model.offer");
+      return this.get("model.offer");
     },
     set(key, value) {
       return value;
@@ -84,7 +83,7 @@ export default addressDetails.extend({
       var controller = this;
       var loadingView = getOwner(controller).lookup('component:loading').append();
       var selectedDate = controller.get('selectedDate');
-      var deliveryId = controller.get('deliveryController.model.id');
+      var deliveryId = this.get('model.id');
       var delivery = controller.store.peekRecord('delivery', deliveryId);
       var gogovanOptionId = controller.get('selectedGogovanOption');
 
