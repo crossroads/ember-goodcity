@@ -38,7 +38,7 @@ export default Ember.Controller.extend({
       this.set("selectedTerritory", value);
       this.set(
         "selectedDistrict",
-        this.selectedTerritory.get("districts").sortBy("name").firstObject
+        this.selectedTerritory.get("districts").sortBy("name")[0]
       );
     }
   }
