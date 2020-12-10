@@ -1,11 +1,11 @@
 import Ember from "ember";
-import _ from "lodash";
 import preloadDataMixin from "../mixins/preload_data";
+import { __get } from "../utils/polyfill";
 const { getOwner } = Ember;
 
 const getString = (obj, path) => {
-  const val = _.get(obj, path);
-  return val && _.isString(val) ? val : null;
+  const val = __get(obj, path);
+  return val && typeof val === "string" ? val : null;
 };
 
 export default Ember.Route.extend(preloadDataMixin, {
