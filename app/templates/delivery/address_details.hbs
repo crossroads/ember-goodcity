@@ -1,7 +1,7 @@
 <div class="small-6 columns">
   {{select-list
     content=territories
-    on-change=(action (mut selectedTerritory))
+    on-change=(action 'onTerritoryChange')
     selectedValue=selectedTerritory
     value=selectedTerritory
     required='true' }}
