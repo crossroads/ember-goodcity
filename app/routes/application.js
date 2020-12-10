@@ -1,11 +1,11 @@
 import Ember from "ember";
-import _ from "lodash";
 import preloadDataMixin from "../mixins/preload_data";
+import { __get } from "../utils/polyfill";
 const { getOwner } = Ember;
 
 const getString = (obj, path) => {
-  const val = _.get(obj, path);
-  return val && _.isString(val) ? val : null;
+  const val = __get(obj, path);
+  return val && typeof val === "string" ? val : null;
 };
 
 export default Ember.Route.extend(preloadDataMixin, {
@@ -172,10 +172,10 @@ export default Ember.Route.extend(preloadDataMixin, {
     const defaultMessage = this.get("i18n").t("unexpected_error");
 
     return (
-      getString(reason, "errors[0].detail.message") ||
-      getString(reason, "errors[0].message") ||
-      getString(reason, "errors[0].title") ||
-      getString(reason, "errors[0]") ||
+      getString(reason, "errors.0.detail.message") ||
+      getString(reason, "errors.0.message") ||
+      getString(reason, "errors.0.title") ||
+      getString(reason, "errors.0") ||
       getString(reason, "message") ||
       getString(reason, "error") ||
       defaultMessage

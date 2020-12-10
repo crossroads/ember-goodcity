@@ -1,7 +1,7 @@
 import Ember from "ember";
 import config from "../config/environment";
 import ActiveModelAdapter from "active-model-adapter";
-import _ from "lodash";
+import { __get } from "../utils/polyfill";
 
 export default ActiveModelAdapter.extend({
   namespace: config.APP.NAMESPACE,
@@ -31,7 +31,7 @@ export default ActiveModelAdapter.extend({
         {
           detail: responseBody,
           status: status,
-          title: _.get(
+          title: __get(
             responseBody,
             "error",
             this.get("i18n").t("unexpected_error")
