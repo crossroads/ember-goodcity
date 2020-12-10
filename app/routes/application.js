@@ -172,10 +172,10 @@ export default Ember.Route.extend(preloadDataMixin, {
     const defaultMessage = this.get("i18n").t("unexpected_error");
 
     return (
-      getString(reason, "errors[0].detail.message") ||
-      getString(reason, "errors[0].message") ||
-      getString(reason, "errors[0].title") ||
-      getString(reason, "errors[0]") ||
+      getString(reason, "errors.0.detail.message") ||
+      getString(reason, "errors.0.message") ||
+      getString(reason, "errors.0.title") ||
+      getString(reason, "errors.0") ||
       getString(reason, "message") ||
       getString(reason, "error") ||
       defaultMessage

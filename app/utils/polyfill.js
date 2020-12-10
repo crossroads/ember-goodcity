@@ -1,8 +1,9 @@
 /**
+ * A polyfill for lodash.get
  *
- * @param {*} obj
- * @param {*} path
- * @param {*} defaultValue
+ * @param {Object} obj
+ * @param {String} path
+ * @param {String} defaultValue
  */
 export const __get = (obj, path, defaultValue) => {
   if (typeof path !== string) {
