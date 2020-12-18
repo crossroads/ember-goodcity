@@ -6,7 +6,7 @@
  * @param {String} defaultValue
  */
 export const __get = (obj, path, defaultValue) => {
-  if (typeof path !== string) {
+  if (typeof path !== "string") {
     throw Error("Invalid argument passed");
   }
   const _path = path.split(".").filter(key => key.length);
