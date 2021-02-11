@@ -7,17 +7,27 @@ export default Ember.Service.extend({
 
   notifyErrorCollector(reason) {
     var currentUser = this.get("session.currentUser");
-    var userName = currentUser.get("fullName");
-    var userId = currentUser.get("id");
-    var error = reason instanceof Error || typeof reason !== "object" ?
-        reason : JSON.stringify(reason);
+    var userName = currentUser ? currentUser.get("fullName") : "anonymous";
+    var userId = currentUser ? currentUser.get("id") : "n/a";
+    var error =
+      reason instanceof Error || typeof reason !== "object"
+        ? reason
+        : JSON.stringify(reason);
     var environment = config.environment;
     var version = config.APP.VERSION;
     var appSHA = config.APP.SHA;
     var appSharedSHA = config.APP.SHARED_SHA;
-    this.set('rollbar.currentUser', currentUser);
-    this.get('rollbar').error(error, { id: userId, username: userName, environment: environment,
-      version: version, appSHA: appSHA, appSharedSHA: appSharedSHA});
+    if (currentUser) {
+      this.set("rollbar.currentUser", currentUser);
+    }
+    this.get("rollbar").error(error, {
+      id: userId,
+      username: userName,
+      environment: environment,
+      version: version,
+      appSHA: appSHA,
+      appSharedSHA: appSharedSHA
+    });
   },
 
   error(reason) {

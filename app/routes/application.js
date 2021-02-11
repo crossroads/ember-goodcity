@@ -60,7 +60,7 @@ export default Ember.Route.extend(preloadDataMixin, {
         object.store.unloadAll("user_profile");
         object.session.clear();
         object.store.unloadAll();
-        window.location.reload();
+        window.location.href = "/";
       } else if (
         object.get("isalreadyLoggedinShown") &&
         authToken &&
