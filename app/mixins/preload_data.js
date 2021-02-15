@@ -4,14 +4,15 @@ import config from "../config/environment";
 
 export default Ember.Mixin.create({
   messages: Ember.inject.service(),
+  i18n: Ember.inject.service(),
 
   preloadData(includePublicTypes) {
     var promises = [];
     var isDonorApp = this.get("session.isDonorApp");
     var isAdminApp = this.get("session.isAdminApp");
 
-    var retrieve = types =>
-      types.map(type => this.store.findAll(type, { reload: true }));
+    var retrieve = (types) =>
+      types.map((type) => this.store.findAll(type, { reload: true }));
 
     if (includePublicTypes && isDonorApp) {
       promises = retrieve(config.APP.PRELOAD_TYPES);
@@ -22,8 +23,11 @@ export default Ember.Mixin.create({
         new AjaxPromise(
           "/auth/current_user_profile",
           "GET",
-          this.session.get("authToken")
-        ).then(data => {
+          this.session.get("authToken"),
+          null,
+          null,
+          this.get("i18n").get("locale")
+        ).then((data) => {
           this.store.pushPayload(data);
           this.store.pushPayload({ user: data.user_profile });
           this.notifyPropertyChange("session.currentUser");
@@ -39,9 +43,7 @@ export default Ember.Mixin.create({
           retrieve(config.APP.PRELOAD_AUTHORIZED_TYPES)
         );
       } else if (isAdminApp) {
-        promises.push(
-          this.get("messages").fetchUnreadMessageCount()
-        );
+        promises.push(this.get("messages").fetchUnreadMessageCount());
       }
     }
 
@@ -50,8 +52,8 @@ export default Ember.Mixin.create({
 
   loadStaticData(includePublicTypes) {
     var promises = [];
-    var retrieve = types =>
-      types.map(type => this.store.findAll(type, { reload: true }));
+    var retrieve = (types) =>
+      types.map((type) => this.store.findAll(type, { reload: true }));
     if (includePublicTypes) {
       promises = retrieve(config.APP.PRELOAD_TYPES);
     }
@@ -59,5 +61,5 @@ export default Ember.Mixin.create({
       promises = promises.concat(retrieve(config.APP.PRELOAD_AUTHORIZED_TYPES));
     }
     return Ember.RSVP.all(promises);
-  }
+  },
 });
