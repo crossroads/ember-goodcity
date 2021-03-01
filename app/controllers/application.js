@@ -3,7 +3,6 @@ import config from "../config/environment";
 export default Ember.Controller.extend({
   cordova: Ember.inject.service(),
   subscriptions: Ember.inject.controller(),
-  messageService: Ember.inject.service(),
   isMobileApp: config.cordova.enabled,
   config,
 
