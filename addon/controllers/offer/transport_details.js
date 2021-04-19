@@ -64,7 +64,7 @@ export default Ember.Controller.extend({
         );
       }
     },
-
+    /* jshint ignore:start */
     removeDelivery(delivery) {
       var _this = this;
 
@@ -93,5 +93,6 @@ export default Ember.Controller.extend({
         null
       );
     }
+    /* jshint ignore:end */
   }
 });
