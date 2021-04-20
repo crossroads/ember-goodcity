@@ -1,12 +1,8 @@
 {{#message-box-click-button btn1Click=true}}
   <nav class="tab-bar">
     <section class="left-small">
-      {{#if session.isAdminApp}}
-        {{link-to (t "application.login") 'login' classNames='back'}}
-      {{else}}
-        {{link-to (t "application.tour") 'tour' classNames='back'}}
-      {{/if}}
-      </section>
+      <div class="back" {{action 'transitionTo' backLinkPath}}>{{t "back"}}</div>
+    </section>
 
     <section class="middle tab-bar-section">
       <h1 class="title">{{t "authenticate.input_code"}}</h1>

@@ -661,3 +661,7 @@ select {
   background-color: #000 !important;
   opacity: 0.3 !important;
 }
+
+[data-ember-action] {
+  cursor: pointer;
+}
