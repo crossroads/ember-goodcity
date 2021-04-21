@@ -12,8 +12,8 @@ export default Ember.Controller.extend({
     return config.APP.HK_COUNTRY_CODE + this.get("mobilePhone");
   }),
 
-  backLinkPath: Ember.computed("session.backLinkPath", function() {
-    return this.session.get("backLinkPath") || "login";
+  backLinkPath: Ember.computed(function() {
+    return this.get("session.backLinkPath") || "login";
   }),
 
   actions: {
@@ -65,7 +65,6 @@ export default Ember.Controller.extend({
       new AjaxPromise("/auth/send_pin", "POST", null, { mobile: mobile })
         .then(data => {
           this.set("session.otpAuthKey", data.otp_auth_key);
-          this.set("session.backLinkPath", "login");
           this.setProperties({ pin: null });
           this.transitionToRoute("/authenticate");
         })
