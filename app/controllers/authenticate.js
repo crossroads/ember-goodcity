@@ -12,7 +12,7 @@ export default Ember.Controller.extend({
     return config.APP.HK_COUNTRY_CODE + this.get("mobilePhone");
   }),
 
-  backLinkPath: Ember.computed(function() {
+  backLinkPath: Ember.computed("session.backLinkPath", function() {
     return this.get("session.backLinkPath") || "login";
   }),
 
