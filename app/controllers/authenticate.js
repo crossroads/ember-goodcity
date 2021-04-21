@@ -65,6 +65,7 @@ export default Ember.Controller.extend({
       new AjaxPromise("/auth/send_pin", "POST", null, { mobile: mobile })
         .then(data => {
           this.set("session.otpAuthKey", data.otp_auth_key);
+          this.set("session.backLinkPath", "login");
           this.setProperties({ pin: null });
           this.transitionToRoute("/authenticate");
         })
