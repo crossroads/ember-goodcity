@@ -9,6 +9,7 @@ export default Ember.Service.extend({
   language: Ember.computed.localStorage(),
   seenTour: Ember.computed.localStorage(),
   store: Ember.inject.service(),
+  backLinkPath: Ember.computed.localStorage(),
 
   currentUser: Ember.computed(function() {
     var store = this.get("store");
@@ -19,7 +20,7 @@ export default Ember.Service.extend({
     return config.APP.NAME === "admin.goodcity";
   }),
 
-  loggedInUser: Ember.computed(function () {
+  loggedInUser: Ember.computed(function() {
     return this.get("store").peekRecord("user", this.get("currentUser.id"));
   }),
 
