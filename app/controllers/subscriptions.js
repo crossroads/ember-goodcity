@@ -192,8 +192,21 @@ export default Ember.Controller.extend(Ember.Evented, {
     run(success);
   },
 
+  onError(e) {
+    console.error("Live update error", e);
+    this.get("logger").notifyErrorCollector(e);
+  },
+
   // each action below is an event in a channel
   update_store: function(data, success) {
+    try {
+      this.processStoreEvent(data, success);
+    } catch (e) {
+      this.onError(e);
+    }
+  },
+
+  processStoreEvent: function(data, success) {
     if (this.applyCustomHandler(data)) {
       run(success);
       return;
@@ -283,7 +296,7 @@ export default Ember.Controller.extend(Ember.Evented, {
     }
 
     if (data.operation === "update" && !existingItem) {
-      this.store.findRecord(type, item.id);
+      this.store.findRecord(type, item.id).catch(this.onError.bind(this));
     } else if (["create", "update"].indexOf(data.operation) >= 0) {
       var payload = {};
       payload[type] = item;
