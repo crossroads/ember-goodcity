@@ -74,6 +74,11 @@
 }
 
 .message-section {
+  .warning-text {
+    text-align: center;
+    color: yellow;
+  }
+
   .icon-empty-items {
     color: $body-font-color;
   }
@@ -149,6 +154,11 @@
 
   .message-base {
     background-color: #dee4eb;
+
+    &.disabled {
+      opacity: 0.5;
+      pointer-events: none;
+    }
   }
 }
 
