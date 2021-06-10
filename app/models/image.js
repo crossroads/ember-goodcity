@@ -8,6 +8,8 @@ var attr = DS.attr,
 export default DS.Model.extend({
   cloudinaryUtils: service(),
 
+  imageableType: attr("string"),
+  imageableId: attr("number"),
   favourite: attr("boolean"),
   cloudinaryId: attr("string"),
   item: belongsTo("item", { async: false }),

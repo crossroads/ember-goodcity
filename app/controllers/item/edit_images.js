@@ -240,7 +240,10 @@ export default Controller.extend({
           controller.transitionToRoute("item.edit_images", item);
         }
       })
-      .finally(() => loadingView.destroy());
+      .finally(() => {
+        loadingView.destroy();
+        this.set("isExpanded", false);
+      });
   },
 
   confirmRemoveLastImage: function() {
@@ -268,9 +271,6 @@ export default Controller.extend({
                 isUnplannedPackage: true
               }
             });
-        }
-        else if (history.state && this.get("previousRoute") !== history.state.path) {
-          window.history.back();
         } else {
           this.transitionToRoute("review_item.accept", offer, model);
         }
@@ -369,8 +369,7 @@ export default Controller.extend({
     },
 
     expandImage() {
-      var value = this.get("isExpanded");
-      this.set("isExpanded", !value);
+      this.toggleProperty("isExpanded");
     },
 
     //file upload
