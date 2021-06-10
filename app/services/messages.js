@@ -7,6 +7,7 @@ export default Ember.Service.extend({
   session: Ember.inject.service(),
   store: Ember.inject.service(),
   subscriptions: Ember.inject.controller(),
+  messageBox: Ember.inject.service(),
 
   unreadMessageCount: 0,
 
@@ -15,6 +16,13 @@ export default Ember.Service.extend({
       const msg = this.get("store").peekRecord("message", id);
       if (msg.get("isUnread")) {
         this._incrementCount();
+      }
+    });
+
+    this.get("subscriptions").on("update:message", ({ id }) => {
+      const msg = this.get("store").peekRecord("message", id);
+      if (msg.get("state") === "read") {
+        this._decrementCount();
       }
     });
   },
@@ -109,6 +117,13 @@ export default Ember.Service.extend({
 
   getRoute: function(message) {
     var isDonorApp = this.get("session.isDonorApp");
+
+    if (!message) {
+      this.get("messageBox").alert(this.get("i18n").t("404_error"), () => {
+        this.transitionToRoute("/");
+      });
+    }
+
     var messageableType = message.get
       ? message.get("messageableType")
       : message.messageable_type;
