@@ -4,7 +4,7 @@ aliases:
 
   - defaults: &defaults
       docker:
-        - image: circleci/node:10.14.2
+        - image: circleci/node:14.15.4
       working_directory: ~/code
   - &restore-repo-cache
       key: shared-goodcity-repo-{{ .Environment.CIRCLE_SHA1 }}
@@ -53,7 +53,7 @@ jobs:
   tests:
     <<: *defaults
     docker:
-      - image: circleci/node:10.14.2-browsers
+      - image: circleci/node:14.15.4-browsers
     steps:
       - restore-cache: *restore-repo-cache
       - restore-cache: *restore-yarn-cache
