@@ -2,7 +2,6 @@
   "name": "shared-goodcity",
   "dependencies": {
     "ember": "~2.18.0",
-    "ember-cli-shims": "^1.2.0",
     "ember-cli-test-loader": "0.2.2",
     "ember-qunit-notifications": "0.1.0",
     "font-awesome": "~4.7.0",
