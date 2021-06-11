@@ -3137,7 +3137,7 @@ broccoli-output-wrapper@^3.2.5:
     heimdalljs-logger "^0.1.10"
     symlink-or-copy "^1.2.0"
 
-broccoli-persistent-filter@^1.0.3, broccoli-persistent-filter@^1.1.0, broccoli-persistent-filter@^1.1.5, broccoli-persistent-filter@^1.1.6, broccoli-persistent-filter@^1.2.0, broccoli-persistent-filter@^1.4.2, broccoli-persistent-filter@^1.4.3:
+broccoli-persistent-filter@^1.1.0, broccoli-persistent-filter@^1.1.5, broccoli-persistent-filter@^1.1.6, broccoli-persistent-filter@^1.2.0, broccoli-persistent-filter@^1.4.2, broccoli-persistent-filter@^1.4.3:
   version "1.4.6"
   resolved "https://registry.yarnpkg.com/broccoli-persistent-filter/-/broccoli-persistent-filter-1.4.6.tgz#80762d19000880a77da33c34373299c0f6a3e615"
   integrity sha512-0RejLwoC95kv4kta8KAa+FmECJCK78Qgm8SRDEK7YyU0N9Cx6KpY3UCDy9WELl3mCXLN8TokNxc7/hp3lL4lfw==
@@ -4786,17 +4786,6 @@ ember-cli-htmlbars-inline-precompile@^1.0.0:
     heimdalljs-logger "^0.1.9"
     silent-error "^1.1.0"
 
-ember-cli-htmlbars@^1.0.3:
-  version "1.3.5"
-  resolved "https://registry.yarnpkg.com/ember-cli-htmlbars/-/ember-cli-htmlbars-1.3.5.tgz#65be9678b274b5e7861d7f75c188780af7ef9d13"
-  integrity sha512-Qur/anb0Vk57qmIhGLkSzl8X1QIMoae6pLa14MRQ8+YD2N5fNs3qdhEFf0SDBquPOH1QxQtraiNQvji47QBJyg==
-  dependencies:
-    broccoli-persistent-filter "^1.0.3"
-    ember-cli-version-checker "^1.0.2"
-    hash-for-dep "^1.0.2"
-    json-stable-stringify "^1.0.0"
-    strip-bom "^2.0.0"
-
 ember-cli-htmlbars@^2.0.3:
   version "2.0.5"
   resolved "https://registry.yarnpkg.com/ember-cli-htmlbars/-/ember-cli-htmlbars-2.0.5.tgz#b5a105429a6bce4f7c9c97b667e3b8926e31397f"
@@ -5327,13 +5316,6 @@ ember-factory-for-polyfill@^1.3.1:
   dependencies:
     ember-cli-version-checker "^2.1.0"
 
-ember-getowner-polyfill@1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/ember-getowner-polyfill/-/ember-getowner-polyfill-1.0.1.tgz#f60a31d25d642461dac4b4746184afaf7f5084ae"
-  integrity sha1-9gox0l1kJGHaxLR0YYSvr39QhK4=
-  dependencies:
-    ember-cli-babel "^5.1.5"
-
 ember-getowner-polyfill@^2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/ember-getowner-polyfill/-/ember-getowner-polyfill-2.2.0.tgz#38e7dccbcac69d5ec694000329ec0b2be651d2b2"
@@ -5407,15 +5389,6 @@ ember-router-generator@^1.0.0:
   integrity sha1-jtLKhv8yM2MSD8FCeBkeno8TFe4=
   dependencies:
     recast "^0.11.3"
-
-ember-smart-banner@0.1.3:
-  version "0.1.3"
-  resolved "https://registry.yarnpkg.com/ember-smart-banner/-/ember-smart-banner-0.1.3.tgz#7102486f1940f8854e3dde2075bbb2a769bd5ff0"
-  integrity sha1-cQJIbxlA+IVOPd4gdbuyp2m9X/A=
-  dependencies:
-    ember-cli-babel "^5.1.6"
-    ember-cli-htmlbars "^1.0.3"
-    ember-getowner-polyfill "1.0.1"
 
 ember-source-channel-url@^1.0.1:
   version "1.2.0"
