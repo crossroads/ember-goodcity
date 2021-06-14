@@ -170,7 +170,7 @@ export default Route.extend(preloadDataMixin, {
     if (
       reason.errors.length &&
       reason.errors[0].detail &&
-      reason.errors[0].detail.status == 422
+      reason.errors[0].detail.status === 422
     ) {
       return reason.errors[0].detail.message;
     } else {

@@ -1,25 +1,33 @@
-import { run } from '@ember/runloop';
-import $ from 'jquery';
-import { Promise } from 'rsvp';
+import { run } from "@ember/runloop";
+import $ from "jquery";
+import { Promise } from "rsvp";
 import config from "../config/environment";
 
 let defaultHeaders = {
   "X-GOODCITY-APP-NAME": config.APP.NAME,
   "X-GOODCITY-APP-VERSION": config.APP.VERSION,
-  "X-GOODCITY-APP-SHA": config.APP.SHA
+  "X-GOODCITY-APP-SHA": config.APP.SHA,
 };
 
 function _read(data) {
-  if (typeof data == "function") {
+  if (typeof data === "function") {
     return data();
   }
   return data;
 }
 
-function AjaxPromise(url, type, authToken, data, args, language = "en", headers = {}) {
-  return new Promise(function(resolve, reject) {
+function AjaxPromise(
+  url,
+  type,
+  authToken,
+  data,
+  args,
+  language = "en",
+  headers = {}
+) {
+  return new Promise(function (resolve, reject) {
     headers = $.extend({}, _read(defaultHeaders), headers, {
-      "Accept-Language": language
+      "Accept-Language": language,
     });
 
     if (authToken) {
@@ -36,17 +44,17 @@ function AjaxPromise(url, type, authToken, data, args, language = "en", headers 
           language: language,
           url: url.indexOf("http") === -1 ? config.APP.SERVER_PATH + url : url,
           headers: headers,
-          success: function(data) {
-            run(function() {
+          success: function (data) {
+            run(function () {
               resolve(data);
             });
           },
-          error: function(jqXHR) {
+          error: function (jqXHR) {
             jqXHR.url = url;
-            run(function() {
+            run(function () {
               reject(jqXHR);
             });
-          }
+          },
         },
         args
       )
@@ -54,7 +62,7 @@ function AjaxPromise(url, type, authToken, data, args, language = "en", headers 
   });
 }
 
-AjaxPromise.setDefaultHeaders = function(headers) {
+AjaxPromise.setDefaultHeaders = function (headers) {
   defaultHeaders = headers;
 };
 
@@ -64,10 +72,9 @@ export default AjaxPromise;
 
 function trimmedObject(obj) {
   const trimmed = {};
-  Object
-    .keys(obj)
-    .filter(key => obj[key] !== undefined)
-    .forEach(key => trimmed[key] = obj[key]);
+  Object.keys(obj)
+    .filter((key) => obj[key] !== undefined)
+    .forEach((key) => (trimmed[key] = obj[key]));
   return trimmed;
 }
 
@@ -116,17 +123,25 @@ class Builder {
 
   do(method) {
     const qstr = Object.keys(this.query)
-      .map(k => `${k}=${this.query[k]}`)
-      .join('&');
+      .map((k) => `${k}=${this.query[k]}`)
+      .join("&");
 
-    const sep = /\?/.test(this.url) ? '&' : '?';
+    const sep = /\?/.test(this.url) ? "&" : "?";
     const url = qstr.length ? `${this.url}${sep}${qstr}` : this.url;
-    return AjaxPromise(url, method, null, this.data, {}, this.lang, this.headers);
+    return AjaxPromise(
+      url,
+      method,
+      null,
+      this.data,
+      {},
+      this.lang,
+      this.headers
+    );
   }
 
   getPage(page, perPage = 25) {
-    this.query['page'] = page;
-    this.query['per_page'] = perPage;
+    this.query["page"] = page;
+    this.query["per_page"] = perPage;
     return this.get();
   }
 

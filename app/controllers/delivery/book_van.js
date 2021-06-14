@@ -1,13 +1,11 @@
-import { computed } from '@ember/object';
-import { inject as service } from '@ember/service';
-import { inject as controller } from '@ember/controller';
-import { getOwner } from '@ember/application';
-import AjaxPromise from './../../utils/ajax-promise';
-import addressDetails from './address_details';
+import { computed } from "@ember/object";
+import { inject as service } from "@ember/service";
+import { getOwner } from "@ember/application";
+import AjaxPromise from "./../../utils/ajax-promise";
+import addressDetails from "./address_details";
 import { translationMacro as t } from "ember-i18n";
 
 export default addressDetails.extend({
-
   selectedDate: null,
   selectedTime: null,
   speakEnglish: false,
@@ -20,7 +18,7 @@ export default addressDetails.extend({
   timePrompt: t("gogovan.book_van.time"),
   i18n: service(),
 
-  isSelectedVan: computed("selectedGogovanOption", function() {
+  isSelectedVan: computed("selectedGogovanOption", function () {
     return this.get("selectedGogovanOption") === "1";
   }),
 
@@ -30,74 +28,89 @@ export default addressDetails.extend({
     },
     set(key, value) {
       return value;
-    }
-  }),
-
-  available_dates: computed('available_dates.[]', {
-    get: function() {
-      new AjaxPromise("/available_dates", "GET", this.get('session.authToken'), { schedule_days: 120 })
-        .then(data => this.set("available_dates", data));
     },
-    set: function(key, value) {
+  }),
+
+  available_dates: computed("available_dates.[]", {
+    get: function () {
+      new AjaxPromise(
+        "/available_dates",
+        "GET",
+        this.get("session.authToken"),
+        { schedule_days: 120 }
+      ).then((data) => this.set("available_dates", data));
+    },
+    set: function (key, value) {
       return value;
-    }
+    },
   }),
 
-  gogovanOptions: computed(function() {
-    var allOptions = this.store.peekAll('gogovan_transport');
-    return allOptions.rejectBy('disabled', true).sortBy('id');
+  gogovanOptions: computed(function () {
+    var allOptions = this.store.peekAll("gogovan_transport");
+    return allOptions.rejectBy("disabled", true).sortBy("id");
   }),
 
-  selectedGogovanOption: computed('gogovanOptions', 'offer', function() {
-    return this.get("offer.gogovanTransport.id") || this.get('gogovanOptions.firstObject.id');
+  selectedGogovanOption: computed("gogovanOptions", "offer", function () {
+    return (
+      this.get("offer.gogovanTransport.id") ||
+      this.get("gogovanOptions.firstObject.id")
+    );
   }),
 
-  timeSlots: computed(function() {
+  timeSlots: computed(function () {
     var options = [];
     var slots = {
-      "600": "10:00",
-      "630": "10:30",
-      "660": "11:00",
-      "690": "11:30",
-      "720": "12:00",
-      "750": "12:30",
-      "780": "1:00",
-      "810": "1:30",
-      "840": "2:00",
-      "870": "2:30",
-      "900": "3:00"
+      600: "10:00",
+      630: "10:30",
+      660: "11:00",
+      690: "11:30",
+      720: "12:00",
+      750: "12:30",
+      780: "1:00",
+      810: "1:30",
+      840: "2:00",
+      870: "2:30",
+      900: "3:00",
     };
     for (var minutes in slots) {
-      var period = parseInt(minutes, 10) >= 720 ? this.locale("gogovan.book_van.pm") : this.locale("gogovan.book_van.am");
+      var period =
+        parseInt(minutes, 10) >= 720
+          ? this.locale("gogovan.book_van.pm")
+          : this.locale("gogovan.book_van.am");
       options.push({ id: minutes, name: slots[minutes] + " " + period });
     }
     return options;
   }),
 
-  locale: function(str) {
+  locale: function (str) {
     return this.get("i18n").t(str);
   },
 
   actions: {
     bookVan() {
       var controller = this;
-      var loadingView = getOwner(controller).lookup('component:loading').append();
-      var selectedDate = controller.get('selectedDate');
-      var deliveryId = this.get('model.id');
-      var delivery = controller.store.peekRecord('delivery', deliveryId);
-      var gogovanOptionId = controller.get('selectedGogovanOption');
+      var loadingView = getOwner(controller)
+        .lookup("component:loading")
+        .append();
+      var selectedDate = controller.get("selectedDate");
+      var deliveryId = this.get("model.id");
+      var delivery = controller.store.peekRecord("delivery", deliveryId);
+      var gogovanOptionId = controller.get("selectedGogovanOption");
 
-      selectedDate.setMinutes(selectedDate.getMinutes() + parseInt(controller.get('selectedTime.id'), 10));
+      selectedDate.setMinutes(
+        selectedDate.getMinutes() +
+          parseInt(controller.get("selectedTime.id"), 10)
+      );
 
       var requestProperties = {};
       requestProperties.pickupTime = selectedDate;
-      requestProperties.slot = this.get('selectedTime.name');
-      requestProperties.districtId = controller.get('selectedDistrict.id');
-      requestProperties.territoryId = controller.get('selectedTerritory.id');
+      requestProperties.slot = this.get("selectedTime.name");
+      requestProperties.districtId = controller.get("selectedDistrict.id");
+      requestProperties.territoryId = controller.get("selectedTerritory.id");
       requestProperties.needEnglish = controller.get("speakEnglish");
       requestProperties.needCart = controller.get("borrowTrolley");
       requestProperties.needCarry = controller.get("porterage");
-      requestProperties.offerId = delivery.get('offer.id');
+      requestProperties.offerId = delivery.get("offer.id");
       requestProperties.gogovanOptionId = gogovanOptionId;
 
       if (this.get("isSelectedVan")) {
@@ -105,25 +118,49 @@ export default addressDetails.extend({
         requestProperties.removeNet = this.get("longGoodSelection");
       }
 
-      var order = controller.store.createRecord('gogovan_order', requestProperties);
-      order.set('delivery', delivery);
-      new AjaxPromise("/gogovan_orders/calculate_price", "POST", controller.get('session.authToken'), requestProperties).then(function(data) {
+      var order = controller.store.createRecord(
+        "gogovan_order",
+        requestProperties
+      );
+      order.set("delivery", delivery);
+      new AjaxPromise(
+        "/gogovan_orders/calculate_price",
+        "POST",
+        controller.get("session.authToken"),
+        requestProperties
+      ).then(function (data) {
         var coupon = data.breakdown.coupon_discount;
         if (coupon) {
           var discount = coupon.value.toString();
           order.set("isDiscountAvailable", true);
-          order.set("couponDiscount", discount.slice(0, 1) + "$" + discount.slice(1));
+          order.set(
+            "couponDiscount",
+            discount.slice(0, 1) + "$" + discount.slice(1)
+          );
         } else {
           order.set("isDiscountAvailable", false);
         }
-        order.set('baseFee', data.base);
-        order.set('total', data.total);
-        order.set('needEnglishFee', data.breakdown.speak_english && data.breakdown.speak_english.value);
-        order.set('needCartFee', (data.breakdown.borrow_carts && data.breakdown.borrow_carts.value) || (data.breakdown.borrow_forklift_pcs && data.breakdown.borrow_forklift_pcs.value));
-        order.set('removeNetFee', data.breakdown.remove_net && data.breakdown.remove_net.value);
+        order.set("baseFee", data.base);
+        order.set("total", data.total);
+        order.set(
+          "needEnglishFee",
+          data.breakdown.speak_english && data.breakdown.speak_english.value
+        );
+        order.set(
+          "needCartFee",
+          (data.breakdown.borrow_carts && data.breakdown.borrow_carts.value) ||
+            (data.breakdown.borrow_forklift_pcs &&
+              data.breakdown.borrow_forklift_pcs.value)
+        );
+        order.set(
+          "removeNetFee",
+          data.breakdown.remove_net && data.breakdown.remove_net.value
+        );
         loadingView.destroy();
-        controller.transitionToRoute('delivery.confirm_van', { queryParams: { placeOrder: true } });
+        controller.transitionToRoute("delivery.confirm_van", {
+          queryParams: { placeOrder: true },
+        });
       });
-    }
-  }
+    },
+  },
 });

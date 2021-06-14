@@ -4,7 +4,11 @@
         "Ember",
         "io",
         "window",
-        "-Promise"
+        "-Promise",
+        "moment",
+        "localStorage",
+        "navigator",
+        "Image"
     ],
     "browser": true,
     "boss": true,
