@@ -1,24 +1,31 @@
-import { get } from '@ember/object';
-import { test, moduleForModel } from 'ember-qunit';
+import { get } from "@ember/object";
+import { module, test } from "qunit";
+import { setupTest } from "ember-qunit";
 
-moduleForModel('district', 'District Model', {
-  needs: ['model:territory']
-});
+import { run } from "@ember/runloop";
 
-test('check attributes', function(assert){
-  assert.expect(1);
-  var model = this.subject();
-  var name = Object.keys(model.toJSON()).indexOf('name') > -1;
+module("District Model", function (hooks) {
+  setupTest(hooks);
 
-  assert.ok(name);
-});
+  test("check attributes", function (assert) {
+    assert.expect(1);
+    var model = run(() =>
+      this.owner.lookup("service:store").createRecord("district")
+    );
+    var name = Object.keys(model.toJSON()).indexOf("name") > -1;
 
-test('Relationships with other models', function(assert){
-  assert.expect(2);
+    assert.ok(name);
+  });
 
-  var district = this.store().modelFor('district');
-  var relationshipsWithTerritory = get(district, 'relationshipsByName').get('territory');
+  test("Relationships with other models", function (assert) {
+    assert.expect(2);
 
-  assert.equal(relationshipsWithTerritory.key, 'territory');
-  assert.equal(relationshipsWithTerritory.kind, 'belongsTo');
+    var district = this.owner.lookup("service:store").modelFor("district");
+    var relationshipsWithTerritory = get(district, "relationshipsByName").get(
+      "territory"
+    );
+
+    assert.equal(relationshipsWithTerritory.key, "territory");
+    assert.equal(relationshipsWithTerritory.kind, "belongsTo");
+  });
 });

@@ -1,43 +1,40 @@
-import { computed } from '@ember/object';
-import { equal, or } from '@ember/object/computed';
-import { inject as service } from '@ember/service';
-import DS from 'ember-data';
+import Model, { attr, belongsTo } from "@ember-data/model";
+import { computed } from "@ember/object";
+import { equal, or } from "@ember/object/computed";
+import { inject as service } from "@ember/service";
 
-var attr = DS.attr,
-  belongsTo = DS.belongsTo;
+export default Model.extend({
+  name: attr("string"),
+  mobile: attr("string"),
 
-export default DS.Model.extend({
-  name: attr('string'),
-  mobile: attr('string'),
+  bookingId: attr("number"),
+  status: attr("string"),
+  pickupTime: attr("date"),
+  slot: attr("string"),
+  districtId: attr("number"),
+  territoryId: attr("number"),
+  offerId: attr("number"),
+  gogovanOptionId: attr("number"),
+  completedAt: attr("date"),
 
-  bookingId: attr('number'),
-  status: attr('string'),
-  pickupTime: attr('date'),
-  slot: attr('string'),
-  districtId: attr('number'),
-  territoryId: attr('number'),
-  offerId: attr('number'),
-  gogovanOptionId: attr('number'),
-  completedAt: attr('date'),
+  needEnglish: attr("boolean"),
+  needCart: attr("boolean"),
+  needCarry: attr("boolean"),
+  needOver6ft: attr("boolean"),
+  removeNet: attr("string"),
 
-  needEnglish: attr('boolean'),
-  needCart: attr('boolean'),
-  needCarry: attr('boolean'),
-  needOver6ft: attr('boolean'),
-  removeNet: attr('string'),
+  baseFee: attr("string"),
+  totalFee: attr("string"),
+  needEnglishFee: attr("string"),
+  needCartFee: attr("string"),
+  removeNetFee: attr("string"),
 
-  baseFee: attr('string'),
-  totalFee: attr('string'),
-  needEnglishFee: attr('string'),
-  needCartFee: attr('string'),
-  removeNetFee: attr('string'),
-
-  price: attr('number'),
-  driverName: attr('string'),
-  driverMobile: attr('string'),
-  driverLicense: attr('string'),
-  ggvUuid: attr('string'),
-  delivery: belongsTo('delivery', { async: false }),
+  price: attr("number"),
+  driverName: attr("string"),
+  driverMobile: attr("string"),
+  driverLicense: attr("string"),
+  ggvUuid: attr("string"),
+  delivery: belongsTo("delivery", { async: false }),
   isDiscountAvailable: false,
   couponDiscount: 0,
 
@@ -50,13 +47,14 @@ export default DS.Model.extend({
   isPickedUp: or("isActive", "isCompleted"),
   nonCompleted: or("isActive", "isPending"),
 
-  ggvOrderStatus: computed("isActive", "isCompleted", function() {
+  ggvOrderStatus: computed("isActive", "isCompleted", function () {
     if (this.get("isActive")) {
-      return this.get("i18n").t("offer.offer_details.is_gogovan_confirm").string;
+      return this.get("i18n").t("offer.offer_details.is_gogovan_confirm")
+        .string;
     } else if (this.get("isCompleted")) {
       return this.get("i18n").t("offer.offer_details.driver_completed").string;
     } else {
       return this.get("i18n").t("offer.offer_details.is_gogovan_order").string;
     }
-  })
+  }),
 });

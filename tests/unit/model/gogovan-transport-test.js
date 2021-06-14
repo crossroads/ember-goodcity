@@ -1,14 +1,20 @@
-import { test, moduleForModel } from 'ember-qunit';
+import { module, test } from "qunit";
+import { setupTest } from "ember-qunit";
 
-moduleForModel('gogovan_transport', 'GogovenTransport Model', {
-});
+import { run } from "@ember/runloop";
 
-test('check attributes', function(assert){
-  assert.expect(2);
-  var model = this.subject();
-  var name = Object.keys(model.toJSON()).indexOf('name') > -1;
-  var disabled = Object.keys(model.toJSON()).indexOf('disabled') > -1;
+module("GogovenTransport Model", function (hooks) {
+  setupTest(hooks);
 
-  assert.ok(disabled);
-  assert.ok(name);
+  test("check attributes", function (assert) {
+    assert.expect(2);
+    var model = run(() =>
+      this.owner.lookup("service:store").createRecord("gogovan_transport")
+    );
+    var name = Object.keys(model.toJSON()).indexOf("name") > -1;
+    var disabled = Object.keys(model.toJSON()).indexOf("disabled") > -1;
+
+    assert.ok(disabled);
+    assert.ok(name);
+  });
 });

@@ -1,12 +1,18 @@
-import { test, moduleForModel } from 'ember-qunit';
+import { module, test } from "qunit";
+import { setupTest } from "ember-qunit";
 
-moduleForModel('permission', 'Permission Model', {
-});
+import { run } from "@ember/runloop";
 
-test('check attributes', function(assert){
-  assert.expect(1);
-  var model = this.subject();
-  var name = Object.keys(model.toJSON()).indexOf('name') > -1;
+module("Permission Model", function (hooks) {
+  setupTest(hooks);
 
-  assert.ok(name);
+  test("check attributes", function (assert) {
+    assert.expect(1);
+    var model = run(() =>
+      this.owner.lookup("service:store").createRecord("permission")
+    );
+    var name = Object.keys(model.toJSON()).indexOf("name") > -1;
+
+    assert.ok(name);
+  });
 });

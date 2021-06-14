@@ -1,24 +1,33 @@
-import { get } from '@ember/object';
-import { test, moduleForModel } from 'ember-qunit';
+import { get } from "@ember/object";
+import { module, test } from "qunit";
+import { setupTest } from "ember-qunit";
 
-moduleForModel('donor_condition', 'DonorCondition Model', {
-  needs: ['model:item']
-});
+import { run } from "@ember/runloop";
 
-test('check attributes', function(assert){
-  assert.expect(1);
-  var model = this.subject();
-  var name = Object.keys(model.toJSON()).indexOf('name') > -1;
+module("DonorCondition Model", function (hooks) {
+  setupTest(hooks);
 
-  assert.ok(name);
-});
+  test("check attributes", function (assert) {
+    assert.expect(1);
+    var model = run(() =>
+      this.owner.lookup("service:store").createRecord("donor_condition")
+    );
+    var name = Object.keys(model.toJSON()).indexOf("name") > -1;
 
-test('Relationships with other models', function(assert){
-  assert.expect(2);
+    assert.ok(name);
+  });
 
-  var donor_condition = this.store().modelFor('donor_condition');
-  var relationshipsWithItem = get(donor_condition, 'relationshipsByName').get('items');
+  test("Relationships with other models", function (assert) {
+    assert.expect(2);
 
-  assert.equal(relationshipsWithItem.key, 'items');
-  assert.equal(relationshipsWithItem.kind, 'hasMany');
+    var donor_condition = this.owner
+      .lookup("service:store")
+      .modelFor("donor_condition");
+    var relationshipsWithItem = get(donor_condition, "relationshipsByName").get(
+      "items"
+    );
+
+    assert.equal(relationshipsWithItem.key, "items");
+    assert.equal(relationshipsWithItem.kind, "hasMany");
+  });
 });

@@ -1,30 +1,33 @@
-import { get } from '@ember/object';
-import { test, moduleForModel } from "ember-qunit";
+import { get } from "@ember/object";
+import { module, test } from "qunit";
+import { setupTest } from "ember-qunit";
 
-moduleForModel("image", "Image Model", {
-  needs: ["model:item", "service:cloudinaryUtils"]
-});
+import { run } from "@ember/runloop";
 
-test("check attributes", function(assert) {
-  assert.expect(3);
-  var model = this.subject();
-  var angle = Object.keys(model.toJSON()).indexOf("angle") > -1;
-  var cloudinaryId = Object.keys(model.toJSON()).indexOf("cloudinaryId") > -1;
-  var favourite = Object.keys(model.toJSON()).indexOf("favourite") > -1;
+module("Image Model", function (hooks) {
+  setupTest(hooks);
 
-  assert.ok(favourite);
-  assert.ok(cloudinaryId);
-  assert.ok(angle);
-});
+  test("check attributes", function (assert) {
+    assert.expect(3);
+    var model = run(() =>
+      this.owner.lookup("service:store").createRecord("image")
+    );
+    var angle = Object.keys(model.toJSON()).indexOf("angle") > -1;
+    var cloudinaryId = Object.keys(model.toJSON()).indexOf("cloudinaryId") > -1;
+    var favourite = Object.keys(model.toJSON()).indexOf("favourite") > -1;
 
-test("Relationships with other models", function(assert) {
-  assert.expect(2);
+    assert.ok(favourite);
+    assert.ok(cloudinaryId);
+    assert.ok(angle);
+  });
 
-  var image = this.store().modelFor("image");
-  var relationshipsWithItem = get(image, "relationshipsByName").get(
-    "item"
-  );
+  test("Relationships with other models", function (assert) {
+    assert.expect(2);
 
-  assert.equal(relationshipsWithItem.key, "item");
-  assert.equal(relationshipsWithItem.kind, "belongsTo");
+    var image = this.owner.lookup("service:store").modelFor("image");
+    var relationshipsWithItem = get(image, "relationshipsByName").get("item");
+
+    assert.equal(relationshipsWithItem.key, "item");
+    assert.equal(relationshipsWithItem.kind, "belongsTo");
+  });
 });

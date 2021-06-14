@@ -1,486 +1,579 @@
-import { compare } from '@ember/utils';
-import { alias, filterBy, equal, or } from '@ember/object/computed';
-import { inject as service } from '@ember/service';
-import { computed } from '@ember/object';
-import DS from 'ember-data';
-
-var attr = DS.attr,
-	hasMany = DS.hasMany,
-	belongsTo = DS.belongsTo;
+import Model, { attr, hasMany, belongsTo } from "@ember-data/model";
+import { compare } from "@ember/utils";
+import { alias, filterBy, equal, or } from "@ember/object/computed";
+import { inject as service } from "@ember/service";
+import { computed } from "@ember/object";
 
 function createCounterOf(collection, opts = {}) {
-	let { filter, fallbackProp } = opts;
-	let computer = function() {
-		let records = this.get(collection);
-		let hasRecords = records && records.length;
+  let { filter, fallbackProp } = opts;
+  let computer = function () {
+    let records = this.get(collection);
+    let hasRecords = records && records.length;
 
-		if (!hasRecords) {
-			return fallbackProp ? this.getWithDefault(fallbackProp, 0) : 0;
-		}
-		if (filter) {
-			let [ key, value ] = filter;
-			records = records.filterBy(key, value);
-		}
-		return records.length;
-	};
+    if (!hasRecords) {
+      return fallbackProp ? this.getWithDefault(fallbackProp, 0) : 0;
+    }
+    if (filter) {
+      let [key, value] = filter;
+      records = records.filterBy(key, value);
+    }
+    return records.length;
+  };
 
-	if (fallbackProp) {
-		return computed(fallbackProp, `${collection}.@each.state`, computer);
-	}
-	return computed(`${collection}.@each.state`, computer);
+  if (fallbackProp) {
+    return computed(fallbackProp, `${collection}.@each.state`, computer);
+  }
+  return computed(`${collection}.@each.state`, computer);
 }
 
-export default DS.Model.extend({
-	cloudinaryUtils: service(),
+export default Model.extend({
+  cloudinaryUtils: service(),
 
-	language: attr('string'),
-	state: attr('string', { defaultValue: 'draft' }),
-	origin: attr('string'),
-	stairs: attr('boolean'),
-	parking: attr('boolean'),
-	saleable: attr('boolean'),
-	estimatedSize: attr('string'),
-	notes: attr('string'),
-	createdById: attr('string'),
-	createdAt: attr('date'),
-	updatedAt: attr('date'),
-	submittedAt: attr('date'),
-	cancelledAt: attr('date'),
-	state_event: attr('string'),
-	reviewedAt: attr('date'),
-	receivedAt: attr('date'),
-	reviewCompletedAt: attr('date'),
-	deliveredBy: attr('string'),
-	startReceivingAt: attr('date'),
-	cancelReason: attr('string'),
-	inactiveAt: attr('date'),
-	displayImageCloudinaryId: attr('string'),
-	companyId: attr('string'),
+  language: attr("string"),
+  state: attr("string", { defaultValue: "draft" }),
+  origin: attr("string"),
+  stairs: attr("boolean"),
+  parking: attr("boolean"),
+  saleable: attr("boolean"),
+  estimatedSize: attr("string"),
+  notes: attr("string"),
+  createdById: attr("string"),
+  createdAt: attr("date"),
+  updatedAt: attr("date"),
+  submittedAt: attr("date"),
+  cancelledAt: attr("date"),
+  state_event: attr("string"),
+  reviewedAt: attr("date"),
+  receivedAt: attr("date"),
+  reviewCompletedAt: attr("date"),
+  deliveredBy: attr("string"),
+  startReceivingAt: attr("date"),
+  cancelReason: attr("string"),
+  inactiveAt: attr("date"),
+  displayImageCloudinaryId: attr("string"),
+  companyId: attr("string"),
 
-	gogovanTransport: belongsTo('gogovan_transport', { async: false }),
-	crossroadsTransport: belongsTo('crossroads_transport', { async: false }),
-	cancellationReason: belongsTo('cancellation_reason', { async: false }),
-	company: belongsTo('company', { async: false }),
+  gogovanTransport: belongsTo("gogovan_transport", { async: false }),
+  crossroadsTransport: belongsTo("crossroads_transport", { async: false }),
+  cancellationReason: belongsTo("cancellation_reason", { async: false }),
+  company: belongsTo("company", { async: false }),
 
-	items: hasMany('item', { async: false }),
-	messages: hasMany('message', { async: true }),
+  items: hasMany("item", { async: false }),
+  messages: hasMany("message", { async: true }),
 
-	delivery: belongsTo('delivery', { async: false }),
-	createdBy: belongsTo('user', { async: false }),
-	reviewedBy: belongsTo('user', { async: false }),
-	closedBy: belongsTo('user', { async: false }),
-	receivedBy: belongsTo('user', { async: false }),
+  delivery: belongsTo("delivery", { async: false }),
+  createdBy: belongsTo("user", { async: false }),
+  reviewedBy: belongsTo("user", { async: false }),
+  closedBy: belongsTo("user", { async: false }),
+  receivedBy: belongsTo("user", { async: false }),
 
-	// User details
-	userName: attr('string'),
-	userPhone: attr('string'),
+  // User details
+  userName: attr("string"),
+  userPhone: attr("string"),
 
-	companyName: computed('company', function () {
-		return this.get('company.name');
-	}),
+  companyName: computed("company", function () {
+    return this.get("company.name");
+  }),
 
-	crossroadsTruckCost: computed('crossroadsTransport', function() {
-		return this.get('crossroadsTransport.cost');
-	}),
+  crossroadsTruckCost: computed("crossroadsTransport", function () {
+    return this.get("crossroadsTransport.cost");
+  }),
 
-	itemCount: computed('items.@each.state', function() {
-		return this.get('items').rejectBy('state', 'draft').length;
-	}),
+  itemCount: computed("items.@each.state", function () {
+    return this.get("items").rejectBy("state", "draft").length;
+  }),
 
-	packages: computed('items.@each.packages', function() {
-		var res = [];
-		this.get('items').filterBy('state', 'accepted').forEach((i) => (res = res.concat(i.get('packages').toArray())));
-		return res;
-	}),
+  packages: computed("items.@each.packages", function () {
+    var res = [];
+    this.get("items")
+      .filterBy("state", "accepted")
+      .forEach((i) => (res = res.concat(i.get("packages").toArray())));
+    return res;
+  }),
 
-	itemPackages: alias('packages'),
+  itemPackages: alias("packages"),
 
-	// Package types
-	expectingPackagesCount: attr('number'),
-	missingPackagesCount: attr('number'),
-	receivedPackagesCount: attr('number'),
-	computedExpectingPackageCount: createCounterOf('packages', {
-		filter: [ 'state', 'expecting' ],
-		fallbackProp: 'expectingPackagesCount'
-	}),
-	computedMissingPackageCount: createCounterOf('packages', {
-		filter: [ 'state', 'missing' ],
-		fallbackProp: 'missingPackagesCount'
-	}),
-	computedReceivedPackageCount: createCounterOf('packages', {
-		filter: [ 'state', 'received' ],
-		fallbackProp: 'receivedPackagesCount'
-	}),
+  // Package types
+  expectingPackagesCount: attr("number"),
+  missingPackagesCount: attr("number"),
+  receivedPackagesCount: attr("number"),
+  computedExpectingPackageCount: createCounterOf("packages", {
+    filter: ["state", "expecting"],
+    fallbackProp: "expectingPackagesCount",
+  }),
+  computedMissingPackageCount: createCounterOf("packages", {
+    filter: ["state", "missing"],
+    fallbackProp: "missingPackagesCount",
+  }),
+  computedReceivedPackageCount: createCounterOf("packages", {
+    filter: ["state", "received"],
+    fallbackProp: "receivedPackagesCount",
+  }),
 
-	// Item types
-	approvedItems: filterBy('items', 'state', 'accepted'),
-	rejectedItems: filterBy('items', 'state', 'rejected'),
-	submittedItems: filterBy('items', 'state', 'submitted'),
-	acceptedItemsCount: attr('number'),
-	rejectedItemsCount: attr('number'),
-	submittedItemsCount: attr('number'),
-	computedSubmittedItemsCount: createCounterOf('submittedItems', {
-		fallbackProp: 'submittedItemsCount'
-	}),
-	computedApprovedItemsCount: createCounterOf('approvedItems', {
-		fallbackProp: 'acceptedItemsCount'
-	}),
-	computedRejectedItemsCount: createCounterOf('rejectedItems', {
-		fallbackProp: 'rejectedItemsCount'
-	}),
+  // Item types
+  approvedItems: filterBy("items", "state", "accepted"),
+  rejectedItems: filterBy("items", "state", "rejected"),
+  submittedItems: filterBy("items", "state", "submitted"),
+  acceptedItemsCount: attr("number"),
+  rejectedItemsCount: attr("number"),
+  submittedItemsCount: attr("number"),
+  computedSubmittedItemsCount: createCounterOf("submittedItems", {
+    fallbackProp: "submittedItemsCount",
+  }),
+  computedApprovedItemsCount: createCounterOf("approvedItems", {
+    fallbackProp: "acceptedItemsCount",
+  }),
+  computedRejectedItemsCount: createCounterOf("rejectedItems", {
+    fallbackProp: "rejectedItemsCount",
+  }),
 
-	isDraft: equal('state', 'draft'),
-	isInactive: equal('state', 'inactive'),
-	isSubmitted: equal('state', 'submitted'),
-	isScheduled: equal('state', 'scheduled'),
-	isUnderReview: equal('state', 'under_review'),
-	isReviewed: equal('state', 'reviewed'),
-	isClosed: equal('state', 'closed'),
-	isReceived: equal('state', 'received'),
-	isReceiving: equal('state', 'receiving'),
-	isCancelled: equal('state', 'cancelled'),
-	preventNewItem: alias('isFinished'),
+  isDraft: equal("state", "draft"),
+  isInactive: equal("state", "inactive"),
+  isSubmitted: equal("state", "submitted"),
+  isScheduled: equal("state", "scheduled"),
+  isUnderReview: equal("state", "under_review"),
+  isReviewed: equal("state", "reviewed"),
+  isClosed: equal("state", "closed"),
+  isReceived: equal("state", "received"),
+  isReceiving: equal("state", "receiving"),
+  isCancelled: equal("state", "cancelled"),
+  preventNewItem: alias("isFinished"),
 
-	hasReceived: or('isReceived', 'isReceiving'),
-	isReviewing: or('isUnderReview', 'isReviewed'),
-	adminCurrentOffer: or('isReviewing', 'isScheduled'),
-	nonSubmittedOffer: or('isDraft', 'isInactive'),
-	closedOrCancelled: or('isClosed', 'isCancelled'),
+  hasReceived: or("isReceived", "isReceiving"),
+  isReviewing: or("isUnderReview", "isReviewed"),
+  adminCurrentOffer: or("isReviewing", "isScheduled"),
+  nonSubmittedOffer: or("isDraft", "isInactive"),
+  closedOrCancelled: or("isClosed", "isCancelled"),
 
-	needReview: computed('isUnderReview', 'isSubmitted', 'isClosed', function() {
-		return this.get('isUnderReview') || this.get('isSubmitted') || this.get('isClosed');
-	}),
+  needReview: computed("isUnderReview", "isSubmitted", "isClosed", function () {
+    return (
+      this.get("isUnderReview") ||
+      this.get("isSubmitted") ||
+      this.get("isClosed")
+    );
+  }),
 
-	isFinished: computed('isClosed', 'isReceived', 'isCancelled', 'isInactive', function() {
-		return this.get('isClosed') || this.get('isReceived') || this.get('isCancelled') || this.get('isInactive');
-	}),
+  isFinished: computed(
+    "isClosed",
+    "isReceived",
+    "isCancelled",
+    "isInactive",
+    function () {
+      return (
+        this.get("isClosed") ||
+        this.get("isReceived") ||
+        this.get("isCancelled") ||
+        this.get("isInactive")
+      );
+    }
+  ),
 
-	canMerged: computed('isSubmitted', 'isUnderReview', 'isReviewed', function() {
-		return this.get('isSubmitted') || this.get('isUnderReview') || this.get('isReviewed');
-	}),
+  canMerged: computed(
+    "isSubmitted",
+    "isUnderReview",
+    "isReviewed",
+    function () {
+      return (
+        this.get("isSubmitted") ||
+        this.get("isUnderReview") ||
+        this.get("isReviewed")
+      );
+    }
+  ),
 
-	baseForMerge: computed('isSubmitted', 'isUnderReview', 'isReviewed', 'isScheduled', function() {
-		return (
-			this.get('isSubmitted') || this.get('isUnderReview') || this.get('isReviewed') || this.get('isScheduled')
-		);
-	}),
+  baseForMerge: computed(
+    "isSubmitted",
+    "isUnderReview",
+    "isReviewed",
+    "isScheduled",
+    function () {
+      return (
+        this.get("isSubmitted") ||
+        this.get("isUnderReview") ||
+        this.get("isReviewed") ||
+        this.get("isScheduled")
+      );
+    }
+  ),
 
-	activeItems: computed('items.@each.state', function() {
-		return this.get('items').rejectBy('state', 'draft');
-	}),
+  activeItems: computed("items.@each.state", function () {
+    return this.get("items").rejectBy("state", "draft");
+  }),
 
-	nonEmptyOffer: computed('items.[]', function() {
-		return this.get('itemCount') > 0;
-	}),
+  nonEmptyOffer: computed("items.[]", function () {
+    return this.get("itemCount") > 0;
+  }),
 
-	allItemsReviewed: computed('items.@each.state', function() {
-		var reviewedItems = this.get('activeItems').filterBy('state', 'submitted');
-		return reviewedItems.get('length') === 0;
-	}),
+  allItemsReviewed: computed("items.@each.state", function () {
+    var reviewedItems = this.get("activeItems").filterBy("state", "submitted");
+    return reviewedItems.get("length") === 0;
+  }),
 
-	readyForSchedule: computed('state', 'allItemsReviewed', function() {
-		return (this.get('isUnderReview') || this.get('isSubmitted')) && this.get('allItemsReviewed');
-	}),
+  readyForSchedule: computed("state", "allItemsReviewed", function () {
+    return (
+      (this.get("isUnderReview") || this.get("isSubmitted")) &&
+      this.get("allItemsReviewed")
+    );
+  }),
 
-	allItemsRejected: computed('items.@each.state', 'needReview', function() {
-		return this.get('needReview') && this.get('computedRejectedItemsCount') === this.get('itemCount');
-	}),
+  allItemsRejected: computed("items.@each.state", "needReview", function () {
+    return (
+      this.get("needReview") &&
+      this.get("computedRejectedItemsCount") === this.get("itemCount")
+    );
+  }),
 
-	displayImageUrl: computed('displayImageCloudinaryId', 'items.@each.displayImageUrl', function() {
-		let dImageId = this.get('displayImageCloudinaryId');
-		if (dImageId) {
-			return this.get('cloudinaryUtils').generateThumbnailUrl(dImageId);
-		}
-		return this.get('activeItems.firstObject.displayImageUrl') || 'assets/images/default_item.jpg';
-	}),
+  displayImageUrl: computed(
+    "displayImageCloudinaryId",
+    "items.@each.displayImageUrl",
+    function () {
+      let dImageId = this.get("displayImageCloudinaryId");
+      if (dImageId) {
+        return this.get("cloudinaryUtils").generateThumbnailUrl(dImageId);
+      }
+      return (
+        this.get("activeItems.firstObject.displayImageUrl") ||
+        "assets/images/default_item.jpg"
+      );
+    }
+  ),
 
-	isCharitableSale: computed('saleable', function() {
-		return this.get('saleable') ? this.locale('yes') : this.locale('no');
-	}),
+  isCharitableSale: computed("saleable", function () {
+    return this.get("saleable") ? this.locale("yes") : this.locale("no");
+  }),
 
-	isAccepted: computed('isReviewed', 'computedApprovedItemsCount', function() {
-		return this.get('computedApprovedItemsCount') > 0 && this.get('isReviewed');
-	}),
+  isAccepted: computed("isReviewed", "computedApprovedItemsCount", function () {
+    return this.get("computedApprovedItemsCount") > 0 && this.get("isReviewed");
+  }),
 
-	donor: computed('createdById', function(){
-	  return this.get("createdById") && this.get("createdBy");
-	}),
+  donor: computed("createdById", function () {
+    return this.get("createdById") && this.get("createdBy");
+  }),
 
-	getOfferStatus(state) {
-		switch (state) {
-			case 'draft':
-				return this.locale('offers.index.complete_offer');
-			case 'under_review':
-				return this.locale('offers.index.in_review');
-			case 'submitted':
-				return this.locale('offers.index.awaiting_review');
-			case 'reviewed':
-				return this.locale('offers.index.arrange_transport');
-			case 'scheduled':
-				return this.scheduledStatus();
-			case 'closed':
-				return this.locale('offers.index.closed');
-			case 'received':
-				return this.locale('offers.index.received');
-			case 'receiving':
-				return this.locale('offers.index.receiving');
-			case 'inactive':
-				return this.locale('offers.index.inactive');
-		}
-	},
+  getOfferStatus(state) {
+    switch (state) {
+      case "draft":
+        return this.locale("offers.index.complete_offer");
+      case "under_review":
+        return this.locale("offers.index.in_review");
+      case "submitted":
+        return this.locale("offers.index.awaiting_review");
+      case "reviewed":
+        return this.locale("offers.index.arrange_transport");
+      case "scheduled":
+        return this.scheduledStatus();
+      case "closed":
+        return this.locale("offers.index.closed");
+      case "received":
+        return this.locale("offers.index.received");
+      case "receiving":
+        return this.locale("offers.index.receiving");
+      case "inactive":
+        return this.locale("offers.index.inactive");
+    }
+  },
 
-	status: computed('state', function() {
-		var state = this.get('state');
-		var status = this.getOfferStatus(state);
-		return status;
-	}),
+  status: computed("state", function () {
+    var state = this.get("state");
+    var status = this.getOfferStatus(state);
+    return status;
+  }),
 
-	i18n: service(),
+  i18n: service(),
 
-	locale: function(text) {
-		return this.get('i18n').t(text);
-	},
+  locale: function (text) {
+    return this.get("i18n").t(text);
+  },
 
-	statusText: computed('status', 'itemCount', function() {
-		return this.get('nonSubmittedOffer')
-			? this.get('status')
-			: this.get('status') + ' (' + this.get('itemCount') + ' ' + this.locale('items_text') + ')';
-	}),
+  statusText: computed("status", "itemCount", function () {
+    return this.get("nonSubmittedOffer")
+      ? this.get("status")
+      : this.get("status") +
+          " (" +
+          this.get("itemCount") +
+          " " +
+          this.locale("items_text") +
+          ")";
+  }),
 
-	scheduledStatus: function() {
-		var deliveryType = this.get('delivery.deliveryType');
-		switch (deliveryType) {
-			case 'Gogovan':
-				return this.get('gogovan_status');
-			case 'Drop Off':
-				return this.locale('offers.index.drop_off');
-			case 'Alternate':
-				return this.locale('offers.index.alternate');
-		}
-	},
+  scheduledStatus: function () {
+    var deliveryType = this.get("delivery.deliveryType");
+    switch (deliveryType) {
+      case "Gogovan":
+        return this.get("gogovan_status");
+      case "Drop Off":
+        return this.locale("offers.index.drop_off");
+      case "Alternate":
+        return this.locale("offers.index.alternate");
+    }
+  },
 
-	gogovan_status: computed('delivery.gogovanOrder.status', function() {
-		var ggvStatus = this.get('delivery.gogovanOrder.status');
-		switch (ggvStatus) {
-			case 'pending':
-				return this.locale('offers.index.van_booked');
-			case 'active':
-				return this.locale('offers.index.van_confirmed');
-			case 'completed':
-				return this.locale('offers.index.picked_up');
-		}
-	}),
+  gogovan_status: computed("delivery.gogovanOrder.status", function () {
+    var ggvStatus = this.get("delivery.gogovanOrder.status");
+    switch (ggvStatus) {
+      case "pending":
+        return this.locale("offers.index.van_booked");
+      case "active":
+        return this.locale("offers.index.van_confirmed");
+      case "completed":
+        return this.locale("offers.index.picked_up");
+    }
+  }),
 
-	isOffer: computed('this', function() {
-		return this.get('constructor.modelName') === 'offer';
-	}),
+  isOffer: computed("this", function () {
+    return this.get("constructor.modelName") === "offer";
+  }),
 
-	// unread offer-items messages
-	unreadMessagesCount: computed('messages.@each.state', function() {
-		return this.get('messages').filterBy('state', 'unread').length;
-	}),
+  // unread offer-items messages
+  unreadMessagesCount: computed("messages.@each.state", function () {
+    return this.get("messages").filterBy("state", "unread").length;
+  }),
 
-	hasUnreadMessages: computed('unreadMessagesCount', function() {
-		return this.get('unreadMessagesCount') > 0;
-	}),
+  hasUnreadMessages: computed("unreadMessagesCount", function () {
+    return this.get("unreadMessagesCount") > 0;
+  }),
 
-	// unread offer-messages
-	unreadOfferMessages: computed('messages.@each.state', function() {
-		return this.get('messages').filterBy('state', 'unread').filterBy('item', null).sortBy('createdAt');
-	}),
+  // unread offer-messages
+  unreadOfferMessages: computed("messages.@each.state", function () {
+    return this.get("messages")
+      .filterBy("state", "unread")
+      .filterBy("item", null)
+      .sortBy("createdAt");
+  }),
 
-	unreadOfferMessagesCount: computed('unreadOfferMessages', function() {
-		var count = this.get('unreadOfferMessages.length');
-		return count > 0 ? count : '';
-	}),
+  unreadOfferMessagesCount: computed("unreadOfferMessages", function () {
+    var count = this.get("unreadOfferMessages.length");
+    return count > 0 ? count : "";
+  }),
 
-	// unread offer-messages by donor
-	hasUnreadDonorMessages: computed('unreadOfferMessages', function() {
-		return this.get('unreadOfferMessages').filterBy('isPrivate', false).length > 0;
-	}),
+  // unread offer-messages by donor
+  hasUnreadDonorMessages: computed("unreadOfferMessages", function () {
+    return (
+      this.get("unreadOfferMessages").filterBy("isPrivate", false).length > 0
+    );
+  }),
 
-	// unread offer-messages by supervisor-reviewer
-	hasUnreadPrivateMessages: computed('unreadOfferMessages', function() {
-		return this.get('unreadOfferMessages').filterBy('isPrivate', true).length > 0;
-	}),
+  // unread offer-messages by supervisor-reviewer
+  hasUnreadPrivateMessages: computed("unreadOfferMessages", function () {
+    return (
+      this.get("unreadOfferMessages").filterBy("isPrivate", true).length > 0
+    );
+  }),
 
-	// recent offer message
-	lastMessage: computed('messages.[]', function() {
-		var messages = this.get('messages').filterBy('item', null).sortBy('createdAt');
-		return messages.get('length') > 0 ? messages.get('lastObject') : null;
-	}),
+  // recent offer message
+  lastMessage: computed("messages.[]", function () {
+    var messages = this.get("messages")
+      .filterBy("item", null)
+      .sortBy("createdAt");
+    return messages.get("length") > 0 ? messages.get("lastObject") : null;
+  }),
 
-	hasCrossroadsTransport: computed('crossroadsTransport', function() {
-		return this.get('crossroadsTransport') && this.get('crossroadsTransport.isVanAllowed');
-	}),
+  hasCrossroadsTransport: computed("crossroadsTransport", function () {
+    return (
+      this.get("crossroadsTransport") &&
+      this.get("crossroadsTransport.isVanAllowed")
+    );
+  }),
 
-	hasGogovanTransport: computed('gogovanTransport', function() {
-		return this.get('gogovanTransport') && !this.get('gogovanTransport.disabled');
-	}),
+  hasGogovanTransport: computed("gogovanTransport", function () {
+    return (
+      this.get("gogovanTransport") && !this.get("gogovanTransport.disabled")
+    );
+  }),
 
-	// display "General Messages Thread"
-	displayGeneralMessages: computed('isDraft', 'lastMessage', function() {
-		return !(this.get('isDraft') && this.get('lastMessage') === null);
-	}),
+  // display "General Messages Thread"
+  displayGeneralMessages: computed("isDraft", "lastMessage", function () {
+    return !(this.get("isDraft") && this.get("lastMessage") === null);
+  }),
 
-	// to sort on offer-details page for updated-offer and latest-message
-	latestUpdatedTime: computed('lastMessage', function() {
-		var value;
-		switch (compare(this.get('lastMessage.createdAt'), this.get('updatedAt'))) {
-			case 0:
-			case 1:
-				value = this.get('lastMessage.createdAt');
-				break;
-			case -1:
-				value = this.get('updatedAt');
-				break;
-		}
-		return value;
-	}),
+  // to sort on offer-details page for updated-offer and latest-message
+  latestUpdatedTime: computed("lastMessage", function () {
+    var value;
+    switch (compare(this.get("lastMessage.createdAt"), this.get("updatedAt"))) {
+      case 0:
+      case 1:
+        value = this.get("lastMessage.createdAt");
+        break;
+      case -1:
+        value = this.get("updatedAt");
+        break;
+    }
+    return value;
+  }),
 
-	hasCompleteGGVOrder: computed('delivery.gogovanOrder.status', function() {
-		return (this.get('delivery.gogovanOrder.status') || '') === 'completed';
-	}),
+  hasCompleteGGVOrder: computed("delivery.gogovanOrder.status", function () {
+    return (this.get("delivery.gogovanOrder.status") || "") === "completed";
+  }),
 
-	showOfferIcons: computed('hasCompleteGGVOrder', 'itemCount', 'isClosed', 'hasReceived', function() {
-		return (
-			this.get('itemCount') > 0 &&
-			!(this.get('isClosed') || this.get('hasReceived')) &&
-			!this.get('hasCompleteGGVOrder')
-		);
-	}),
+  showOfferIcons: computed(
+    "hasCompleteGGVOrder",
+    "itemCount",
+    "isClosed",
+    "hasReceived",
+    function () {
+      return (
+        this.get("itemCount") > 0 &&
+        !(this.get("isClosed") || this.get("hasReceived")) &&
+        !this.get("hasCompleteGGVOrder")
+      );
+    }
+  ),
 
-	statusBarClass: computed('state', function() {
-		var retState = '';
-		if (this.get('isSubmitted')) {
-			retState = 'is-submitted';
-		} else if (this.get('isUnderReview')) {
-			retState = 'is-under-review';
-		} else if (this.get('isReviewed')) {
-			retState = 'is-reviewed';
-		} else if (this.get('isScheduled')) {
-			retState = 'is-scheduled';
-		} else if (this.get('isClosed')) {
-			retState = 'is-closed';
-		} else if (this.get('hasReceived')) {
-			retState = 'is-received';
-		}
-		return retState;
-	}),
+  statusBarClass: computed("state", function () {
+    var retState = "";
+    if (this.get("isSubmitted")) {
+      retState = "is-submitted";
+    } else if (this.get("isUnderReview")) {
+      retState = "is-under-review";
+    } else if (this.get("isReviewed")) {
+      retState = "is-reviewed";
+    } else if (this.get("isScheduled")) {
+      retState = "is-scheduled";
+    } else if (this.get("isClosed")) {
+      retState = "is-closed";
+    } else if (this.get("hasReceived")) {
+      retState = "is-received";
+    }
+    return retState;
+  }),
 
-	showDeliveryDetails: computed('state', function() {
-		return this.get('isScheduled') || this.get('isReceived') || this.get('isReceiving');
-	}),
+  showDeliveryDetails: computed("state", function () {
+    return (
+      this.get("isScheduled") ||
+      this.get("isReceived") ||
+      this.get("isReceiving")
+    );
+  }),
 
-	hideBookingModification: alias('delivery.gogovanOrder.isCompleted'),
+  hideBookingModification: alias("delivery.gogovanOrder.isCompleted"),
 
-	allPackagesMissing: computed('state', 'items.@each.state', 'packages.@each.state', function() {
-		return (
-			!this.get('allItemsRejected') &&
-			this.get('allItemsReviewed') &&
-			this.get('state') !== 'received' &&
-			this.get('packages.length') > 0 &&
-			this.get('packages')
-				.filter((p) => !p.get('item.isRejected') && p.get('state') === 'missing')
-				.get('length') === this.get('packages.length')
-		);
-	}),
+  allPackagesMissing: computed(
+    "state",
+    "items.@each.state",
+    "packages.@each.state",
+    function () {
+      return (
+        !this.get("allItemsRejected") &&
+        this.get("allItemsReviewed") &&
+        this.get("state") !== "received" &&
+        this.get("packages.length") > 0 &&
+        this.get("packages")
+          .filter(
+            (p) => !p.get("item.isRejected") && p.get("state") === "missing"
+          )
+          .get("length") === this.get("packages.length")
+      );
+    }
+  ),
 
-	readyForClosure: computed('state', 'packages.@each.state', function() {
-		return (
-			!this.get('allItemsRejected') &&
-			this.get('allItemsReviewed') &&
-			this.get('state') !== 'received' &&
-			this.get('packages.length') > 0 &&
-			this.get('packages')
-				.filter((p) => !p.get('item.isRejected') && p.get('state') === 'expecting')
-				.get('length') === 0
-		);
-	}),
+  readyForClosure: computed("state", "packages.@each.state", function () {
+    return (
+      !this.get("allItemsRejected") &&
+      this.get("allItemsReviewed") &&
+      this.get("state") !== "received" &&
+      this.get("packages.length") > 0 &&
+      this.get("packages")
+        .filter(
+          (p) => !p.get("item.isRejected") && p.get("state") === "expecting"
+        )
+        .get("length") === 0
+    );
+  }),
 
-	timeDetail: computed('state', 'delivery', function() {
-		var prefix = '',
-			suffix = '',
-			date;
+  timeDetail: computed("state", "delivery", function () {
+    var prefix = "",
+      suffix = "",
+      date;
 
-		if (this.get('isSubmitted')) {
-			prefix = this.locale('submitted');
-			date = this.get('submittedAt');
-		} else if (this.get('isUnderReview')) {
-			prefix = this.get('i18n').t('review_offer.review_started_by', {
-				firstName: this.get('reviewedBy.firstName'),
-				lastName: this.get('reviewedBy.lastName')
-			});
-			date = this.get('reviewedAt');
-		} else if (this.get('isReviewed')) {
-			prefix = this.locale('review_offer.reviewed');
-			date = this.get('reviewCompletedAt');
-			suffix = this.locale('review_offer.plan_transport');
-		} else if (this.get('isClosed')) {
-			prefix = this.get('i18n').t('offer.closed_by', {
-				firstName: this.get('closedBy.firstName'),
-				lastName: this.get('closedBy.lastName')
-			});
-			date = this.get('reviewCompletedAt');
-		} else if (this.get('isCancelled')) {
-			prefix = this.get('i18n').t('offer.cancelled_by', {
-				firstName: this.get('closedBy.firstName'),
-				lastName: this.get('closedBy.lastName')
-			});
-			date = this.get('cancelledAt');
-		} else if (this.get('isReceived')) {
-			prefix = this.get('i18n').t('offer.received_by', {
-				firstName: this.get('closedBy.firstName'),
-				lastName: this.get('closedBy.lastName')
-			});
-			date = this.get('receivedAt');
-		} else if (this.get('isReceiving')) {
-			prefix = this.get('i18n').t('offer.offer_details.start_receiving_by', {
-				firstName: this.get('receivedBy.firstName'),
-				lastName: this.get('receivedBy.lastName')
-			});
-			date = this.get('startReceivingAt');
-		} else if (this.get('isInactive')) {
-			prefix = this.get('i18n').t('offer.offer_details.inactive');
-			date = this.get('inactiveAt');
-		} else if (this.get('isScheduled')) {
-			if (this.get('delivery.isAlternate')) {
-				prefix = this.locale('offer.offer_details.is_collection');
-			} else if (this.get('delivery.isDropOff')) {
-				prefix = this.locale('offer.offer_details.is_drop_off');
-			} else if (this.get('delivery.isGogovan')) {
-				prefix = this.get('delivery.gogovanOrder.ggvOrderStatus');
-			}
+    if (this.get("isSubmitted")) {
+      prefix = this.locale("submitted");
+      date = this.get("submittedAt");
+    } else if (this.get("isUnderReview")) {
+      prefix = this.get("i18n").t("review_offer.review_started_by", {
+        firstName: this.get("reviewedBy.firstName"),
+        lastName: this.get("reviewedBy.lastName"),
+      });
+      date = this.get("reviewedAt");
+    } else if (this.get("isReviewed")) {
+      prefix = this.locale("review_offer.reviewed");
+      date = this.get("reviewCompletedAt");
+      suffix = this.locale("review_offer.plan_transport");
+    } else if (this.get("isClosed")) {
+      prefix = this.get("i18n").t("offer.closed_by", {
+        firstName: this.get("closedBy.firstName"),
+        lastName: this.get("closedBy.lastName"),
+      });
+      date = this.get("reviewCompletedAt");
+    } else if (this.get("isCancelled")) {
+      prefix = this.get("i18n").t("offer.cancelled_by", {
+        firstName: this.get("closedBy.firstName"),
+        lastName: this.get("closedBy.lastName"),
+      });
+      date = this.get("cancelledAt");
+    } else if (this.get("isReceived")) {
+      prefix = this.get("i18n").t("offer.received_by", {
+        firstName: this.get("closedBy.firstName"),
+        lastName: this.get("closedBy.lastName"),
+      });
+      date = this.get("receivedAt");
+    } else if (this.get("isReceiving")) {
+      prefix = this.get("i18n").t("offer.offer_details.start_receiving_by", {
+        firstName: this.get("receivedBy.firstName"),
+        lastName: this.get("receivedBy.lastName"),
+      });
+      date = this.get("startReceivingAt");
+    } else if (this.get("isInactive")) {
+      prefix = this.get("i18n").t("offer.offer_details.inactive");
+      date = this.get("inactiveAt");
+    } else if (this.get("isScheduled")) {
+      if (this.get("delivery.isAlternate")) {
+        prefix = this.locale("offer.offer_details.is_collection");
+      } else if (this.get("delivery.isDropOff")) {
+        prefix = this.locale("offer.offer_details.is_drop_off");
+      } else if (this.get("delivery.isGogovan")) {
+        prefix = this.get("delivery.gogovanOrder.ggvOrderStatus");
+      }
 
-			if (this.get('delivery.isGogovan')) {
-				if (this.get('delivery.completedWithGogovan')) {
-					date = this.get('delivery.gogovanOrder.completedAt');
-				} else {
-					prefix = prefix + ' ' + this.get('delivery.schedule.slotName');
-					date = this.get('delivery.schedule.scheduledAt');
-				}
-			} else {
-				date = this.get('delivery.schedule.scheduledAt');
-				suffix = this.get('delivery.schedule.dayTime');
-			}
-		}
-		return { prefix: prefix, date: date, suffix: suffix };
-	}),
+      if (this.get("delivery.isGogovan")) {
+        if (this.get("delivery.completedWithGogovan")) {
+          date = this.get("delivery.gogovanOrder.completedAt");
+        } else {
+          prefix = prefix + " " + this.get("delivery.schedule.slotName");
+          date = this.get("delivery.schedule.scheduledAt");
+        }
+      } else {
+        date = this.get("delivery.schedule.scheduledAt");
+        suffix = this.get("delivery.schedule.dayTime");
+      }
+    }
+    return { prefix: prefix, date: date, suffix: suffix };
+  }),
 
-	hideCancelOfferOption: computed('state', 'hasCompleteGGVOrder', function() {
-		return (
-			this.get('closedOrCancelled') ||
-			this.get('isReceived') ||
-			this.get('hasCompleteGGVOrder') ||
-			this.get('isReceiving')
-		);
-	}),
+  hideCancelOfferOption: computed("state", "hasCompleteGGVOrder", function () {
+    return (
+      this.get("closedOrCancelled") ||
+      this.get("isReceived") ||
+      this.get("hasCompleteGGVOrder") ||
+      this.get("isReceiving")
+    );
+  }),
 
-	hideInactiveOfferOption: computed('state', 'hasCompleteGGVOrder', function() {
-		return this.get('isFinished') || this.get('hasCompleteGGVOrder') || this.get('isReceiving');
-	}),
+  hideInactiveOfferOption: computed(
+    "state",
+    "hasCompleteGGVOrder",
+    function () {
+      return (
+        this.get("isFinished") ||
+        this.get("hasCompleteGGVOrder") ||
+        this.get("isReceiving")
+      );
+    }
+  ),
 
-	allowResubmit: computed('isCancelled', 'allItemsReviewed', function() {
-		return (this.get('isCancelled') && !this.get('allItemsReviewed')) || this.get('isInactive');
-	})
+  allowResubmit: computed("isCancelled", "allItemsReviewed", function () {
+    return (
+      (this.get("isCancelled") && !this.get("allItemsReviewed")) ||
+      this.get("isInactive")
+    );
+  }),
 });

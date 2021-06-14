@@ -1,12 +1,18 @@
-import { test, moduleForModel } from 'ember-qunit';
+import { module, test } from "qunit";
+import { setupTest } from "ember-qunit";
 
-moduleForModel('timeslot', 'Timeslot Model', {
-});
+import { run } from "@ember/runloop";
 
-test('check attributes', function(assert){
-  assert.expect(1);
-  var model = this.subject();
-  var name = Object.keys(model.toJSON()).indexOf('name') > -1;
+module("Timeslot Model", function (hooks) {
+  setupTest(hooks);
 
-  assert.ok(name);
+  test("check attributes", function (assert) {
+    assert.expect(1);
+    var model = run(() =>
+      this.owner.lookup("service:store").createRecord("timeslot")
+    );
+    var name = Object.keys(model.toJSON()).indexOf("name") > -1;
+
+    assert.ok(name);
+  });
 });

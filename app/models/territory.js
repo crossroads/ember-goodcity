@@ -1,8 +1,6 @@
-import DS from 'ember-data';
-var attr = DS.attr,
-    hasMany = DS.hasMany ;
+import Model, { attr, hasMany } from "@ember-data/model";
 
-export default DS.Model.extend({
-  name: attr('string'),
-  districts:  hasMany('district', { async: false })
+export default Model.extend({
+  name: attr("string"),
+  districts: hasMany("district", { async: false }),
 });

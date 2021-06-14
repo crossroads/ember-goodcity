@@ -1,9 +1,7 @@
-import DS from 'ember-data';
+import Model, { attr } from "@ember-data/model";
 
-var attr = DS.attr;
-
-export default DS.Model.extend({
-  name: attr('string'),
-  holiday: attr('date'),
-  year: attr('number')
+export default Model.extend({
+  name: attr("string"),
+  holiday: attr("date"),
+  year: attr("number"),
 });

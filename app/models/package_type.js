@@ -1,13 +1,10 @@
-import DS from 'ember-data';
+import Model, { attr, hasMany } from "@ember-data/model";
 
-var attr = DS.attr,
-  hasMany = DS.hasMany;
+export default Model.extend({
+  name: attr("string"),
+  code: attr("string"),
+  isItemTypeNode: attr("boolean", { defaultValue: false }),
 
-export default DS.Model.extend({
-  name:           attr('string'),
-  code:           attr('string'),
-  isItemTypeNode: attr('boolean', {defaultValue: false}),
-
-  items:          hasMany('item', { async: false }),
-  packages:       hasMany('package', { async: false })
+  items: hasMany("item", { async: false }),
+  packages: hasMany("package", { async: false }),
 });

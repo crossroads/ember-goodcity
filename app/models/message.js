@@ -1,12 +1,9 @@
-import { alias, equal } from '@ember/object/computed';
-import { computed } from '@ember/object';
-import { getOwner } from '@ember/application';
-import DS from "ember-data";
+import Model, { attr, belongsTo } from "@ember-data/model";
+import { alias, equal } from "@ember/object/computed";
+import { computed } from "@ember/object";
+import { getOwner } from "@ember/application";
 
-var attr = DS.attr,
-  belongsTo = DS.belongsTo;
-
-export default DS.Model.extend({
+export default Model.extend({
   body: attr("string"),
   isPrivate: attr("boolean"),
   createdAt: attr("date"),
@@ -18,20 +15,20 @@ export default DS.Model.extend({
   item: belongsTo("item", { async: false }),
   offer: belongsTo("offer", { async: false }),
 
-  myMessage: computed(function() {
+  myMessage: computed(function () {
     var session = getOwner(this).lookup("service:session");
     return this.get("sender.id") === session.get("currentUser.id");
   }),
 
-  isMessage: computed("this", function() {
+  isMessage: computed("this", function () {
     return true;
   }),
 
-  createdDate: computed(function() {
+  createdDate: computed(function () {
     return new Date(this.get("createdAt")).toDateString();
   }),
 
   itemImageUrl: alias("item.displayImageUrl"),
   isRead: equal("state", "read"),
-  isUnread: equal("state", "unread")
+  isUnread: equal("state", "unread"),
 });

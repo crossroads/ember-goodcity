@@ -1,17 +1,12 @@
-import DS from "ember-data";
-import {
-  hasMany
-} from "ember-data/relationships";
+import Model, { hasMany, attr } from "@ember-data/model";
 
-var attr = DS.attr;
-
-export default DS.Model.extend({
+export default Model.extend({
   name: attr("string"),
   crmId: attr("number"),
   createdById: attr("number"),
   updatedById: attr("number"),
 
   offers: hasMany("offers", {
-    async: false
-  })
+    async: false,
+  }),
 });

@@ -1,10 +1,10 @@
-import $ from 'jquery';
-import { next } from '@ember/runloop';
-import { inject as service } from '@ember/service';
-import Route from '@ember/routing/route';
-import { getOwner } from '@ember/application';
-import Ember from 'ember';
-import preloadDataMixin from '../mixins/preload_data';
+import $ from "jquery";
+import { next, later } from "@ember/runloop";
+import { inject as service } from "@ember/service";
+import Route from "@ember/routing/route";
+import { getOwner } from "@ember/application";
+import Ember from "ember";
+import preloadDataMixin from "../mixins/preload_data";
 
 export default Route.extend(preloadDataMixin, {
   cordova: service(),
@@ -15,9 +15,9 @@ export default Route.extend(preloadDataMixin, {
   messageBox: service(),
   isalreadyLoggedinShown: false,
 
-  _loadDataStore: function() {
+  _loadDataStore: function () {
     return this.preloadData(true)
-      .catch(error => {
+      .catch((error) => {
         if (
           error.status === 0 ||
           (error.errors && error.errors[0].status === "0")
@@ -46,7 +46,7 @@ export default Route.extend(preloadDataMixin, {
 
   init() {
     var _this = this;
-    var storageHandler = function(object) {
+    var storageHandler = function (object) {
       var currentPath = window.location.href;
       var authToken = window.localStorage.getItem("authToken");
       if (
@@ -75,7 +75,7 @@ export default Route.extend(preloadDataMixin, {
     };
     window.addEventListener(
       "storage",
-      function() {
+      function () {
         storageHandler(_this);
       },
       false
@@ -105,13 +105,13 @@ export default Route.extend(preloadDataMixin, {
     language = this.session.get("language") || "en";
     moment.locale(language);
     this.set("i18n.locale", language);
-    Ember.onerror = window.onerror = error => this.handleError(error);
+    Ember.onerror = window.onerror = (error) => this.handleError(error);
     return this._loadDataStore();
   },
 
   afterModel() {
     if (this.get("session.isAdminApp")) {
-      this.loadStaticData(true).catch(error => {
+      this.loadStaticData(true).catch((error) => {
         if (
           error.status === 0 ||
           (error.errors && error.errors[0].status === "0")
@@ -131,20 +131,20 @@ export default Route.extend(preloadDataMixin, {
       // the template to render
       into: "application", // the template to render into
       outlet: "notifications", // the name of the outlet in that template
-      controller: "notifications" // the controller to use for the template
+      controller: "notifications", // the controller to use for the template
     });
 
     if (this.get("session.isAdminApp")) {
       this.render("notification_link", {
         into: "application",
         outlet: "notification_link",
-        controller: "notification_link"
+        controller: "notification_link",
       });
 
       this.render("internet_call_status", {
         into: "application",
         outlet: "internet_call_status",
-        controller: "internet_call_status"
+        controller: "internet_call_status",
       });
     }
   },
@@ -199,7 +199,7 @@ export default Route.extend(preloadDataMixin, {
     }
   },
 
-  handleError: function(reason) {
+  handleError: function (reason) {
     try {
       var status;
       try {
@@ -237,9 +237,7 @@ export default Route.extend(preloadDataMixin, {
     },
     loading() {
       if (!this._loadingView) {
-        this._loadingView = getOwner(this)
-          .lookup("component:loading")
-          .append();
+        this._loadingView = getOwner(this).lookup("component:loading").append();
       }
     },
     // this is hopefully only triggered from promises from routes
@@ -267,7 +265,7 @@ export default Route.extend(preloadDataMixin, {
       // Without later() it causes double render error
       // as we're trying to render a page and remove loading
       // indicator at a same time
-      Ember.run.later(() => {
+      later(() => {
         if (this._loadingView) {
           this._loadingView.destroy();
           this._loadingView = null;
@@ -276,7 +274,7 @@ export default Route.extend(preloadDataMixin, {
     },
 
     willTransition() {
-      next(function() {
+      next(function () {
         // before transitioning close all foundation-dialog box
         $(".reveal-modal").foundation("reveal", "close");
 
@@ -285,6 +283,6 @@ export default Route.extend(preloadDataMixin, {
           $(".joyride-tip-guide").remove();
         }
       });
-    }
-  }
+    },
+  },
 });

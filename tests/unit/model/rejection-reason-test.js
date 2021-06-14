@@ -1,24 +1,34 @@
-import { get } from '@ember/object';
-import { test, moduleForModel } from 'ember-qunit';
+import { get } from "@ember/object";
+import { module, test } from "qunit";
+import { setupTest } from "ember-qunit";
 
-moduleForModel('rejection_reason', 'RejectionReason Model', {
-  needs: ['model:item']
-});
+import { run } from "@ember/runloop";
 
-test('check attributes', function(assert){
-  assert.expect(1);
-  var model = this.subject();
-  var name = Object.keys(model.toJSON()).indexOf('name') > -1;
+module("RejectionReason Model", function (hooks) {
+  setupTest(hooks);
 
-  assert.ok(name);
-});
+  test("check attributes", function (assert) {
+    assert.expect(1);
+    var model = run(() =>
+      this.owner.lookup("service:store").createRecord("rejection_reason")
+    );
+    var name = Object.keys(model.toJSON()).indexOf("name") > -1;
 
-test('Relationships with other models', function(assert){
-  assert.expect(2);
+    assert.ok(name);
+  });
 
-  var rejectionReason = this.store().modelFor('rejection_reason');
-  var relationshipsWithDistrict = get(rejectionReason, 'relationshipsByName').get('items');
+  test("Relationships with other models", function (assert) {
+    assert.expect(2);
 
-  assert.equal(relationshipsWithDistrict.key, 'items');
-  assert.equal(relationshipsWithDistrict.kind, 'hasMany');
+    var rejectionReason = this.owner
+      .lookup("service:store")
+      .modelFor("rejection_reason");
+    var relationshipsWithDistrict = get(
+      rejectionReason,
+      "relationshipsByName"
+    ).get("items");
+
+    assert.equal(relationshipsWithDistrict.key, "items");
+    assert.equal(relationshipsWithDistrict.kind, "hasMany");
+  });
 });

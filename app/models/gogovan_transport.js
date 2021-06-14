@@ -1,13 +1,11 @@
-import { computed } from '@ember/object';
-import DS from 'ember-data';
+import Model, { attr } from "@ember-data/model";
+import { computed } from "@ember/object";
 
-var attr = DS.attr;
+export default Model.extend({
+  name: attr("string"),
+  disabled: attr("boolean"),
 
-export default DS.Model.extend({
-  name: attr('string'),
-  disabled: attr('boolean'),
-
-  specialId: computed('id', function() {
+  specialId: computed("id", function () {
     return this.get("id") + "_ggv";
-  })
+  }),
 });
