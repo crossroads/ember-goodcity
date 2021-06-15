@@ -1,40 +1,40 @@
-import Model, { attr, belongsTo } from "@ember-data/model";
+import DS from "ember-data";
 import { computed } from "@ember/object";
 import { equal, or } from "@ember/object/computed";
 import { inject as service } from "@ember/service";
 
-export default Model.extend({
-  name: attr("string"),
-  mobile: attr("string"),
+export default DS.Model.extend({
+  name: DS.attr("string"),
+  mobile: DS.attr("string"),
 
-  bookingId: attr("number"),
-  status: attr("string"),
-  pickupTime: attr("date"),
-  slot: attr("string"),
-  districtId: attr("number"),
-  territoryId: attr("number"),
-  offerId: attr("number"),
-  gogovanOptionId: attr("number"),
-  completedAt: attr("date"),
+  bookingId: DS.attr("number"),
+  status: DS.attr("string"),
+  pickupTime: DS.attr("date"),
+  slot: DS.attr("string"),
+  districtId: DS.attr("number"),
+  territoryId: DS.attr("number"),
+  offerId: DS.attr("number"),
+  gogovanOptionId: DS.attr("number"),
+  completedAt: DS.attr("date"),
 
-  needEnglish: attr("boolean"),
-  needCart: attr("boolean"),
-  needCarry: attr("boolean"),
-  needOver6ft: attr("boolean"),
-  removeNet: attr("string"),
+  needEnglish: DS.attr("boolean"),
+  needCart: DS.attr("boolean"),
+  needCarry: DS.attr("boolean"),
+  needOver6ft: DS.attr("boolean"),
+  removeNet: DS.attr("string"),
 
-  baseFee: attr("string"),
-  totalFee: attr("string"),
-  needEnglishFee: attr("string"),
-  needCartFee: attr("string"),
-  removeNetFee: attr("string"),
+  baseFee: DS.attr("string"),
+  totalFee: DS.attr("string"),
+  needEnglishFee: DS.attr("string"),
+  needCartFee: DS.attr("string"),
+  removeNetFee: DS.attr("string"),
 
-  price: attr("number"),
-  driverName: attr("string"),
-  driverMobile: attr("string"),
-  driverLicense: attr("string"),
-  ggvUuid: attr("string"),
-  delivery: belongsTo("delivery", { async: false }),
+  price: DS.attr("number"),
+  driverName: DS.attr("string"),
+  driverMobile: DS.attr("string"),
+  driverLicense: DS.attr("string"),
+  ggvUuid: DS.attr("string"),
+  delivery: DS.belongsTo("delivery", { async: false }),
   isDiscountAvailable: false,
   couponDiscount: 0,
 

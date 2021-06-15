@@ -1,15 +1,15 @@
-import Model, { attr, hasMany } from "@ember-data/model";
+import DS from "ember-data";
 import { computed } from "@ember/object";
 import { inject as service } from "@ember/service";
 
-export default Model.extend({
-  resource: attr("string"),
-  slot: attr("number"),
-  slotName: attr("string"),
-  zone: attr("string"),
-  scheduledAt: attr("date"),
+export default DS.Model.extend({
+  resource: DS.attr("string"),
+  slot: DS.attr("number"),
+  slotName: DS.attr("string"),
+  zone: DS.attr("string"),
+  scheduledAt: DS.attr("date"),
 
-  deliveries: hasMany("delivery", { async: false }),
+  deliveries: DS.hasMany("delivery", { async: false }),
 
   i18n: service(),
 

@@ -1,31 +1,31 @@
-import { attr, belongsTo, hasMany } from "@ember-data/model";
+import DS from "ember-data";
 import { equal } from "@ember/object/computed";
 import { inject as service } from "@ember/service";
 import { computed } from "@ember/object";
 import Addressable from "./addressable";
 
 export default Addressable.extend({
-  firstName: attr("string"),
-  lastName: attr("string"),
-  mobile: attr("string"),
-  createdAt: attr("date"),
-  userRoleIds: attr(""),
-  email: attr(""),
-  receiveEmail: attr(""),
-  otherPhone: attr(""),
-  title: attr(""),
+  firstName: DS.attr("string"),
+  lastName: DS.attr("string"),
+  mobile: DS.attr("string"),
+  createdAt: DS.attr("date"),
+  userRoleIds: DS.attr(""),
+  email: DS.attr(""),
+  receiveEmail: DS.attr(""),
+  otherPhone: DS.attr(""),
+  title: DS.attr(""),
 
-  lastConnected: attr("date"),
-  lastDisconnected: attr("date"),
+  lastConnected: DS.attr("date"),
+  lastDisconnected: DS.attr("date"),
 
-  image: belongsTo("image", { async: false }),
-  permission: belongsTo("permission", { async: true }),
-  reviewedOffers: hasMany("offers", { inverse: "reviewedBy", async: false }),
-  donations: hasMany("offers", { inverse: "createdBy", async: false }),
-  printerId: attr("number"),
-  printer: belongsTo("printer", { async: false }),
+  image: DS.belongsTo("image", { async: false }),
+  permission: DS.belongsTo("permission", { async: true }),
+  reviewedOffers: DS.hasMany("offers", { inverse: "reviewedBy", async: false }),
+  donations: DS.hasMany("offers", { inverse: "createdBy", async: false }),
+  printerId: DS.attr("number"),
+  printer: DS.belongsTo("printer", { async: false }),
 
-  userRoles: hasMany("userRoles", { async: false }),
+  userRoles: DS.hasMany("userRoles", { async: false }),
 
   roles: computed("userRoles.[]", function () {
     var roles = [];

@@ -1,4 +1,4 @@
-import Model, { attr, hasMany, belongsTo } from "@ember-data/model";
+import DS from "ember-data";
 import { compare } from "@ember/utils";
 import { alias, filterBy, equal, or } from "@ember/object/computed";
 import { inject as service } from "@ember/service";
@@ -26,50 +26,50 @@ function createCounterOf(collection, opts = {}) {
   return computed(`${collection}.@each.state`, computer);
 }
 
-export default Model.extend({
+export default DS.Model.extend({
   cloudinaryUtils: service(),
 
-  language: attr("string"),
-  state: attr("string", { defaultValue: "draft" }),
-  origin: attr("string"),
-  stairs: attr("boolean"),
-  parking: attr("boolean"),
-  saleable: attr("boolean"),
-  estimatedSize: attr("string"),
-  notes: attr("string"),
-  createdById: attr("string"),
-  createdAt: attr("date"),
-  updatedAt: attr("date"),
-  submittedAt: attr("date"),
-  cancelledAt: attr("date"),
-  state_event: attr("string"),
-  reviewedAt: attr("date"),
-  receivedAt: attr("date"),
-  reviewCompletedAt: attr("date"),
-  deliveredBy: attr("string"),
-  startReceivingAt: attr("date"),
-  cancelReason: attr("string"),
-  inactiveAt: attr("date"),
-  displayImageCloudinaryId: attr("string"),
-  companyId: attr("string"),
+  language: DS.attr("string"),
+  state: DS.attr("string", { defaultValue: "draft" }),
+  origin: DS.attr("string"),
+  stairs: DS.attr("boolean"),
+  parking: DS.attr("boolean"),
+  saleable: DS.attr("boolean"),
+  estimatedSize: DS.attr("string"),
+  notes: DS.attr("string"),
+  createdById: DS.attr("string"),
+  createdAt: DS.attr("date"),
+  updatedAt: DS.attr("date"),
+  submittedAt: DS.attr("date"),
+  cancelledAt: DS.attr("date"),
+  state_event: DS.attr("string"),
+  reviewedAt: DS.attr("date"),
+  receivedAt: DS.attr("date"),
+  reviewCompletedAt: DS.attr("date"),
+  deliveredBy: DS.attr("string"),
+  startReceivingAt: DS.attr("date"),
+  cancelReason: DS.attr("string"),
+  inactiveAt: DS.attr("date"),
+  displayImageCloudinaryId: DS.attr("string"),
+  companyId: DS.attr("string"),
 
-  gogovanTransport: belongsTo("gogovan_transport", { async: false }),
-  crossroadsTransport: belongsTo("crossroads_transport", { async: false }),
-  cancellationReason: belongsTo("cancellation_reason", { async: false }),
-  company: belongsTo("company", { async: false }),
+  gogovanTransport: DS.belongsTo("gogovan_transport", { async: false }),
+  crossroadsTransport: DS.belongsTo("crossroads_transport", { async: false }),
+  cancellationReason: DS.belongsTo("cancellation_reason", { async: false }),
+  company: DS.belongsTo("company", { async: false }),
 
-  items: hasMany("item", { async: false }),
-  messages: hasMany("message", { async: true }),
+  items: DS.hasMany("item", { async: false }),
+  messages: DS.hasMany("message", { async: true }),
 
-  delivery: belongsTo("delivery", { async: false }),
-  createdBy: belongsTo("user", { async: false }),
-  reviewedBy: belongsTo("user", { async: false }),
-  closedBy: belongsTo("user", { async: false }),
-  receivedBy: belongsTo("user", { async: false }),
+  delivery: DS.belongsTo("delivery", { async: false }),
+  createdBy: DS.belongsTo("user", { async: false }),
+  reviewedBy: DS.belongsTo("user", { async: false }),
+  closedBy: DS.belongsTo("user", { async: false }),
+  receivedBy: DS.belongsTo("user", { async: false }),
 
   // User details
-  userName: attr("string"),
-  userPhone: attr("string"),
+  userName: DS.attr("string"),
+  userPhone: DS.attr("string"),
 
   companyName: computed("company", function () {
     return this.get("company.name");
@@ -94,9 +94,9 @@ export default Model.extend({
   itemPackages: alias("packages"),
 
   // Package types
-  expectingPackagesCount: attr("number"),
-  missingPackagesCount: attr("number"),
-  receivedPackagesCount: attr("number"),
+  expectingPackagesCount: DS.attr("number"),
+  missingPackagesCount: DS.attr("number"),
+  receivedPackagesCount: DS.attr("number"),
   computedExpectingPackageCount: createCounterOf("packages", {
     filter: ["state", "expecting"],
     fallbackProp: "expectingPackagesCount",
@@ -114,9 +114,9 @@ export default Model.extend({
   approvedItems: filterBy("items", "state", "accepted"),
   rejectedItems: filterBy("items", "state", "rejected"),
   submittedItems: filterBy("items", "state", "submitted"),
-  acceptedItemsCount: attr("number"),
-  rejectedItemsCount: attr("number"),
-  submittedItemsCount: attr("number"),
+  acceptedItemsCount: DS.attr("number"),
+  rejectedItemsCount: DS.attr("number"),
+  submittedItemsCount: DS.attr("number"),
   computedSubmittedItemsCount: createCounterOf("submittedItems", {
     fallbackProp: "submittedItemsCount",
   }),

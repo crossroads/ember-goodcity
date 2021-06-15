@@ -1,18 +1,18 @@
-import Model, { attr, belongsTo } from "@ember-data/model";
+import DS from "ember-data";
 import { computed } from "@ember/object";
 import { inject as service } from "@ember/service";
 
-export default Model.extend({
+export default DS.Model.extend({
   cloudinaryUtils: service(),
 
-  imageableType: attr("string"),
-  imageableId: attr("number"),
-  favourite: attr("boolean"),
-  cloudinaryId: attr("string"),
-  item: belongsTo("item", { async: false }),
-  angle: attr("number"),
-  itemId: attr("number"),
-  packageId: attr("number"),
+  imageableType: DS.attr("string"),
+  imageableId: DS.attr("number"),
+  favourite: DS.attr("boolean"),
+  cloudinaryId: DS.attr("string"),
+  item: DS.belongsTo("item", { async: false }),
+  angle: DS.attr("number"),
+  itemId: DS.attr("number"),
+  packageId: DS.attr("number"),
 
   imageUrl: computed("cloudinaryId", "angle", function () {
     return this.get("cloudinaryUtils").generateUrl(this.get("cloudinaryId"), {

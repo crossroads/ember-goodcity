@@ -1,9 +1,9 @@
-import Model, { attr, hasMany } from "@ember-data/model";
+import DS from "ember-data";
 import { computed } from "@ember/object";
 
-export default Model.extend({
-  name: attr("string"),
-  items: hasMany("item", { async: false }),
+export default DS.Model.extend({
+  name: DS.attr("string"),
+  items: DS.hasMany("item", { async: false }),
 
   specialId: computed("id", function () {
     return this.get("id") + "_reason";

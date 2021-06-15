@@ -1,7 +1,7 @@
-import Model, { belongsTo } from "@ember-data/model";
+import DS from "ember-data";
 
-var Addressable = Model.extend({
-  address: belongsTo("address", { async: false }),
+var Addressable = DS.Model.extend({
+  address: DS.belongsTo("address", { async: false }),
 });
 
 export default Addressable;

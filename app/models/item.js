@@ -1,4 +1,4 @@
-import Model, { attr, belongsTo, hasMany } from "@ember-data/model";
+import DS from "ember-data";
 import { compare } from "@ember/utils";
 import { equal, alias } from "@ember/object/computed";
 import { computed, observer } from "@ember/object";
@@ -7,22 +7,22 @@ import config from "../config/environment";
 
 var foreignKey = computed.foreignKey;
 
-export default Model.extend({
-  donorDescription: attr("string"),
-  state: attr("string"),
-  rejectReason: attr("string"),
-  rejectionComments: attr("string"),
-  createdAt: attr("date"),
-  updatedAt: attr("date"),
-  packages: hasMany("package", { async: false }),
-  messages: hasMany("message", { async: true }),
-  images: hasMany("image", { async: false }),
-  offer: belongsTo("offer", { async: false }),
-  packageType: belongsTo("package_type", { async: false }),
-  donorCondition: belongsTo("donor_condition", { async: false }),
+export default DS.Model.extend({
+  donorDescription: DS.attr("string"),
+  state: DS.attr("string"),
+  rejectReason: DS.attr("string"),
+  rejectionComments: DS.attr("string"),
+  createdAt: DS.attr("date"),
+  updatedAt: DS.attr("date"),
+  packages: DS.hasMany("package", { async: false }),
+  messages: DS.hasMany("message", { async: true }),
+  images: DS.hasMany("image", { async: false }),
+  offer: DS.belongsTo("offer", { async: false }),
+  packageType: DS.belongsTo("package_type", { async: false }),
+  donorCondition: DS.belongsTo("donor_condition", { async: false }),
   donorConditionId: foreignKey("donorCondition.id"),
-  rejectionReason: belongsTo("rejection_reason", { async: false }),
-  state_event: attr("string"),
+  rejectionReason: DS.belongsTo("rejection_reason", { async: false }),
+  state_event: DS.attr("string"),
 
   isAccepted: equal("state", "accepted"),
   isRejected: equal("state", "rejected"),

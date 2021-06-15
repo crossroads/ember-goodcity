@@ -1,15 +1,15 @@
-import Model, { attr } from "@ember-data/model";
+import DS from "ember-data";
 import { inject as service } from "@ember/service";
 import { computed } from "@ember/object";
 
-export default Model.extend({
-  event: attr("string"),
-  itemType: attr("string"),
-  itemId: attr("number"),
-  whodunnit: attr("string"),
-  whodunnitName: attr("string"),
-  state: attr("string"),
-  createdAt: attr("date"),
+export default DS.Model.extend({
+  event: DS.attr("string"),
+  itemType: DS.attr("string"),
+  itemId: DS.attr("number"),
+  whodunnit: DS.attr("string"),
+  whodunnitName: DS.attr("string"),
+  state: DS.attr("string"),
+  createdAt: DS.attr("date"),
 
   createdDate: computed(function () {
     return this.get("createdAt").toDateString();

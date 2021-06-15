@@ -1,16 +1,16 @@
-import { attr, hasMany } from "@ember-data/model";
+import DS from "ember-data";
 import { empty } from "@ember/object/computed";
 import { computed } from "@ember/object";
 import Addressable from "./addressable";
 
 export default Addressable.extend({
-  firstName: attr("string"),
-  lastName: attr("string"),
-  mobile: attr("string"),
-  donationAmount: attr("string"),
-  donationDate: attr("date"),
+  firstName: DS.attr("string"),
+  lastName: DS.attr("string"),
+  mobile: DS.attr("string"),
+  donationAmount: DS.attr("string"),
+  donationDate: DS.attr("date"),
 
-  userRoles: hasMany("userRoles", { async: false }),
+  userRoles: DS.hasMany("userRoles", { async: false }),
 
   roles: computed("userRoles.[]", function () {
     var roles = [];

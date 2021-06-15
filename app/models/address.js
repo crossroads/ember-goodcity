@@ -1,18 +1,18 @@
-import Model, { attr, belongsTo } from "@ember-data/model";
+import DS from "ember-data";
 import { isBlank } from "@ember/utils";
 import { computed } from "@ember/object";
 import Ember from "ember";
 
-export default Model.extend({
-  flat: attr("string"),
-  building: attr("string"),
-  street: attr("string"),
-  addressType: attr("string"),
+export default DS.Model.extend({
+  flat: DS.attr("string"),
+  building: DS.attr("string"),
+  street: DS.attr("string"),
+  addressType: DS.attr("string"),
 
-  district: belongsTo("district", { async: false }),
+  district: DS.belongsTo("district", { async: false }),
 
-  addressableType: attr("string"),
-  addressable: belongsTo("addressable", { polymorphic: true, async: false }),
+  addressableType: DS.attr("string"),
+  addressable: DS.belongsTo("addressable", { polymorphic: true, async: false }),
 
   fullAddress: computed("flat", "building", "street", function () {
     var addressDetails = [

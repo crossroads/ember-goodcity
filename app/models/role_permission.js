@@ -1,6 +1,6 @@
-import Model, { belongsTo } from "@ember-data/model";
+import DS from "ember-data";
 
-export default Model.extend({
-  role: belongsTo("role", { async: false }),
-  permission: belongsTo("permission", { async: false }),
+export default DS.Model.extend({
+  role: DS.belongsTo("role", { async: false }),
+  permission: DS.belongsTo("permission", { async: false }),
 });

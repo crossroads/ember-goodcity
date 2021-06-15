@@ -1,19 +1,19 @@
-import Model, { attr, belongsTo } from "@ember-data/model";
+import DS from "ember-data";
 import { alias, equal } from "@ember/object/computed";
 import { computed } from "@ember/object";
 import { getOwner } from "@ember/application";
 
-export default Model.extend({
-  body: attr("string"),
-  isPrivate: attr("boolean"),
-  createdAt: attr("date"),
-  updatedAt: attr("date"),
-  offerId: attr("string"),
-  itemId: attr("string"),
-  state: attr("string", { defaultValue: "read" }),
-  sender: belongsTo("user", { async: false }),
-  item: belongsTo("item", { async: false }),
-  offer: belongsTo("offer", { async: false }),
+export default DS.Model.extend({
+  body: DS.attr("string"),
+  isPrivate: DS.attr("boolean"),
+  createdAt: DS.attr("date"),
+  updatedAt: DS.attr("date"),
+  offerId: DS.attr("string"),
+  itemId: DS.attr("string"),
+  state: DS.attr("string", { defaultValue: "read" }),
+  sender: DS.belongsTo("user", { async: false }),
+  item: DS.belongsTo("item", { async: false }),
+  offer: DS.belongsTo("offer", { async: false }),
 
   myMessage: computed(function () {
     var session = getOwner(this).lookup("service:session");

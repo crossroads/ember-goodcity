@@ -1,7 +1,7 @@
-import Model, { attr, hasMany } from "@ember-data/model";
+import DS from "ember-data";
 
-export default Model.extend({
-  name: attr("string"),
-  rolePermissions: hasMany("rolePermissions", { async: false }),
-  users: hasMany("users", { async: false }),
+export default DS.Model.extend({
+  name: DS.attr("string"),
+  rolePermissions: DS.hasMany("rolePermissions", { async: false }),
+  users: DS.hasMany("users", { async: false }),
 });

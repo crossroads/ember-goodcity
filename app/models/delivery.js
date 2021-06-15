@@ -1,16 +1,16 @@
-import Model, { attr, belongsTo } from "@ember-data/model";
+import DS from "ember-data";
 import { computed } from "@ember/object";
 import { equal, notEmpty, and } from "@ember/object/computed";
 
-export default Model.extend({
-  start: attr("date"),
-  finish: attr("date"),
-  deliveryType: attr("string"),
+export default DS.Model.extend({
+  start: DS.attr("date"),
+  finish: DS.attr("date"),
+  deliveryType: DS.attr("string"),
 
-  offer: belongsTo("offer", { async: false }),
-  contact: belongsTo("contact", { async: false }),
-  schedule: belongsTo("schedule", { async: false }),
-  gogovanOrder: belongsTo("gogovan_order", { async: false }),
+  offer: DS.belongsTo("offer", { async: false }),
+  contact: DS.belongsTo("contact", { async: false }),
+  schedule: DS.belongsTo("schedule", { async: false }),
+  gogovanOrder: DS.belongsTo("gogovan_order", { async: false }),
 
   isGogovan: equal("deliveryType", "Gogovan"),
   isDropOff: equal("deliveryType", "Drop Off"),
