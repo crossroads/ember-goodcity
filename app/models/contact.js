@@ -1,4 +1,4 @@
-import { attr, belongsTo } from "@ember-data/model";
+import DS from "ember-data";
 import Addressable from "./addressable";
 
 export default Addressable.extend({

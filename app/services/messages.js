@@ -1,7 +1,6 @@
-import { inject as controller } from '@ember/controller';
-import Service, { inject as service } from '@ember/service';
-import { getOwner } from '@ember/application';
-import { AjaxBuilder } from '../utils/ajax-promise';
+import Service, { inject as service } from "@ember/service";
+import { getOwner } from "@ember/application";
+import { AjaxBuilder } from "../utils/ajax-promise";
 
 export default Service.extend({
   logger: service(),
@@ -14,13 +13,14 @@ export default Service.extend({
   init() {
     const subscriptionsController =
       this.container && this.container.lookup("controller:subscriptions");
-    subscriptionsController &&
+    if (subscriptionsController) {
       subscriptionsController.on("create:message", ({ id }) => {
         const msg = this.get("store").peekRecord("message", id);
         if (msg.get("isUnread")) {
           this._incrementCount();
         }
       });
+    }
   },
 
   fetchUnreadMessages(page, perPage) {
@@ -32,23 +32,22 @@ export default Service.extend({
   },
 
   fetchMessages(page = 1, perPage = 25, opts = {}) {
-    const store = this.get('store');
-    return this._queryMessages(page, perPage, opts)
-      .then(data => {
-        store.pushPayload(data);
-        return data.messages.map(m => {
-          return store.peekRecord('message', m.id);
-        });
-      })
+    const store = this.get("store");
+    return this._queryMessages(page, perPage, opts).then((data) => {
+      store.pushPayload(data);
+      return data.messages.map((m) => {
+        return store.peekRecord("message", m.id);
+      });
+    });
   },
 
   fetchUnreadMessageCount() {
-    return this._queryMessages(1,1, { state: "unread" })
-      .then(data => {
-        const count = (data.meta && data.meta.total_count);
-        this.set('unreadMessageCount', count || 0);
+    return this._queryMessages(1, 1, { state: "unread" })
+      .then((data) => {
+        const count = data.meta && data.meta.total_count;
+        this.set("unreadMessageCount", count || 0);
       })
-      .catch(e => this._onError(e));
+      .catch((e) => this._onError(e));
   },
 
   markRead(message) {
@@ -57,27 +56,27 @@ export default Service.extend({
       var url = adapter.buildURL("message", message.id) + "/mark_read";
       adapter
         .ajax(url, "PUT")
-        .then(data => {
+        .then((data) => {
           delete data.message.id;
           message.setProperties(data.message);
           this._decrementCount();
         })
-        .catch(e => this._onError(e));
+        .catch((e) => this._onError(e));
     }
   },
 
   markAllRead() {
-    return AjaxBuilder('/messages/mark_all_read')
-      .withAuth(this.get('session.authToken'))
+    return AjaxBuilder("/messages/mark_all_read")
+      .withAuth(this.get("session.authToken"))
       .put()
       .then(() => {
         this.get("store")
-          .peekAll('message')
+          .peekAll("message")
           .filterBy("state", "unread")
-          .forEach(message => {
-            message.set('state', 'read');
+          .forEach((message) => {
+            message.set("state", "read");
           });
-        this.set('unreadMessageCount', 0);
+        this.set("unreadMessageCount", 0);
       });
   },
 
@@ -103,7 +102,7 @@ export default Service.extend({
     }
   },
 
-  getRoute: function(message) {
+  getRoute: function (message) {
     var isDonorApp = this.get("session.isDonorApp");
     var offerId = message.get ? message.get("offerId") : message.offer_id;
     var itemId = message.get ? message.get("itemId") : message.item_id;
@@ -124,8 +123,8 @@ export default Service.extend({
 
   _queryMessages(page = 1, perPage = 25, opts = {}) {
     const { scope = "offer", state } = opts;
-    return AjaxBuilder('/messages')
-      .withAuth(this.get('session.authToken'))
+    return AjaxBuilder("/messages")
+      .withAuth(this.get("session.authToken"))
       .withQuery({ state, scope })
       .getPage(page, perPage);
   },
@@ -135,15 +134,15 @@ export default Service.extend({
   },
 
   _incrementCount(step = 1) {
-    const count = this.get('unreadMessageCount') + step;
+    const count = this.get("unreadMessageCount") + step;
     if (count < 0) {
-      this.set('unreadMessageCount', 0);
+      this.set("unreadMessageCount", 0);
     } else {
-      this.set('unreadMessageCount', count);
+      this.set("unreadMessageCount", count);
     }
   },
 
   _decrementCount() {
     this._incrementCount(-1);
-  }
+  },
 });
