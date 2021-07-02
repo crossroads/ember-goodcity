@@ -53,6 +53,7 @@ export default DS.Model.extend({
   inactiveAt: attr("date"),
   displayImageCloudinaryId: attr("string"),
   companyId: attr("string"),
+  sharing_expires_at: attr("string"),
 
   gogovanTransport: belongsTo("gogovan_transport", { async: false }),
   crossroadsTransport: belongsTo("crossroads_transport", { async: false }),
