@@ -2,15 +2,35 @@ import Ember from "ember";
 import AjaxPromise from "../utils/ajax-promise";
 import config from "../config/environment";
 const { getOwner } = Ember;
+let timeout;
 
 export default Ember.Controller.extend({
   messageBox: Ember.inject.service(),
   attemptedTransition: null,
   pin: "",
+  timer: config.APP.OTP_RESEND_TIME,
+  pinAlreadySent: false,
 
   mobile: Ember.computed("mobilePhone", function() {
     return config.APP.HK_COUNTRY_CODE + this.get("mobilePhone");
   }),
+
+  timerFunction() {
+    let waitTime = this.get("timer");
+    if (waitTime === 0) {
+      this.resetTimerParameters();
+      return false;
+    }
+    this.set("timer", waitTime - 1);
+    timeout = setTimeout(() => {
+      this.timerFunction();
+    }, 1000);
+  },
+
+  resetTimerParameters() {
+    this.set("pinAlreadySent", false);
+    this.set("timer", config.APP.OTP_RESEND_TIME);
+  },
 
   backLinkPath: Ember.computed("session.backLinkPath", function() {
     return this.get("session.backLinkPath") || "login";
@@ -31,11 +51,12 @@ export default Ember.Controller.extend({
         otp_auth_key: otp_auth_key
       })
         .then(function(data) {
+          clearTimeout(timeout);
+          _this.resetTimerParameters();
           _this.setProperties({ pin: null });
           _this.set("session.authToken", data.jwt_token);
           _this.set("session.otpAuthKey", null);
           _this.store.pushPayload(data.user);
-          _this.setProperties({ pin: null });
           _this.transitionToRoute("post_login");
         })
         .catch(function(jqXHR) {
@@ -68,6 +89,8 @@ export default Ember.Controller.extend({
           this.set("session.backLinkPath", "login");
           this.setProperties({ pin: null });
           this.transitionToRoute("/authenticate");
+          this.set("pinAlreadySent", true);
+          this.timerFunction();
         })
         .catch(error => {
           if ([401].includes(error.status)) {
