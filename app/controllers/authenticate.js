@@ -17,11 +17,16 @@ export default Ember.Controller.extend({
 
   timerFunction() {
     let waitTime = this.get("timer");
-    if (waitTime === 0) {
+    if (waitTime === 1) {
       this.resetTimerParameters();
       return false;
     }
-    this.set("timer", waitTime - 1);
+
+    if (!this.isDestroyed) {
+      // check aaded as workaround to avoid failing test cases because of timer
+      this.set("timer", waitTime - 1);
+    }
+
     timeout = setTimeout(() => {
       this.timerFunction();
     }, 1000);
@@ -29,7 +34,10 @@ export default Ember.Controller.extend({
 
   resetTimerParameters() {
     this.set("pinAlreadySent", false);
-    this.set("timer", config.APP.OTP_RESEND_TIME);
+    if (!this.isDestroyed) {
+      // check aaded as workaround to avoid failing test cases because of timer
+      this.set("timer", config.APP.OTP_RESEND_TIME);
+    }
   },
 
   backLinkPath: Ember.computed("session.backLinkPath", function() {
