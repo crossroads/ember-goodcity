@@ -1,12 +1,9 @@
 import Ember from "ember";
 
 export default Ember.Helper.helper(function(value) {
-  var text;
-  if(/<[a-z][\s\S]*>/i.test(value)) {
-    text = value;
-  } else {
-    text = Ember.Handlebars.Utils.escapeExpression(value);
-    text = text.replace(/(\r\n|\n|\r)/gm, '<br>');
-  }
-  return new Ember.Handlebars.SafeString(text);
+  value = new Ember.Handlebars.SafeString(value[0] || "").string;
+  value = value.replace(/(\r\n|\n|\r)/gm, "<br>");
+  return new Ember.String.htmlSafe(
+    Ember.Handlebars.Utils.escapeExpression(value)
+  );
 });
