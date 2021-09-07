@@ -26,7 +26,7 @@ export default Ember.Service.extend({
     if (url_for === "feedback_form") {
       values.body = msg.replace(
         "[" + url_with_text + "]",
-        `<a href=' https://crossroads-foundation.formstack.com/forms/goodcity_feedback?OfferId=${offerId}'>${url_text}</a>`
+        `<a href='https://crossroads-foundation.formstack.com/forms/goods_donor_survey?field114124226=${offerId}'>${url_text}</a>`
       );
     }
   }
