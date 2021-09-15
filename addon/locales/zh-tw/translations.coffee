@@ -6,7 +6,7 @@ I18nTranslationsZhTw =
   "delete_confirm": "一旦刪除將無法還原，你確定嗎？"
   "online": "在線"
   "not_connected": "未連線"
-  "not_now": "Not Now"
+  "not_now": "暫時不要"
 
   "crossroads" : "十字路會"
   "language": "繁體中文"
@@ -59,7 +59,7 @@ I18nTranslationsZhTw =
     "rate_button_label": "好的"
     "yes_button_label": "是!"
     "no_button_label": "Not now"
-    "app_rate_prompt_title":"Rate GoodCity! Thank you for your kind donation."
+    "app_rate_prompt_title":"感謝你的慷慨捐贈！請為好人好市應用程式評分。"
     "feedback_prompt_title":"請分享閣下的意見。"
 
   "menu":
@@ -108,8 +108,8 @@ I18nTranslationsZhTw =
     "done" : "完成"
 
   "_resend":
-    "try_again": "Try again in {{timer}} seconds",
-    "please_wait": "Please wait {{timer}} seconds before requesting a pin again",
+    "try_again": "請在 {{timer}} 秒後再試",
+    "please_wait": "請等候 {{timer}} 秒以重新索取驗證碼",
     "resend" : "重新發送"
 
   "_verification_pin":
@@ -141,7 +141,7 @@ I18nTranslationsZhTw =
 
     "cancel":
       "cancel_title": "取消預約"
-      "cancel_transport": "Cancel Transport"
+      "cancel_transport": "取消運輸選項"
       "modify_title": "修改預約"
       "no_ggv_cancel": "我們無法取消已確認的GoGoVan預約，請見諒。"
       "no_ggv_modify": "我們無法修改已確認的GoGoVan預約，請見諒。"
