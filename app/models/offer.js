@@ -36,6 +36,7 @@ export default DS.Model.extend({
   stairs: attr("boolean"),
   parking: attr("boolean"),
   saleable: attr("boolean"),
+  isShared: attr("boolean"),
   estimatedSize: attr("string"),
   notes: attr("string"),
   createdById: attr("string"),
