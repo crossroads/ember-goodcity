@@ -9,22 +9,20 @@ export default Ember.Service.extend({
   store: Ember.inject.service(),
   messagesUtil: Ember.inject.service("messages"),
 
-  iOSDevice: Ember.computed({
-    get() {
-      return false;
-    },
-    set(key, value) {
-      return value;
+  isAndroid() {
+    if (!config.cordova.enabled || !window.device) {
+      return;
     }
-  }),
-
-  isAndroid: function() {
-    if (!config.cordova.enabled) { return; }
-    return ["android", "Android", "amazon-fireos"].indexOf(window.device.platform) >= 0;
+    return (
+      ["android", "Android", "amazon-fireos"].indexOf(window.device.platform) >=
+      0
+    );
   },
 
   isIOS: function() {
-    if (!config.cordova.enabled) { return; }
+    if (!config.cordova.enabled || !window.device) {
+      return;
+    }
     return window.device.platform === "iOS";
   },
 
@@ -37,36 +35,25 @@ export default Ember.Service.extend({
   },
 
   appLoad: function() {
-    if (!config.cordova.enabled) { return; }
-    var isAdminApp = this.get("session.isAdminApp");
-    this.initiatePushNotifications(!isAdminApp);
+    if (!config.cordova.enabled) {
+      return;
+    }
+    this.initiatePushNotifications();
   },
 
-  initiatePushNotifications: function(verifyIOS = false) {
+  initiatePushNotifications: function() {
 
     var _this = this;
 
     function onDeviceReady() {
 
-      _this.set("iOSDevice", _this.isIOS());
-
-      // if (verifyIOS && _this.isIOS()) { return false; }
-
-      if (config.staging && typeof TestFairy !== 'undefined') {
-        TestFairy.begin('a362fd4ae199930a7a1a1b6daa6f729ac923b506');
-      }
-
       var push = PushNotification.init({
-        android: {
-          senderID: config.cordova.FcmSenderId,
-          badge: false,
-          icon: "ic_notify"
-        },
+        android: {},
         ios: {
           alert: true,
-          sound: true
-        },
-        windows: {}
+          sound: true,
+          badge: true
+        }
       });
 
       push.on('registration', function(data) {
