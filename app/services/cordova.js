@@ -48,7 +48,10 @@ export default Ember.Service.extend({
     function onDeviceReady() {
 
       var push = PushNotification.init({
-        android: {},
+        android: {
+          icon: "notification",
+          iconColor: "#002352"
+        },
         ios: {
           alert: true,
           sound: true,
@@ -70,6 +73,10 @@ export default Ember.Service.extend({
 
         }
       });
+
+      push.on("error", e => {
+        console.log(e);
+      });
     }
 
     function sendToken(handle, platform) {
@@ -78,7 +85,11 @@ export default Ember.Service.extend({
 
     function platformCode() {
       var platform;
-      if (_this.isAndroid()) { platform = "fcm"; } else if (window.device.platform === "iOS") { platform = "aps"; } else if (window.device.platform === "windows") { platform = "wns"; }
+      if (_this.isAndroid()) {
+        platform = "fcm";
+      } else if (window.device.platform === "iOS") {
+        platform = "aps";
+      }
       return platform;
     }
 
