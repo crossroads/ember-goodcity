@@ -55,6 +55,8 @@ export default DS.Model.extend({
   displayImageCloudinaryId: attr("string"),
   companyId: attr("string"),
   sharing_expires_at: attr("string"),
+  districtId: attr("string"),
+  district: belongsTo("district", { async: false }),
 
   gogovanTransport: belongsTo("gogovan_transport", { async: false }),
   crossroadsTransport: belongsTo("crossroads_transport", { async: false }),
