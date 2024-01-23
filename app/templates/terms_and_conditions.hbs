@@ -6,7 +6,7 @@
       <nav class="tab-bar">
         <section class="left-small">
           {{#if session.isLoggedIn}}
-            <a class="left-off-canvas-toggle menu-icon" href="#"><span></span></a>
+            <a class="left-off-canvas-toggle menu-icon" href="#"><i class="fa fa-angle-left"></i></a>
           {{else}}
             {{link-to (t "back") 'register' classNames='back'}}
           {{/if}}
