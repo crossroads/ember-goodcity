@@ -24,7 +24,7 @@ export default Ember.Controller.extend({
   }),
 
   appVersion: Ember.computed(function() {
-    return config.cordova.enabled ? config.APP.VERSION : null;
+    return config.APP.VERSION;
   }),
 
   actions: {
