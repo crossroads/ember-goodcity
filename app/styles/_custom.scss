@@ -380,6 +380,11 @@ textarea {
       margin: 10px 0;
     }
   }
+  
+  .disabled-inputs button  {
+    pointer-events: none;
+    opacity: 0.5;
+  }
 }
 
 .btm, .row {

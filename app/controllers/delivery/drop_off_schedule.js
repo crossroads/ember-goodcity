@@ -26,6 +26,10 @@ export default Ember.Controller.extend({
     }
   }),
 
+  requiredFieldsFilled: Ember.computed('selectedId', 'selectedDate', function(){
+    return !!(this.get('selectedId') && this.get('selectedDate'));
+  }),
+
   actions: {
     bookSchedule() {
       var controller   = this;
