@@ -1,5 +1,6 @@
 import Ember from "ember";
 import DS from "ember-data";
+import config from "../config/environment";
 
 var attr = DS.attr,
   belongsTo = DS.belongsTo;
@@ -28,6 +29,14 @@ export default DS.Model.extend({
       {
         angle: this.get("angle") || 0
       }
+    );
+  }),
+
+  isImageOnLongTermStorage: Ember.computed("cloudinaryId", function() {
+    return (
+      (this.get("cloudinaryId") || "").indexOf(
+        config.APP.LONG_TERM_IMAGE_STORAGE_ID_PREFIX
+      ) === 0
     );
   })
 });
