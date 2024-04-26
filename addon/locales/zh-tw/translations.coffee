@@ -177,6 +177,7 @@ I18nTranslationsZhTw =
     "driver_picked_up_items": "GoGoVan司機已接收物資"
     "charity_sale": "閣下同意我們義賣捐贈物資嗎？"
     "crossroads_phone": "十字路會電話"
+    "donation_reference": "捐贈參考編號"
 
   "items":
     "add_item":

@@ -177,6 +177,7 @@ I18nTranslationsEn =
     "driver_picked_up_items": "Items picked up by GGV Driver"
     "charity_sale": "Charity sale ok?"
     "crossroads_phone": "Crossroads' Phone"
+    "donation_reference": "Donation Reference Number"
 
   "items":
     "add_item":

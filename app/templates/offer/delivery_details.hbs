@@ -89,6 +89,16 @@
       <hr>
 
       <div class="row">
+        <div class="small-6 columns">
+          {{t "delivery_details.donation_reference"}}
+        </div>
+        <div class="small-6 columns right strong">
+          {{model.id}}
+        </div>
+      </div>
+      <hr>
+
+      <div class="row">
         <div class="small-12 columns">
           {{#if delivery.completedWithGogovan}}
             {{t 'delivery_details.driver_picked_up_items'}}
